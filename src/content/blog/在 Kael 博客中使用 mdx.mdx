@@ -1,16 +1,16 @@
 ---
-title: Using mdx in RyuChan
-description: Using MDX in RyuChan to enrich article content with more components
-pubDate: 07 12 2024
-image: /image/image2.jpg
+title: 在 Kael 博客中使用 mdx
+description: 在 Kael 博客中使用 MDX 来丰富文章内容
+pubDate: 2025-12-06
+image: "https://zayck-img.pages.dev/file/1764985106621_background1.webp"
 categories:
-  - Documentation
-  - Examples
+  - Astro魔改
 tags:
-  - RyuChan
-  - Blog
-  - Project
-badge: MDX
+  - Kael
+  - Astro
+  - 博客
+  - mdx
+
 ---
 
 import Collapse from "../../components/mdx/Collapse.astro";
@@ -23,19 +23,15 @@ import Warning from "../../components/mdx/Warning.astro";
 import TimeLine from "../../components/mdx/TimeLine.astro";
 import LinkCard from "../../components/mdx/LinkCard.astro";
 
-## Preface
+## 前言
 
-This article describes how to use the components provided by RyuChan in `mdx` to realize the functions that can't be realized by normal `md`.
+本文介绍了如何在 Kael 博客中使用在 mdx 中提供的组件，来实现普通 md 无法实现的功能。
 
-## Main text
+## 开始使用
 
-### Getting started
+首先，你需要创建一个 `mdx` 文件，就是将扩展名更改为 `.mdx` 。
 
-First you need to create an `mdx` file, which is as simple as changing the extension to `.mdx`.
-
-### Introducing
-
-The components provided by Ryuchan are placed in the `/mdx` folders. Write something under the document properties (frontmatter):
+而想在文章中使用特定代码，需要先在文档属性 `frontmatter` 下写上对应的代码：
 
 ```astro
 import Collapse from "../../components/mdx/Collapse.astro";
@@ -49,29 +45,35 @@ import TimeLine from "../../components/mdx/TimeLine.astro";
 import LinkCard from "../../components/mdx/LinkCard.astro";
 ```
 
-### Example
 
-#### Collapse
+### 1.折叠框
 
-<Collapse title="This is an example text.">
-  This is the hidden content!
+<Collapse title="这是一个示例文本。">
+  这就是隐藏的内容！
 </Collapse>
 
 ```astro
-<Collapse title="This is an example text.">
-  This is the hidden content!
+<Collapse title="这是一个示例文本。">
+  这就是隐藏的内容！
 </Collapse>
 ```
 
-#### Diff
+---
 
-<Diff l="/image/l.png" r="/image/r.png" />
+
+### 2.图片对比
+
+<Diff l="https://zayck-img.pages.dev/file/1764992494906_ef5ff2f26abd1a4d7c07dd3e24d94a91.jpeg" r="https://zayck-img.pages.dev/file/1764985106621_background1.webp" />
 
 ```astro
-<Diff l="/image/l.png" r="/image/r.png" />
+<Diff l="https://zayck-img.pages.dev/file/1764992494906_ef5ff2f26abd1a4d7c07dd3e24d94a91.jpeg" r="https://zayck-img.pages.dev/file/1764985106621_background1.webp" />
 ```
 
-#### Error
+
+---
+
+
+### 3.错误标签
 
 <Error>Maybe something went wrong?</Error>
 
@@ -79,7 +81,9 @@ import LinkCard from "../../components/mdx/LinkCard.astro";
 <Error>Maybe something went wrong? </Error>
 ```
 
-#### Warning
+---
+
+### 4.警告标签
 
 <Warning>Hey! Watch out for potholes! </Warning>
 
@@ -87,7 +91,9 @@ import LinkCard from "../../components/mdx/LinkCard.astro";
 <Warning>Hey! Watch out for potholes! </Warning>
 ```
 
-#### Message
+---
+
+### 5.消息标签
 
 <Info>It's just a message. </Info>
 
@@ -95,7 +101,9 @@ import LinkCard from "../../components/mdx/LinkCard.astro";
 <Info>It's just a message. </Info>
 ```
 
-#### Success
+---
+
+### 6.成功标签
 
 <Success>Congratulations on your successful deployment! </Success>
 
@@ -103,7 +111,9 @@ import LinkCard from "../../components/mdx/LinkCard.astro";
 <Success>Congratulations on your successful deployment! </Success>
 ```
 
-#### Kbd
+---
+
+### 7.键盘样式
 
 <Kbd>Ctrl</Kbd> + <Kbd>C</Kbd> to copy the text.
 
@@ -111,7 +121,9 @@ import LinkCard from "../../components/mdx/LinkCard.astro";
 <Kbd>Ctrl</Kbd> + <Kbd>C</Kbd> to copy the text.
 ```
 
-#### TimeLine
+---
+
+### 8.时间轴
 
 <TimeLine
   items={[
@@ -135,20 +147,22 @@ import LinkCard from "../../components/mdx/LinkCard.astro";
 />
 ```
 
-#### LinkCard
+---
+
+### 9.网站卡片
 
 <LinkCard
-  title="RyuChan"
+  title="Kael"
   desc="My blog project!"
-  url="https://github.com/xz131714/RyuChan"
-  img="https://img.xiaozhangya.xin/file/Avatar/NOr1G3Zs.jpeg"
+  url="https://github.com/zayck/Kael"
+  img="/goat.jpg"
 />
 
 ```astro
 <LinkCard
-  title="RyuChan"
+  title="Kael"
   desc="My blog project!"
-  url="https://github.com/xz131714/RyuChan"
-  img="https://img.xiaozhangya.xin/file/Avatar/NOr1G3Zs.jpeg"
+  url="https://github.com/zayck/Kael"
+  img="/goat.jpg"
 />
 ```
