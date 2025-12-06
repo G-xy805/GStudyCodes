@@ -1,27 +1,25 @@
 ---
-title: Adding Comment Systems to RyuChan
-description: A comprehensive guide on how to integrate the Waline comment system into your RyuChan blog
-pubDate: 04 15 2025
-image: /image/image4.jpg
+title: 为 Kael 博客添加评论插件
+description: 如何将 Waline 评论插件集成到 Kael 博客的全面指南
+pubDate: 2025-12-06
+image: "https://zayck-img.pages.dev/file/1764992494906_ef5ff2f26abd1a4d7c07dd3e24d94a91.jpeg"
 categories:
-  - Documentation
+  - Astro魔改
 tags:
-  - RyuChan
-  - Comments
-  - Waline
+  - Kael
   - Astro
-badge: Waline
+  - 博客
+  - 评论
 ---
 
-## Introduction
 
-RyuChan 博客现已支持通过配置文件集中管理评论系统，无需在页面手动引入组件或硬编码参数，只需在 `ryuchan.config.yaml` 中配置即可。
+Kael 博客现已支持通过配置文件集中管理评论插件，无需在页面手动引入组件或硬编码参数，只需在 `Kael.config.yaml` 中配置即可。
 
-## 集中式评论系统配置
+## 集中式评论插件配置
 
-### 步骤 1：配置评论系统
+### 步骤 1：配置评论插件
 
-在 `ryuchan.config.yaml` 中找到 `comments` 配置块：
+在 `Kael.config.yaml` 中找到 `comments` 配置块：
 
 ```yaml
 comments:
@@ -51,23 +49,23 @@ comments:
 ```
 
 - `enable: true/false` 控制是否全站显示评论。
-- `type: giscus/waline/none` 控制评论系统类型，**同一时间只会启用一个**。
+- `type: giscus/waline/none` 控制评论插件类型，**同一时间只会启用一个**。
 - 详细参数请参考各自官方文档。
 
 ### 步骤 2：自动渲染，无需手动引入
 
-你无需在页面或模板中手动引入 `<Giscus />` 或 `<Waline />` 组件，Ryuchan 已自动根据配置渲染对应评论系统。只需专注于内容创作和配置维护。
+你无需在页面或模板中手动引入 `<Giscus />` 或 `<Waline />` 组件，Kael 已自动根据配置渲染对应评论插件。只需专注于内容创作和配置维护。
 
-### 步骤 3：切换或禁用评论系统
+### 步骤 3：切换或禁用评论插件
 
-- 切换评论系统：只需修改 `type` 字段为 `giscus` 或 `waline`，保存后自动生效。
-- 禁用评论系统：将 `enable` 设为 `false` 即可。
+- 切换评论插件：只需修改 `type` 字段为 `giscus` 或 `waline`，保存后自动生效。
+- 禁用评论插件：将 `enable` 设为 `false` 即可。
 
 ---
 
 ## 进阶：自定义 Waline 组件
 
-如需自定义 Waline 组件样式或参数，可参考如下代码（已内置于 RyuChan）：
+如需自定义 Waline 组件样式或参数，可参考如下代码（已内置于 Kael）：
 
 ```astro
 ---
