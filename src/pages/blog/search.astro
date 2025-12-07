@@ -60,12 +60,17 @@ import { Icon } from "astro-icon/components";
               const titles = document.querySelectorAll('.pagefind-ui__result-title');
               titles.forEach((title) => {
                 const text = title.textContent || '';
-                // 移除所有形式的博客名称后缀
-                title.textContent = text.replace(/ - Zayck'? Blog?$/, '');
+                // 更灵活地移除博客名称后缀，考虑不同的分隔符和大小写
+                const blogName = 'Zayck';
+                // 匹配各种可能的分隔符和后缀格式（-、|、_等分隔符，以及Blog/Blog的不同形式）
+                const suffixRegex = new RegExp(`(?:\s*-\s*|\s*\|\s*|\s*_\s*)${blogName}'?s?\s*Blog?\s*$`, 'i');
+                title.textContent = text.replace(suffixRegex, '');
               });
             }, 100);
           }
         });
+
+
 
         // If search param exists (e.g., search?q=astro), trigger search
         const query = params.get("q");
