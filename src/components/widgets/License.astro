@@ -11,9 +11,9 @@ const displayDate = pubDate ? dayjs(pubDate).format(DATE_FORMAT) : "";
 // 从 URL 中提取 slug  
 const slug = url ? url.toString().split('/').filter(Boolean).pop() : undefined;  
 
-// 获取文章的主要分类  
-const mainCategory = categories && categories.length > 0 ? categories[0] : '';
-  
+// 获取文章的主要分类并转换为小写
+const mainCategory = categories && categories.length > 0 ? categories[0].toLowerCase() : '';
+
 const socialLinks = [  
   {  
     name: "Facebook",  
