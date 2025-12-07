@@ -52,42 +52,42 @@ site:
       subItems:
       - id: wanyi
         text: 玩易
-        href: /wanyi
+        href: /blog/category/玩易
         svg: "material-symbols:book-outline"
         target: _self
       - id: xuanhuang
         text: 玄黄
-        href: /xuanhuang
+        href: /blog/category/玄黄
         svg: "material-symbols:book-outline"
         target: _self
       - id: randeng
         text: 燃灯
-        href: /randeng
+        href: /blog/category/燃灯
         svg: "material-symbols:book-outline"
         target: _self
       - id: caotang
         text: 草堂
-        href: /caotang
+        href: /blog/category/草堂
         svg: "material-symbols:book-outline"
         target: _self
       - id: qingnang
         text: 青囊
-        href: /qingnang
+        href: /blog/category/青囊
         svg: "material-symbols:book-outline"
         target: _self
       - id: niansi
         text: 廿四
-        href: /niansi
+        href: /blog/category/廿四
         svg: "material-symbols:book-outline"
         target: _self
       - id: yaoyan
         text: 妖言
-        href: /yaoyan
+        href: /blog/category/妖言
         svg: "material-symbols:book-outline"
         target: _self
       - id: zuowang
         text: 坐忘
-        href: /zuowang
+        href: /blog/category/坐忘
         svg: "material-symbols:book-outline"
         target: _self
 
@@ -98,37 +98,37 @@ site:
       subItems:
       - id: xlrj
         text: 效率软件
-        href: /xlrj
+        href: /blog/category/效率软件
         svg: "material-symbols:book-outline"
         target: _self
       - id: sjwz
         text: 神级网站
-        href: /sjwz
+        href: /blog/category/神级网站
         svg: "material-symbols:book-outline"
         target: _self
       - id: llqcj
         text: 浏览器插件
-        href: /llqcj
+        href: /blog/category/浏览器插件
         svg: "material-symbols:book-outline"
         target: _self
       - id: hexo
-        text: Hexo 魔改
-        href: /hexo
+        text: Hexo魔改
+        href: /blog/category/Hexo魔改
         svg: "material-symbols:book-outline"
         target: _self
       - id: hugo
-        text: Hugo 魔改
-        href: /hugo
+        text: Hugo魔改
+        href: /blog/category/Hugo魔改
         svg: "material-symbols:book-outline"
         target: _self
       - id: Astro
-        text: Astro 魔改
-        href: /Astro
+        text: Astro魔改
+        href: /blog/category/Astro魔改
         svg: "material-symbols:book-outline"
         target: _self
       - id: obsidian
-        text: obsidian 教程
-        href: /obsidian
+        text: obsidian教程
+        href: /blog/category/obsidian教程
         svg: "material-symbols:book-outline"
         target: _self
              
