@@ -3,8 +3,7 @@ title: Testing Mathematical Formulas in Markdown
 description: A demonstration of various mathematical formulas rendered using LaTeX within Markdown.
 pubDate: May 31 2025
 categories:
-  - Documentation
-  - Examples
+  - Astro魔改
 tags:
   - Markdown
   - LaTeX

@@ -4,8 +4,7 @@ description: "Here is a sample of some basic Markdown syntax that can be used wh
 pubDate: "Jul 01 2024"
 image: /image/image3.png
 categories:
-  - Documentation
-  - Examples
+  - Astro魔改
 tags:
   - Markdown
 badge: Markdown
