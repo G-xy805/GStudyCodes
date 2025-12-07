@@ -4,46 +4,51 @@ import { USER_NAME, DATE_FORMAT, t, umamiConfig } from "@config";
 import type { PostData } from "@interfaces/data";  
 import { Icon } from "astro-icon/components";  
 import PostFilter from "./PostFilter.astro";  
-  
+
 const { title, url, pubDate, badge, categories = [], tags = [], word, time } = Astro.props as PostData;  
 const displayDate = pubDate ? dayjs(pubDate).format(DATE_FORMAT) : "";  
-  
+
 // 从 URL 中提取 slug  
 const slug = url ? url.toString().split('/').filter(Boolean).pop() : undefined;  
 
 // 获取文章的主要分类并转换为小写
 const mainCategory = categories && categories.length > 0 ? categories[0].toLowerCase() : '';
 
+// 生成完整的URL
+const getFullUrl = () => {
+  if (!url) return '';
+  return url.includes('/blog/') ? url : `https://zayck.pages.dev/blog/${mainCategory}/${slug}`;
+};
+
 const socialLinks = [  
   {  
     name: "微博",  
     icon: "ri:weibo-line",  
     class: "bg-[#E6162D] hover:bg-[#c5122a]",  
-    url: `https://service.weibo.com/share/share.php?title=${title}&url=${url ? (url.includes('/blog/') ? url : `https://zayck.pages.dev/blog/${mainCategory}/${slug}`) : ''}`,  
+    url: `https://service.weibo.com/share/share.php?title=${title}&url=${getFullUrl()}`,  
   },  
   {  
     name: "QQ",  
     icon: "ri:qq-line",  
     class: "bg-[#12B7F5] hover:bg-[#0b9ed8]",  
-    url: `https://connect.qq.com/widget/shareqq/index.html?title=${title}&url=${url ? (url.includes('/blog/') ? url : `https://zayck.pages.dev/blog/${mainCategory}/${slug}`) : ''}`,  
+    url: `https://connect.qq.com/widget/shareqq/index.html?title=${title}&url=${getFullUrl()}`,  
   },  
   {  
     name: "微信",  
     icon: "ri:wechat-line",  
     class: "bg-[#07C160] hover:bg-[#06ad57]",  
-    url: `https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=4&data=${encodeURIComponent(url ? (url.includes('/blog/') ? url : `https://zayck.pages.dev/blog/${mainCategory}/${slug}`) : '')}`,  
   },  
   {  
     name: "Email",  
     icon: "ri:mail-line",  
     class: "bg-gray-600 hover:bg-gray-700",  
-    url: `mailto:?subject=${title}&body=${url ? (url.includes('/blog/') ? url : `https://zayck.pages.dev/blog/${mainCategory}/${slug}`) : ''}`,  
+    url: `mailto:?subject=${title}&body=${getFullUrl()}`,  
   },  
   {  
     name: "链接",  
     icon: "ri:links-line",  
     class: "bg-blue-600 hover:bg-blue-700",  
-    type: "copy", // 添加类型标识用于特殊处理  
+    type: "copy",  
   },  
 ];  
 ---  
@@ -69,53 +74,39 @@ const socialLinks = [
 
         <!-- Stats Row -->  
         <div class="flex flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm opacity-75">  
-          {  
-            displayDate && (  
-              <span class="flex items-center gap-1">  
-                <Icon name="lucide:calendar" class="h-4 w-4" />  
-                {displayDate}  
-              </span>  
-            )  
-          }  
+          {displayDate && (  
+            <span class="flex items-center gap-1">  
+              <Icon name="lucide:calendar" class="h-4 w-4" />  
+              {displayDate}  
+            </span>  
+          )}  
 
-          {  
-            badge && (  
-              <span class="flex items-center gap-1">  
-                <Icon name="lucide:bookmark" class="h-4 w-4" />  
-                {badge}  
-              </span>  
-            )  
-          }  
+          {badge && (  
+            <span class="flex items-center gap-1">  
+              <Icon name="lucide:bookmark" class="h-4 w-4" />  
+              {badge}  
+            </span>  
+          )}  
 
-          {  
-            word && time && (  
-              <div class="flex items-center gap-1">  
-                <Icon name="lucide:book-open" class="h-4 w-4" />  
-                <span>  
-                  {word} {t("label.wordCount")} · {time} {t("label.readTime")}  
-                </span>  
-              </div>  
-            )  
-          }  
+          {word && time && (  
+            <div class="flex items-center gap-1">  
+              <Icon name="lucide:book-open" class="h-4 w-4" />  
+              <span>{word} {t("label.wordCount")} · {time} {t("label.readTime")}</span>  
+            </div>  
+          )}  
 
-          <!-- 添加浏览量显示 -->  
-          {  
-            slug && (  
-              <div class="flex items-center gap-1">  
-                <Icon name="lucide:eye" class="h-4 w-4" />  
-                <span id="license-page-views">加载中...</span>  
-              </div>  
-            )  
-          }  
+          <!-- 浏览量显示 -->  
+          {slug && (  
+            <div class="flex items-center gap-1">  
+              <Icon name="lucide:eye" class="h-4 w-4" />  
+              <span id="license-page-views">加载中...</span>  
+            </div>  
+          )}  
 
+          <!-- 复制URL按钮 -->
           <button id="copy-url-button" class="flex items-center gap-1 hover:text-primary transition-colors cursor-pointer">
             <Icon name="ri:links-line" class="w-4 h-4" />
           </button>
-          
-          <!-- 复制成功提示 -->
-          <div id="copy-toast" class="fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg text-sm opacity-0 transition-opacity duration-300 pointer-events-none z-50">
-            已复制链接
-          </div>
         </div>  
 
         <!-- Categories and Tags -->  
@@ -187,11 +178,16 @@ const socialLinks = [
     <div class="flex flex-wrap gap-4 justify-center">  
       {  
         socialLinks.map(({ name, icon, class: bgClass, url, type }) => {
+          // 为每个链接创建通用属性
+          const commonProps = {
+            class: `btn btn-circle btn-lg transition-transform hover:scale-110 ${bgClass}`,
+            title: name
+          };
+
           if (name === "微信") {
             return (
               <button 
-                class={`btn btn-circle btn-lg transition-transform hover:scale-110 ${bgClass}`}  
-                title={name}
+                {...commonProps}
                 onclick="wechat_qr_modal.showModal()"
               >  
                 <span class="sr-only">{name}</span>  
@@ -202,21 +198,20 @@ const socialLinks = [
             return (
               <button 
                 id="share-copy-url-button"
-                class={`btn btn-circle btn-lg transition-transform hover:scale-110 ${bgClass}`}  
-                title={name}
+                {...commonProps}
               >  
                 <span class="sr-only">{name}</span>  
                 <Icon name={icon} class="w-6 h-6 text-white" />  
               </button>
             );
           }
+          
           return (
             <a  
               href={url}  
-              class={`btn btn-circle btn-lg transition-transform hover:scale-110 ${bgClass}`}  
+              {...commonProps}
               target="_blank"  
               rel="noopener noreferrer"  
-              title={name}  
             >  
               <span class="sr-only">{name}</span>  
               <Icon name={icon} class="w-6 h-6 text-white" />  
@@ -247,7 +242,7 @@ const socialLinks = [
       </div>
       <div class="bg-white rounded-lg shadow-lg mb-4 mx-auto p-4" style="display: flex; justify-content: center; align-items: center; width: 204px; height: 204px;">
         <img 
-          src={`https://api.qrserver.com/v1/create-qr-code/?size=196x196&margin=4&data=${encodeURIComponent(url ? (url.includes('/blog/') ? url : `https://zayck.pages.dev/blog/${mainCategory}/${slug}`) : '')}`} 
+          src={`https://api.qrserver.com/v1/create-qr-code/?size=196x196&margin=4&data=${encodeURIComponent(getFullUrl())}`} 
           alt="微信分享二维码"
           class="max-w-full h-auto"
         />
@@ -267,10 +262,14 @@ const socialLinks = [
   </form>
 </dialog>
 
+<!-- 复制成功提示 -->
+<div id="copy-toast" class="fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg text-sm opacity-0 transition-opacity duration-300 pointer-events-none z-50">
+  已复制链接
+</div>
+
 <script>
   // 简化的打赏按钮交互逻辑
   document.addEventListener('DOMContentLoaded', () => {
-    const donateButton = document.getElementById('donate_button');
     const donateModal = document.getElementById('donate_modal');
     
     if (donateModal) {
@@ -278,9 +277,11 @@ const socialLinks = [
       donateModal.onmouseleave = null;
     }
     
-    // 复制当前URL功能
-    const copyButton = document.getElementById('copy-url-button');
-    const shareCopyButton = document.getElementById('share-copy-url-button');
+    // 复制URL功能
+    const copyButtons = [
+      document.getElementById('copy-url-button'),
+      document.getElementById('share-copy-url-button')
+    ];
     const copyToast = document.getElementById('copy-toast');
     
     // 复制URL的函数，供多个按钮调用
@@ -312,15 +313,12 @@ const socialLinks = [
         });
     }
     
-    // 原链接符号的复制事件
-    if (copyButton && copyToast) {
-      copyButton.addEventListener('click', copyCurrentUrl);
-    }
-    
-    // 分享模态框中链接按钮的复制事件
-    if (shareCopyButton && copyToast) {
-      shareCopyButton.addEventListener('click', copyCurrentUrl);
-    }
+    // 为所有复制按钮添加事件监听
+    copyButtons.forEach(button => {
+      if (button) {
+        button.addEventListener('click', copyCurrentUrl);
+      }
+    });
     
     // 剪贴板API备用方法
     function fallbackCopyTextToClipboard(text: string) {
@@ -335,17 +333,14 @@ const socialLinks = [
       
       try {
         const successful = document.execCommand('copy');
-        if (successful) {
-          const copyToast = document.getElementById('copy-toast');
-          if (copyToast) {
-            copyToast.classList.remove('opacity-0');
-            copyToast.classList.add('opacity-100');
-            
-            setTimeout(() => {
-              copyToast.classList.remove('opacity-100');
-              copyToast.classList.add('opacity-0');
-            }, 2000);
-          }
+        if (successful && copyToast) {
+          copyToast.classList.remove('opacity-0');
+          copyToast.classList.add('opacity-100');
+          
+          setTimeout(() => {
+            copyToast.classList.remove('opacity-100');
+            copyToast.classList.add('opacity-0');
+          }, 2000);
         }
       } catch (err) {
         console.error('复制失败 (备用方法):', err);
@@ -359,35 +354,31 @@ const socialLinks = [
 {slug && (  
   <script define:vars={{ slug, umamiConfig }}>  
     // 获取浏览量统计  
-    async function fetchLicensePageViews() {  
-      if (!umamiConfig.enable) {  
-        return;  
-      }  
+    async function fetchPageViews() {  
+      if (!umamiConfig.enable) return;  
         
       try {  
-        // 第一步：获取网站ID和token  
-        const shareResponse = await fetch(`${umamiConfig.baseUrl}/api/share/${umamiConfig.shareId}`);  
-        if (!shareResponse.ok) {  
-          throw new Error('获取分享信息失败');  
-        }  
-        const shareData = await shareResponse.json();  
+        // 获取网站ID和token  
+        const shareData = await fetch(`${umamiConfig.baseUrl}/api/share/${umamiConfig.shareId}`)
+          .then(res => {
+            if (!res.ok) throw new Error('获取分享信息失败');
+            return res.json();
+          });
+          
         const { websiteId, token } = shareData;  
           
-        // 第二步：获取统计数据  
+        // 获取统计数据  
         const currentTimestamp = Date.now();  
         const statsUrl = `${umamiConfig.baseUrl}/api/websites/${websiteId}/stats?startAt=0&endAt=${currentTimestamp}&unit=hour&timezone=${encodeURIComponent(umamiConfig.timezone)}&url=%2Fblog%2F${slug}&compare=false`;  
           
-        const statsResponse = await fetch(statsUrl, {  
-          headers: {  
-            'x-umami-share-token': token  
-          }  
-        });  
+        const statsData = await fetch(statsUrl, {  
+          headers: { 'x-umami-share-token': token }  
+        })
+        .then(res => {
+          if (!res.ok) throw new Error('获取统计数据失败');
+          return res.json();
+        });
           
-        if (!statsResponse.ok) {  
-          throw new Error('获取统计数据失败');  
-        }  
-          
-        const statsData = await statsResponse.json();  
         const pageViews = statsData.pageviews?.value || 0;  
         const visits = statsData.visits?.value || 0;  
           
@@ -396,7 +387,7 @@ const socialLinks = [
           displayElement.textContent = `浏览量 ${pageViews} · 访问数 ${visits}`;  
         }  
       } catch (error) {  
-        console.error('Error fetching page views for license:', error);  
+        console.error('Error fetching page views:', error);  
         const displayElement = document.getElementById('license-page-views');  
         if (displayElement) {  
           displayElement.textContent = '统计不可用';  
@@ -406,9 +397,9 @@ const socialLinks = [
 
     // 页面加载完成后获取统计数据  
     if (document.readyState === 'loading') {  
-      document.addEventListener('DOMContentLoaded', fetchLicensePageViews);  
+      document.addEventListener('DOMContentLoaded', fetchPageViews);  
     } else {  
-      fetchLicensePageViews();  
+      fetchPageViews();  
     }  
   </script>  
 )}  
