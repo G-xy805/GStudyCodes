@@ -55,20 +55,8 @@ import { Icon } from "astro-icon/components";
             return term;
           },
           onResults: function() {
-            // 搜索结果加载完成后处理标题
-            setTimeout(() => {
-              const results = document.querySelectorAll('.pagefind-ui__result');
-              results.forEach((result) => {
-                const titleElement = result.querySelector('.pagefind-ui__result-title');
-                
-                if (titleElement) {
-                  // 移除标题中的博客名称后缀
-                  const originalTitle = titleElement.textContent || '';
-                  const cleanTitle = originalTitle.replace(/ - Zayck'Blog$/, '');
-                  titleElement.textContent = cleanTitle;
-                }
-              });
-            }, 200);
+            // 搜索结果加载完成后可以添加自定义处理
+            console.log('Search results loaded');
           }
         });
 

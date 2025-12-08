@@ -70,6 +70,9 @@ const url = new URL(`/${blog.slug}`, Astro.url.origin);
       time={remarkPluginFrontmatter.readingTime}
       url={`/blog/${blog.slug}`}
     />
+    
+    <!-- Pagefind metadata for article title -->
+    <meta data-pagefind-meta="title" content={blog.data.title} />
 
     <!-- Categories and tags using PostFilter component -->
     <div class="mb-6">
