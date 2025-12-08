@@ -76,19 +76,39 @@ import { Icon } from "astro-icon/components";
         // If search param exists (e.g., search?q=astro), trigger search
         const query = params.get("q");
         if (query) {
+          // Clear previous results before triggering new search
+          const searchContainer = document.querySelector(".pagefind-ui__results");
+          if (searchContainer) {
+            searchContainer.innerHTML = "";
+          }
           search.triggerSearch(query);
         }
 
-        // Reset search param if search input is cleared
+        // Reset search param if search input is cleared and handle search input changes
         const searchInput = document.querySelector(".pagefind-ui__search-input");
         const clearButton = document.querySelector(".pagefind-ui__search-clear");
 
-        searchInput?.addEventListener("input", resetSearchParam);
-        clearButton?.addEventListener("click", resetSearchParam);
+        searchInput?.addEventListener("input", handleSearchInputChange);
+        clearButton?.addEventListener("click", handleSearchClear);
 
-        function resetSearchParam(e: Event): void {
-          if ((e.target as HTMLInputElement).value === "") {
+        function handleSearchInputChange(e: Event): void {
+          const inputElement = e.target as HTMLInputElement;
+          if (inputElement.value === "") {
             history.replaceState(history.state, "", window.location.pathname);
+            // Clear results when input is empty
+            const searchContainer = document.querySelector(".pagefind-ui__results");
+            if (searchContainer) {
+              searchContainer.innerHTML = "";
+            }
+          }
+        }
+
+        function handleSearchClear(e: Event): void {
+          history.replaceState(history.state, "", window.location.pathname);
+          // Clear results when clear button is clicked
+          const searchContainer = document.querySelector(".pagefind-ui__results");
+          if (searchContainer) {
+            searchContainer.innerHTML = "";
           }
         }
       } catch (error) {
