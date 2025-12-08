@@ -57,18 +57,36 @@ import { Icon } from "astro-icon/components";
           onResults: function() {
             // 搜索结果加载完成后处理标题
             setTimeout(() => {
-              const titles = document.querySelectorAll('.pagefind-ui__result-title');
-              titles.forEach((title, index) => {
-                const text = title.textContent || '';
-                console.log(`Result ${index + 1} original title:`, text);
-                // 更简单直接的方式处理标题，确保显示正确的文章标题
-                // 如果标题中包含博客名称，尝试提取前面的部分
-                const blogName = 'Zayck';
-                const separatorIndex = text.indexOf(`- ${blogName}`);
-                if (separatorIndex > 0) {
-                  const cleanedTitle = text.substring(0, separatorIndex).trim();
-                  title.textContent = cleanedTitle;
-                  console.log(`Result ${index + 1} cleaned title:`, cleanedTitle);
+              const results = document.querySelectorAll('.pagefind-ui__result');
+              results.forEach((result, index) => {
+                const titleElement = result.querySelector('.pagefind-ui__result-title');
+                const linkElement = result.querySelector('.pagefind-ui__result-link');
+                
+                if (titleElement && linkElement) {
+                  const linkHref = linkElement.getAttribute('href');
+                  // 尝试从链接中提取文章标题
+                  if (linkHref) {
+                    // 提取链接中的最后一部分作为标题
+                    const parts = linkHref.split('/');
+                    let articleTitle = parts[parts.length - 1];
+                    
+                    // 移除可能的文件扩展名
+                    articleTitle = articleTitle.replace('.html', '');
+                    
+                    // 替换连字符/下划线为空格
+                    articleTitle = articleTitle.replace(/[-_]/g, ' ');
+                    
+                    // 如果是中文，直接使用
+                    if (/[\u4e00-\u9fa5]/.test(articleTitle)) {
+                      titleElement.textContent = articleTitle;
+                    } else {
+                      // 如果是英文，首字母大写
+                      articleTitle = articleTitle.split(' ').map(word => 
+                        word.charAt(0).toUpperCase() + word.slice(1)
+                      ).join(' ');
+                      titleElement.textContent = articleTitle;
+                    }
+                  }
                 }
               });
             }, 200);
