@@ -16,9 +16,7 @@ tags:
 
 Kael 博客欢迎你的到来和使用！
 
-如果喜欢我的这个博客样式，并用到你的网站上，请到友链点击 `“添加你的博客”` 按钮，通过提交 Pull Request 来编辑 `友链` 页面哦!
-
-![image.png](https://zayck-img.pages.dev/file/1765106231391_image.png)
+欢迎来交换友链哦，具体请查看`友链`页面！
 
 
 ## text2
