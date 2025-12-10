@@ -7,7 +7,10 @@
   max-width: 72rem; /* 默认90% - 适合小屏幕 */  
 }
 
-.prose {  
+.prose {
+  @apply text-justify; // 文章正文两端对齐
+  padding-left: 1ch; // 左端缩进1个字符
+  padding-right: 1ch; // 右端缩进1个字符
 
   // 只优化链接的上下边距，不影响水平对齐  
   a {  
@@ -24,6 +27,10 @@
   // 只优化分隔线的上下边距  
   hr {  
     @apply my-3; // 上下各 0.75rem 的间距，比默认更紧凑  
+  }  
+  // 设置引用块样式，将左侧灰色改为与封面图下分类文件夹图标内蓝色文字颜色一致且更淡  
+  blockquote {  
+    border-left-color: oklch(var(--p) / 0.7) !important; // 使用主题的primary颜色，降低不透明度使其更淡  
   }  
 }
 
