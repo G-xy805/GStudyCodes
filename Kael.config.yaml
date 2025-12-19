@@ -43,7 +43,9 @@ site:
     #   text: 首页 # 菜单项显示的文本
     #   href: / # 菜单项链接的地址
     #   svg: "material-symbols:home-outline-rounded"
-    #   target: _self
+    #   target: _self  # 在本页面内打开
+    #   target: _blank # 在新标签页打开
+    
     
     - id: sysj
       text: 少阳手记
@@ -141,12 +143,12 @@ site:
         text: 个人主页
         href: https://zayck-top.pages.dev
         svg: "material-symbols:book-outline"
-        target: _self
+        target: _blank
       - id: music
         text: 音乐网站
         href: https://zayck-music.pages.dev
         svg: "material-symbols:book-outline"
-        target: _self  
+        target: _blank  
       - id: tool
         text: 工具箱
         href: /navigation
@@ -174,13 +176,6 @@ site:
         svg: "material-symbols:supervisor-account-outline-rounded"
         target: _self  
 
-
-    # - id: contact
-    #   text: Contact
-    #   href: "mailto:contact.evesunmaple@outlook.com"
-    #   target: _blank # 在新标签页打开
-    #   svg: "material-symbols:attach-email-outline-rounded"
-
 # 用户的个人信息
 user:
   name: Zayck # 用户名
@@ -188,11 +183,6 @@ user:
   avatar: /avatar.webp # 用户头像路径
   sidebar: # 侧边栏配置
     social:
-      # - href: "https://afdian.com/a/saroprock" # 链接
-      #   ariaLabel: Support my work # 图标的可访问性标签
-      #   title: Support my work # 图标的悬浮标题
-      #   svg: "ri:cup-line"
-
       - href: "https://github.com/zayck"
         ariaLabel: Github
         title: Github
@@ -212,10 +202,6 @@ user:
 
   footer:
     social:
-      # - href: "https://afdian.com/a/saroprock" # 链接
-      #   ariaLabel: Support my work # 图标的可访问性标签
-      #   title: Support my work # 图标的悬浮标题
-      #   svg: "ri:cup-line"
       - href: "https://zayck-firefly.pages.dev/sponsor/"
         ariaLabel: 支持博主
         title: 支持博主
