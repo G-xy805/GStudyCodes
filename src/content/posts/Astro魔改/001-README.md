@@ -27,7 +27,7 @@ category: Astro魔改
   - 只需在 `Kael.config.yaml` 配置你的博客内容
 - 🛠️ 本博客基于 [RyuChan](https://github.com/xz131714/RyuChan) 主题下进行修改  
 
-## 📝 功能新增和修改（作者：Zayck）
+## 📝 功能新增和修改（作者：Gxy）
 - ✅ 修复**搜索功能**，精确呈现文章标题以及自动删除搜索历史
 - ✅ 修改**导航栏背景**，由原来的毛玻璃透明效果改为纯色
 - ✅ 修改导航栏的**搜索框位置**，让其贴近右边的光暗调节按钮
@@ -119,8 +119,8 @@ Kael 使用 `Kael.config.yaml` 作为配置文件，你可以在此文件中配�
 
 ```yaml
 site:
-  tab: Zayck # 浏览器标签栏上显示的文本
-  title: Zayck # 网站的主标题
+  tab: Gxy # 浏览器标签栏上显示的文本
+  title: Gxy # 网站的主标题
   description: A clean, elegant, and fast static blog template! # 网站描述，用于SEO
   language: zh # 网站的语言代码，如"en"表示英文，"zh"表示中文
   favicon: /goat.svg # 网站图标路径

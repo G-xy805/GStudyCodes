@@ -8,7 +8,7 @@ description: "与优秀的朋友们一起成长"
 申请友链前<span style="color: var(--primary); font-weight: bold;">请先在自己网站添加本站友链</span>，请使用以下信息：
 
 ```
-名称: Zayck' Blog
+名称: Gxy' Blog
 网址：https://zayck.pages.dev/
 头像（方）：https://zayck-img.pages.dev/file/1764984969206_logo.png
 头像（圆）：https://zayck-img.pages.dev/file/1765794621905_goat.webp

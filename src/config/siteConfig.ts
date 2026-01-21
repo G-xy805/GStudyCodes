@@ -6,15 +6,15 @@ import { fontConfig } from "./fontConfig";
 const SITE_LANG = "zh_CN";
 
 export const siteConfig: SiteConfig = {
-	title: "Zayck' Blog",
+	title: "Gxy' Blog",
 	subtitle: "系统 · 高效 · 实用",
 	site_url: "https://zayck.pages.dev",
 	description: "系统 · 高效 · 实用",
 	keywords: [
-		"Zayck",
-		"少阳",
-		"少阳手记",
-		"少阳研究所",
+		"Gxy",
+		"宇",
+		"宇手记",
+		"宇研究所",
 		"传统文化",
 		"资源",
 		"软件",
@@ -53,7 +53,7 @@ export const siteConfig: SiteConfig = {
 		value: "/assets/images/goat.png",
 		alt: "",
 	},
-	navbarTitle: "Zayck", // 导航栏标题，可以设置为与 title 不同的值，如果不设置则使用 title
+	navbarTitle: "Gxy", // 导航栏标题，可以设置为与 title 不同的值，如果不设置则使用 title
 
 	// 站点开始日期，用于统计运行天数
 	siteStartDate: "2025-11-29", // 请修改为你的站点实际开始日期，格式：YYYY-MM-DD
@@ -110,7 +110,7 @@ export const siteConfig: SiteConfig = {
 				// 主页显示自定义文本（全局开关）
 				enable: true,
 				// 主页横幅主标题
-				title: "Zayck' Blog",
+				title: "Gxy' Blog",
 				// 主页横幅副标题
 				subtitle: [
 					"系统 · 高效 · 实用",
@@ -132,8 +132,8 @@ export const siteConfig: SiteConfig = {
 					mobile: true, // 移动端显示横幅图片来源文本
 				},
 				text: {
-					desktop: "WeChat - 少阳手记", // 桌面端要显示的来源文本
-					mobile: "WeChat - 少阳手记", // 移动端要显示的来源文本
+					desktop: "WeChat - 宇手记", // 桌面端要显示的来源文本
+					mobile: "WeChat - 宇手记", // 移动端要显示的来源文本
 				},
 				url: {
 					desktop:
