@@ -8,7 +8,7 @@ const SITE_LANG = "zh_CN";
 export const siteConfig: SiteConfig = {
 	title: "Gxy' Blog",
 	subtitle: "系统 · 高效 · 实用",
-	site_url: "https://zayck.pages.dev",
+	site_url: "https://gstudycodes.pages.dev",
 	description: "系统 · 高效 · 实用",
 	keywords: [
 		"Gxy",
