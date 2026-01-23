@@ -1,4 +1,5 @@
 ---
+import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import PostCard from "@components/content/PostCard.astro";
@@ -7,6 +8,32 @@ import Icon from "@components/misc/Icon.astro";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import { siteConfig } from "@/config";
+
+export async function getStaticPaths() {
+  // 获取所有文章
+  const allPosts = await getCollection("posts", ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+  });
+
+  // 提取所有唯一分类
+  const categorySet = new Set<string>();
+  allPosts.forEach((post) => {
+    let category = post.data.category;
+    if (!category) {
+      category = i18n(I18nKey.uncategorized);
+    }
+    if (typeof category !== "string") {
+      category = String(category);
+    }
+    category = category.trim();
+    categorySet.add(category);
+  });
+
+  // 为每个分类生成路由
+  return Array.from(categorySet).map((category) => ({
+    params: { slug: category },
+  }));
+}
 
 // 获取当前分类的参数
 const { slug } = Astro.params;
