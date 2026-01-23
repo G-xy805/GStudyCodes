@@ -688,6 +688,16 @@ function disableAnimation() {
       import("@/utils/icon-loader").then(({ initIconLoader }) => {
         initIconLoader();
       });
+      
+      // 重新初始化导航栏JavaScript功能
+      if (typeof loadButtonScript === 'function') {
+        setTimeout(loadButtonScript, 100); // 延迟执行确保DOM已更新
+      }
+      
+      // 重新初始化移动端下拉菜单
+      if (typeof window !== 'undefined' && (window as any).initMobileDropdowns) {
+        setTimeout((window as any).initMobileDropdowns, 150); // 稍晚一点执行
+      }
 
       // 只在文章页面处理数学公式滚动条和TOC组件
       // 客户端重新计算是否为文章页面

@@ -93,7 +93,7 @@ const processedLinks = Astro.props.links.map((link: NavBarLink) => ({
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    function initMobileDropdowns() {
         const mobileDropdowns = document.querySelectorAll('[data-mobile-dropdown]');
         
         mobileDropdowns.forEach(dropdown => {
@@ -102,7 +102,11 @@ const processedLinks = Astro.props.links.map((link: NavBarLink) => ({
             
             if (!trigger || !submenu) return;
             
-            trigger.addEventListener('click', function(e) {
+            // 移除之前的事件监听器（防止重复绑定）
+            const newTrigger = trigger.cloneNode(true);
+            trigger.parentNode?.replaceChild(newTrigger, trigger);
+            
+            newTrigger.addEventListener('click', function(e) {
                 e.preventDefault();
                 const isExpanded = dropdown.getAttribute('data-expanded') === 'true';
                 
@@ -120,8 +124,15 @@ const processedLinks = Astro.props.links.map((link: NavBarLink) => ({
                 // 切换当前下拉菜单
                 const newState = !isExpanded;
                 dropdown.setAttribute('data-expanded', newState.toString());
-                trigger.setAttribute('aria-expanded', newState.toString());
+                newTrigger.setAttribute('aria-expanded', newState.toString());
             });
         });
-    });
+    }
+    
+    // 将初始化函数暴露给全局作用域，以便Swup可以调用
+    if (typeof window !== 'undefined') {
+        (window as any).initMobileDropdowns = initMobileDropdowns;
+    }
+
+    document.addEventListener('DOMContentLoaded', initMobileDropdowns);
 </script>
