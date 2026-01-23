@@ -449,6 +449,11 @@ const bannerOffset = `${BANNER_HEIGHT_EXTEND / 2}vh`;
 
     <!-- 页面顶部渐变高光效果 - 只在full和semifull模式下显示 -->
     {shouldShowTopHighlight && <div class="top-gradient-highlight" />}
+    <!-- 背景容器 -->
+    <div class="background-container">
+        <div class="gradient-bg"></div>
+        <div class="texture-bg"></div>
+    </div>
     <ConfigCarrier />
     <FontManager />
     <slot />

@@ -18,13 +18,39 @@ html.is-entering .transition-main {
         opacity 250ms cubic-bezier(0.4, 0, 0.6, 1) !important;
 }
 
+/* 滚动触发动画 */
+.scroll-animation {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
+}
+
+.scroll-animation.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 为不同元素设置不同的动画延迟 */
+.scroll-animation:nth-child(1) {
+    transition-delay: 0.1s;
+}
+
+.scroll-animation:nth-child(2) {
+    transition-delay: 0.2s;
+}
+
+.scroll-animation:nth-child(3) {
+    transition-delay: 0.3s;
+}
+
 /* 增强的组件动画 */
 .enhanced-fade-in {
     opacity: 0;
     transform: translateY(1.5rem) scale(0.98);
     transition: 
-        opacity 350ms cubic-bezier(0.4, 0, 0.2, 1),
-        transform 350ms cubic-bezier(0.4, 0, 0.2, 1);
+        opacity 500ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .enhanced-fade-in.animate {
@@ -37,8 +63,8 @@ html.is-entering .transition-main {
     opacity: 0;
     transform: translateX(-2rem);
     transition: 
-        opacity 300ms cubic-bezier(0.4, 0, 0.2, 1),
-        transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        opacity 400ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .sidebar-animate.animate {
@@ -51,8 +77,8 @@ html.is-entering .transition-main {
     opacity: 0;
     transform: translateY(2rem) scale(0.95);
     transition: 
-        opacity 400ms cubic-bezier(0.4, 0, 0.2, 1),
-        transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+        opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card-animate.animate {
@@ -65,8 +91,8 @@ html.is-entering .transition-main {
     opacity: 0;
     transform: translateY(1rem);
     transition: 
-        opacity 320ms cubic-bezier(0.4, 0, 0.2, 1),
-        transform 320ms cubic-bezier(0.4, 0, 0.2, 1);
+        opacity 500ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .post-content-animate.animate {
@@ -79,8 +105,8 @@ html.is-entering .transition-main {
     opacity: 0;
     transform: translateY(-1rem);
     transition: 
-        opacity 280ms cubic-bezier(0.4, 0, 0.2, 1),
-        transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
+        opacity 400ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbar-animate.animate {
@@ -93,8 +119,8 @@ html.is-entering .transition-main {
     opacity: 0;
     transform: translateY(1rem);
     transition: 
-        opacity 300ms cubic-bezier(0.4, 0, 0.2, 1),
-        transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        opacity 400ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .footer-animate.animate {
@@ -105,24 +131,24 @@ html.is-entering .transition-main {
 /* 按钮悬停动画增强 */
 .button-enhance {
     transition: 
-        transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
-        box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
+        transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .button-enhance:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
 .button-enhance:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
 /* 链接动画增强 */
 .link-enhance {
     position: relative;
-    transition: color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: color 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .link-enhance::after {
@@ -133,7 +159,7 @@ html.is-entering .transition-main {
     width: 0;
     height: 2px;
     background: currentColor;
-    transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: width 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .link-enhance:hover::after {
@@ -145,8 +171,8 @@ html.is-entering .transition-main {
     opacity: 0;
     transform: scale(1.05);
     transition: 
-        opacity 400ms cubic-bezier(0.4, 0, 0.2, 1),
-        transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+        opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .image-animate.loaded {
