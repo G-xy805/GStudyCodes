@@ -76,21 +76,16 @@ let links: NavBarLink[] = navBarConfig.links.map(
 
 <script>
 function loadButtonScript() {
-
-
     let menuBtn = document.getElementById("nav-menu-switch");
     if (menuBtn) {
-        menuBtn.onclick = function () {
+        menuBtn.onclick = function (e) {
+            e.stopPropagation(); // 阻止事件冒泡，防止被setClickOutsideToClose捕获
             let menuPanel = document.getElementById("nav-menu-panel");
             if (menuPanel) {
                 menuPanel.classList.toggle("float-panel-closed");
             }
         };
     }
-
-
-
-
 }
 
 loadButtonScript();
