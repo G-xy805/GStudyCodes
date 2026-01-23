@@ -6,14 +6,16 @@ import { Icon } from "astro-icon/components";
 <div class="back-to-top-wrapper hidden lg:block">
   <div
     id="back-to-top-btn"
-    class="back-to-top-btn hide flex items-center rounded-2xl overflow-hidden transition"
+    class="back-to-top-btn hide flex items-center rounded-2xl overflow-hidden transition group"
     onclick="backToTop()"
   >
+    <div class="absolute inset-0 bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full"></div>
+    <div class="absolute inset-0 rounded-full bg-[var(--primary)]/20 opacity-0 group-hover:opacity-30 transition-opacity duration-300 blur-md scale-0 group-hover:scale-150"></div>
     <button
       aria-label="Back to Top"
-      class="h-[3rem] w-[3rem] rounded-full"
+      class="h-[3rem] w-[3rem] rounded-full relative z-10"
     >
-      <Icon name="feather:arrow-up" class="mx-auto" />
+      <Icon name="feather:arrow-up" class="mx-auto transition-transform duration-300 group-hover:-translate-y-1" />
     </button>
   </div>
 </div>
@@ -48,14 +50,14 @@ import { Icon } from "astro-icon/components";
     svg
         font-size: 1.25rem
     &.hide
-        transform: scale(0.9)
+        transform: scale(0.9) translateY(20px)
         opacity: 0
         pointer-events: none
     &:active
-      transform: scale(0.9)
+      transform: scale(0.95)
     &:hover
         transform: scale(1.05)
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2)
+        box-shadow: 0 8px 24px rgba(67, 56, 202, 0.25)
         background-color: #D2D7DE
         border-color: none
 
@@ -64,12 +66,12 @@ import { Icon } from "astro-icon/components";
     background-color: #2B2D38
     border: none
     color: #ffffff
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15)
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25)
     
     &:hover
         background-color: #3a3d4a
         border-color: none
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2)
+        box-shadow: 0 8px 24px rgba(165, 180, 252, 0.25)
 
 /* 响应式调整 */
 @media (max-width: 1024px)

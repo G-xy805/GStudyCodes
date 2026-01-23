@@ -36,14 +36,16 @@ const USER_FOOTER_SOCIAL_ICONS = [
 
 <!--<div class="border-t border-[var(&#45;&#45;primary)] mx-16 border-dashed py-8 max-w-[var(&#45;&#45;page-width)] flex flex-col items-center justify-center px-6">-->
 <!--<div class="transition bg-[oklch(92%_0.01_var(&#45;&#45;hue))] dark:bg-black rounded-2xl py-8 mt-4 mb-8 flex flex-col items-center justify-center px-6">-->
-<div class="card-base my-4 scroll-animation">
+<div class="card-base my-4 scroll-animation relative overflow-hidden">
   <!-- 页脚装饰元素 -->
   <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--primary)] to-transparent"></div>
+  <div class="absolute -top-24 -right-24 w-48 h-48 bg-gradient-to-bl from-[var(--primary)]/10 to-[var(--accent)]/10 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-gradient-to-tr from-[var(--secondary)]/10 to-[var(--tertiary)]/10 rounded-full blur-3xl pointer-events-none"></div>
   
-  <footer class="py-3 pl-4 pr-4 md:pl-8 md:pr-16 md:py-10 flex flex-col md:flex-row justify-between items-start gap-8 md:gap-12 max-w-5xl mx-auto relative">
+  <footer class="py-3 pl-4 pr-4 md:pl-8 md:pr-16 md:py-10 flex flex-col md:flex-row justify-between items-start gap-8 md:gap-12 max-w-5xl mx-auto relative z-10">
     <aside class="flex flex-col gap-4">
       <!-- Logo -->
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-3 group cursor-pointer">
         <svg
           width="32"
           height="32"
@@ -51,7 +53,7 @@ const USER_FOOTER_SOCIAL_ICONS = [
           xmlns="http://www.w3.org/2000/svg"
           fill-rule="evenodd"
           clip-rule="evenodd"
-          class="fill-current md:w-[40px] md:h-[40px] text-[var(--primary)] transition-transform hover:scale-110"
+          class="fill-current md:w-[40px] md:h-[40px] text-[var(--primary)] transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"
           aria-label="Logo"
           role="img"
         >
@@ -59,14 +61,16 @@ const USER_FOOTER_SOCIAL_ICONS = [
             d="M22.672 15.226l-2.432.811.841 2.515c.33 1.019-.209 2.127-1.23 2.456-1.15.325-2.148-.321-2.463-1.226l-.84-2.518-5.013 1.677.84 2.517c.391 1.203-.434 2.542-1.831 2.542-.88 0-1.601-.564-1.86-1.314l-.842-2.516-2.431.809c-1.135.328-2.145-.317-2.463-1.229-.329-1.018.211-2.127 1.231-2.456l2.432-.809-1.621-4.823-2.432.808c-1.355.384-2.558-.59-2.558-1.839 0-.817.509-1.582 1.327-1.846l2.433-.809-.842-2.515c-.33-1.02.211-2.129 1.232-2.458 1.02-.329 2.13.209 2.461 1.229l.842 2.515 5.011-1.677-.839-2.517c-.403-1.238.484-2.553 1.843-2.553.819 0 1.585.509 1.85 1.326l.841 2.517 2.431-.81c1.02-.33 2.131.211 2.461 1.229.332 1.018-.21 2.126-1.23 2.456l-2.433.809 1.622 4.823 2.433-.809c1.242-.401 2.557.484 2.557 1.838 0 .819-.51 1.583-1.328 1.847m-8.992-6.428l-5.01 1.675 1.619 4.828 5.011-1.674-1.62-4.829z"
           ></path>
         </svg>
-        <span class="text-xl font-bold text-[var(--primary)]">Gxy' Blog</span>
+        <span class="text-xl font-bold text-[var(--primary)] bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] bg-clip-text text-transparent group-hover:from-[var(--secondary)] group-hover:to-[var(--accent)] transition-all duration-300">
+          Gxy' Blog
+        </span>
       </div>
       
       <!-- 版权信息 -->
       <p class="text-xs md:text-sm text-[var(--text-secondary)] font-normal leading-loose">
-        Powered by <a href="https://github.com/zayck/Kael" target="_blank" class="font-bold text-[var(--primary)] hover:underline transition-all hover:scale-105">Kael</a>
+        Powered by <a href="https://github.com/zayck/Kael" target="_blank" class="font-bold text-[var(--primary)] hover:underline transition-all hover:scale-105 relative inline-block"><span class="relative z-10">Kael</span></a>
         <br />
-        Copyright © <a href={USER_SITE} target="_blank" class="font-bold text-[var(--primary)] hover:underline transition-all hover:scale-105">{USER_NAME}</a>
+        Copyright © <a href={USER_SITE} target="_blank" class="font-bold text-[var(--primary)] hover:underline transition-all hover:scale-105 relative inline-block"><span class="relative z-10">{USER_NAME}</span></a>
         {currentYear} - All right reserved
       </p>
     </aside>
@@ -75,7 +79,10 @@ const USER_FOOTER_SOCIAL_ICONS = [
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <!-- 快速链接 -->
       <nav class="flex flex-col items-start gap-4">
-        <span class="footer-title text-sm md:text-sm text-[var(--primary)] font-semibold uppercase tracking-wider">快速链接</span>
+        <span class="footer-title text-sm md:text-sm text-[var(--primary)] font-semibold uppercase tracking-wider relative inline-block">
+          <span class="relative z-10">快速链接</span>
+          <div class="absolute -bottom-1 left-0 w-8 h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)]"></div>
+        </span>
         <ul class="flex flex-col gap-3">
           {[
             { name: "首页", href: "/" },
@@ -85,8 +92,9 @@ const USER_FOOTER_SOCIAL_ICONS = [
             { name: "关于", href: "/about" }
           ].map(item => (
             <li>
-              <a href={item.href} class="text-sm text-[var(--text-secondary)] hover:text-[var(--primary)] transition-all hover:translate-x-2 hover:font-medium">
-                {item.name}
+              <a href={item.href} class="text-sm text-[var(--text-secondary)] hover:text-[var(--primary)] transition-all hover:translate-x-2 hover:font-medium relative group">
+                <span class="relative z-10">{item.name}</span>
+                <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] transition-all duration-300 group-hover:w-full"></span>
               </a>
             </li>
           ))}
@@ -95,28 +103,33 @@ const USER_FOOTER_SOCIAL_ICONS = [
       
       <!-- 社交链接 -->
       <nav class="flex flex-col items-start gap-4">
-        <span class="footer-title text-sm md:text-sm text-[var(--primary)] font-semibold uppercase tracking-wider">社交网络</span>
+        <span class="footer-title text-sm md:text-sm text-[var(--primary)] font-semibold uppercase tracking-wider relative inline-block">
+          <span class="relative z-10">社交网络</span>
+          <div class="absolute -bottom-1 left-0 w-8 h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)]"></div>
+        </span>
         <div class="grid grid-flow-col gap-4">
           {USER_FOOTER_SOCIAL_ICONS.map((icon, index) => (
-            <div class="tooltip" data-tip={icon.title}>
+            <div class="relative group">
+              <div class="absolute -inset-2 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-sm"></div>
               <a 
                 href={icon.href} 
                 aria-label={icon.ariaLabel} 
                 target={index > 0 ? "_blank" : undefined}
-                class="transition-all hover:scale-125 hover:text-[var(--primary)]"
+                class="relative transition-all hover:scale-125 hover:text-[var(--primary)] block"
               >
-                <Icon name={icon.svg} class="text-2xl md:text-xl text-[var(--text-secondary)]" />
+                <Icon name={icon.svg} class="text-2xl md:text-xl text-[var(--text-secondary)] transition-all duration-300 group-hover:scale-110" />
               </a>
             </div>
           ))}
-          <div class="tooltip" data-tip="RSS Feed">
+          <div class="relative group">
+            <div class="absolute -inset-2 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-sm"></div>
             <a 
               href="/rss.xml" 
               aria-label="RSS Feed" 
               target="_blank"
-              class="transition-all hover:scale-125 hover:text-[var(--primary)]"
+              class="relative transition-all hover:scale-125 hover:text-[var(--primary)] block"
             >
-              <Icon name="feather:rss" class="text-2xl md:text-xl text-[var(--text-secondary)]" />
+              <Icon name="feather:rss" class="text-2xl md:text-xl text-[var(--text-secondary)] transition-all duration-300 group-hover:scale-110" />
             </a>
           </div>
         </div>
@@ -126,9 +139,10 @@ const USER_FOOTER_SOCIAL_ICONS = [
     <!-- 额外信息 -->
     <div class="w-full md:w-auto flex flex-col gap-3 text-center md:text-left">
       <!-- 订阅区域 -->
-      <div class="bg-[var(--primary)] bg-opacity-5 p-3 rounded-lg border border-[var(--primary)] border-opacity-20">
+      <div class="bg-[var(--primary)] bg-opacity-5 p-4 rounded-xl border border-[var(--primary)] border-opacity-20 hover:bg-opacity-10 transition-all duration-300 hover:scale-[1.02]">
         <p class="text-sm text-[var(--primary)] font-medium">订阅更新</p>
         <p class="text-xs text-[var(--text-secondary)] mt-1">获取最新的技术分享和文章推送</p>
+        <div class="mt-2 h-0.5 w-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] opacity-50 rounded-full"></div>
       </div>
       
       <!-- 页脚底部 -->

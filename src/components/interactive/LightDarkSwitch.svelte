@@ -89,11 +89,17 @@ onMount(() => {
 
 <button 
     aria-label="Light/Dark Mode" 
-    class="btn-plain scale-animation rounded-full h-11 w-11 active:scale-90 flex items-center justify-center theme-switch-btn {isSwitching ? 'switching' : ''} ml-3 mr-1"
+    class="btn-plain scale-animation rounded-full h-11 w-11 active:scale-90 flex items-center justify-center theme-switch-btn {isSwitching ? 'switching' : ''} ml-3 mr-1 relative overflow-hidden group"
     on:click={switchTheme}
     disabled={isSwitching}
     title={mode === LIGHT_MODE ? '切换到深色模式' : '切换到浅色模式'}
 >
+    <!-- 背景渐变效果 -->
+    <div class="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/10 to-[var(--secondary)]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full"></div>
+    
+    <!-- 光晕效果 -->
+    <div class="absolute inset-0 rounded-full bg-[var(--primary)]/20 opacity-0 group-hover:opacity-30 transition-opacity duration-300 blur-md scale-0 group-hover:scale-150"></div>
+    
     <div class="absolute icon-transition" class:opacity-0={mode !== LIGHT_MODE}>
         <Icon icon="feather:sun" class="text-[1.25rem] text-[var(--primary)]"></Icon>
     </div>
@@ -139,7 +145,7 @@ onMount(() => {
 
     /* 悬停效果增强 */
     .theme-switch-btn:not(.switching):hover .icon-transition {
-        transform: scale(1.1);
+        transform: scale(1.15);
     }
 
     /* 按钮禁用状态 */
