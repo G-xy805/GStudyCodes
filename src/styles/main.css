@@ -456,16 +456,18 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
     }
 
     .dropdown-menu {
-        @apply absolute top-full left-0 pt-2 opacity-0 invisible pointer-events-none transition-all duration-200 ease-out transform translate-y-[-8px] z-50;
+        @apply absolute top-full left-0 pt-2 opacity-0 invisible transition-all duration-200 ease-out transform translate-y-[-8px] z-50;
     }
 
     .dropdown-container:hover .dropdown-menu,
-    .dropdown-container:focus-within .dropdown-menu {
-        @apply opacity-100 visible pointer-events-auto translate-y-0;
+    .dropdown-container:focus-within .dropdown-menu,
+    .dropdown-container[data-expanded="true"] .dropdown-menu {
+        @apply opacity-100 visible translate-y-0;
     }
 
     .dropdown-container:hover .dropdown-arrow,
-    .dropdown-container:focus-within .dropdown-arrow {
+    .dropdown-container:focus-within .dropdown-arrow,
+    .dropdown-container[data-expanded="true"] .dropdown-arrow {
         @apply rotate-180;
     }
 
@@ -507,7 +509,7 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
 
     /* 无障碍支持 */
     .dropdown-container:focus-within .dropdown-menu {
-        @apply opacity-100 visible pointer-events-auto translate-y-0;
+        @apply opacity-100 visible translate-y-0;
     }
 
     .dropdown-item:focus {

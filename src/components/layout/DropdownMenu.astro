@@ -38,7 +38,7 @@ const processedLink = {
 const hasChildren = processedLink.children && processedLink.children.length > 0;
 ---
 
-<div class:list={["dropdown-container", className]} data-dropdown>
+<div class:list={["dropdown-container", className]} data-dropdown data-expanded="false">
 	{hasChildren ? (
 		<button 
 			class="btn-plain scale-animation rounded-lg h-11 font-semibold px-5 active:scale-95 dropdown-trigger"
@@ -98,8 +98,16 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 		@apply opacity-100 visible translate-y-0;
 	}
 
+	.dropdown-container[data-expanded="true"] .dropdown-menu {
+		@apply opacity-100 visible translate-y-0;
+	}
+
 	.dropdown-container:hover .dropdown-arrow,
 	.dropdown-container:focus-within .dropdown-arrow {
+		@apply rotate-180;
+	}
+
+	.dropdown-container[data-expanded="true"] .dropdown-arrow {
 		@apply rotate-180;
 	}
 
@@ -144,6 +152,11 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 					closeDropdown(dropdown, trigger, menu);
 				}
 			});
+
+			trigger.addEventListener('click', function(e: MouseEvent) {
+				e.preventDefault();
+				toggleDropdown(dropdown, trigger, menu);
+			});
 			
 			// 菜单项键盘导航
 			items.forEach((item, index) => {
@@ -187,15 +200,13 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 		}
 	}
 	
-	function openDropdown(_dropdown: Element, trigger: Element, menu: Element) {
+	function openDropdown(_dropdown: Element, trigger: Element, _menu: Element) {
 		trigger.setAttribute('aria-expanded', 'true');
-		menu.classList.remove('opacity-0', 'invisible', 'pointer-events-none', 'translate-y-[-8px]');
-		menu.classList.add('opacity-100', 'visible', 'pointer-events-auto', 'translate-y-0');
+		_dropdown.setAttribute('data-expanded', 'true');
 	}
 	
-	function closeDropdown(_dropdown: Element, trigger: Element, menu: Element) {
+	function closeDropdown(_dropdown: Element, trigger: Element, _menu: Element) {
 		trigger.setAttribute('aria-expanded', 'false');
-		menu.classList.add('opacity-0', 'invisible', 'pointer-events-none', 'translate-y-[-8px]');
-		menu.classList.remove('opacity-100', 'visible', 'pointer-events-auto', 'translate-y-0');
+		_dropdown.setAttribute('data-expanded', 'false');
 	}
 </script>
