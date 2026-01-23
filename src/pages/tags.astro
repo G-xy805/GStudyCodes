@@ -23,12 +23,12 @@ const totalTags = tagList.length;
     <div class="px-6 py-6">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div class="flex items-center gap-2">
-          <Icon icon="feather:tag" class="text-[#463AA2] dark:text-[#BD93F9]" size="2xl" />
+          <Icon icon="ri:price-tag-3-line" class="text-[#463AA2] dark:text-[#BD93F9]" size="2xl" />
           <h1 class="text-3xl font-bold text-[#394E6A] dark:text-[#F8F8F2]">{i18n(I18nKey.tags)}</h1>
           <div class="badge rounded-full bg-[#463AA2] text-white dark:bg-[#BD93F9] dark:text-black text-[0.8rem] px-4 py-0.4">{totalTags} {i18n(totalTags === 1 ? I18nKey.tagCount : I18nKey.tagsCount)}</div>
         </div>
         <a href="/" class="transition-all duration-300 inline-flex items-center justify-center gap-1 px-3 py-1.5 border border-[#394E6A] text-[#394E6A] text-sm font-bold rounded-lg hover:bg-[#394E6A] hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black">
-          <Icon icon="feather:book-open" class="w-4 h-4" />
+          <Icon icon="ri:book-open-line" class="w-4 h-4" />
           <span class="mr-1">{i18n(I18nKey.backToBlog)}</span>
         </a>
       </div>
@@ -51,7 +51,7 @@ const totalTags = tagList.length;
                 data-index={index}
               >
                 <span class="tags-content">
-                  <Icon icon="feather:tag" class="tags-icon" />
+                  <Icon icon="ri:price-tag-3-line" class="tags-icon" />
                   <span class="tags-text">{tag.name}</span>
                   <span class="tags-count">{tag.count}</span>
                 </span>
@@ -60,7 +60,7 @@ const totalTags = tagList.length;
           </div>
         ) : (
           <div class="empty-state">
-            <Icon icon="feather:frown" class="empty-icon" />
+            <Icon icon="ri:empathize-line" class="empty-icon" />
             <p class="empty-text">{i18n(I18nKey.noTags)}</p>
           </div>
         )}

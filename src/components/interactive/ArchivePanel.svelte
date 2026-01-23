@@ -98,7 +98,7 @@ onMount(async () => {
                     {#each group.months as monthGroup}
                         <div class="timeline-month">
                             <h3 class="month-title">
-                                <Icon icon="feather:calendar" class="month-icon" />
+                                <Icon icon="ri:calendar-line" class="month-icon" />
                                 <span>
                                     {formatMonth(monthGroup.posts[0].data.published)} {group.year}
                                 </span>

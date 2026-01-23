@@ -103,7 +103,7 @@ const getIconStyle = () => {
       {trend && (
         <div class={`flex items-center gap-1 ${trend.isPositive ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
           <iconify-icon 
-            icon={trend.isPositive ? 'feather:trending-up' : 'feather:trending-down'} 
+            icon={trend.isPositive ? 'ri:arrow-up-line' : 'ri:arrow-down-line'} 
             class="text-sm"
           ></iconify-icon>
           <span class="text-xs font-medium">

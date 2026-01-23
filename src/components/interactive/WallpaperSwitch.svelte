@@ -31,13 +31,13 @@ function switchWallpaperMode(newMode: WALLPAPER_MODE) {
 <div class="relative z-50" role="menu" tabindex="-1">
 	<button aria-label="Wallpaper Mode" role="menuitem" class="relative btn-plain scale-animation rounded-lg h-11 w-11 active:scale-90" id="wallpaper-mode-switch">
 		<div class="absolute" class:opacity-0={mode !== WALLPAPER_BANNER}>
-			<Icon icon="feather:image" class="text-[1.25rem]"></Icon>
+			<Icon icon="ri:image-line" class="text-[1.25rem]"></Icon>
 		</div>
 		<div class="absolute" class:opacity-0={mode !== WALLPAPER_OVERLAY}>
-			<Icon icon="feather:image" class="text-[1.25rem]"></Icon>
+			<Icon icon="ri:image-line" class="text-[1.25rem]"></Icon>
 		</div>
 		<div class="absolute" class:opacity-0={mode !== WALLPAPER_NONE}>
-			<Icon icon="feather:image-off" class="text-[1.25rem]"></Icon>
+			<Icon icon="ri:image-off-line" class="text-[1.25rem]"></Icon>
 		</div>
 	</button>
 	<div id="wallpaper-mode-panel" class="absolute transition float-panel-closed top-11 -right-2 pt-5 z-50">
@@ -47,7 +47,7 @@ function switchWallpaperMode(newMode: WALLPAPER_MODE) {
 				isLast={false}
 				onclick={() => switchWallpaperMode(WALLPAPER_BANNER)}
 			>
-				<Icon icon="feather:image" class="text-[1.25rem] mr-3"></Icon>
+				<Icon icon="ri:image-line" class="text-[1.25rem] mr-3"></Icon>
 				{i18n(I18nKey.wallpaperBannerMode)}
 			</DropdownItem>
 			<DropdownItem
@@ -55,7 +55,7 @@ function switchWallpaperMode(newMode: WALLPAPER_MODE) {
 				isLast={false}
 				onclick={() => switchWallpaperMode(WALLPAPER_OVERLAY)}
 			>
-				<Icon icon="feather:image" class="text-[1.25rem] mr-3"></Icon>
+				<Icon icon="ri:image-line" class="text-[1.25rem] mr-3"></Icon>
 				{i18n(I18nKey.wallpaperOverlayMode)}
 			</DropdownItem>
 			<DropdownItem
@@ -63,7 +63,7 @@ function switchWallpaperMode(newMode: WALLPAPER_MODE) {
 				isLast={true}
 				onclick={() => switchWallpaperMode(WALLPAPER_NONE)}
 			>
-				<Icon icon="feather:image-off" class="text-[1.25rem] mr-3"></Icon>
+				<Icon icon="ri:image-off-line" class="text-[1.25rem] mr-3"></Icon>
 				{i18n(I18nKey.wallpaperNoneMode)}
 			</DropdownItem>
 		</DropdownPanel>

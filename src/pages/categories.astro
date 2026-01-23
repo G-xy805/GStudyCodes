@@ -40,12 +40,12 @@ function getCategoryColorClass(index: number): string {
     <div class="px-6 py-6">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div class="flex items-center gap-2">
-          <Icon icon="feather:folder" class="text-[var(--primary)]" size="2xl" />
+          <Icon icon="ri:folder-line" class="text-[var(--primary)]" size="2xl" />
           <h1 class="text-3xl font-bold text-[#394E6A] dark:text-[#F8F8F2]">{i18n(I18nKey.categories)}</h1>
           <div class="badge rounded-full bg-[var(--primary)] text-white dark:text-black text-[0.8rem] px-4 py-0.4">{totalCategories} {i18n(totalCategories === 1 ? I18nKey.categoryCount : I18nKey.categoriesCount)}</div>
         </div>
         <a href="/" class="transition-all duration-300 inline-flex items-center justify-center gap-1 px-3 py-1.5 border border-[#394E6A] text-[#394E6A] text-sm font-bold rounded-lg hover:bg-[#394E6A] hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black">
-          <Icon icon="feather:book-open" class="w-4 h-4" />
+          <Icon icon="ri:book-open-line" class="w-4 h-4" />
           <span class="mr-1">{i18n(I18nKey.backToBlog)}</span>
         </a>
       </div>
@@ -65,7 +65,7 @@ function getCategoryColorClass(index: number): string {
                   <div class="category-header" data-category={category.name}>
                     <div class="category-title">
                       <div class="category-icon">
-                        <Icon icon="feather:folder" />
+                        <Icon icon="ri:folder-line" />
                       </div>
                       <h2>{category.name}</h2>
                       <span class="category-count">{category.count}</span>
@@ -77,7 +77,7 @@ function getCategoryColorClass(index: number): string {
           </div>
         ) : (
           <div class="empty-state">
-            <Icon icon="feather:frown" class="empty-icon" />
+            <Icon icon="ri:empathize-line" class="empty-icon" />
             <p class="empty-text">{i18n(I18nKey.noCategory)}</p>
           </div>
         )}

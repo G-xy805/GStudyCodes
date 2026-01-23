@@ -85,7 +85,7 @@
 }
 
 /* 隐藏外部链接图标 */
-#navbar a [name="feather:external-link"] {
+#navbar a [name="ri:external-link-line"] {
     display: none;
 }
 

@@ -30,12 +30,12 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 				{
 					name: "Astro",
 					url: "/categories/Astro魔改/",
-					icon: "feather:code",
+					icon: "ri:code-box-line",
 				},
 				{
 					name: "技术杂谈",
 					url: "/categories/技术杂谈/",
-					icon: "feather:code",
+					icon: "ri:code-box-line",
 				},
 			],
 		},
@@ -55,7 +55,7 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 				{
 					name: "项目",
 					url: "/project/",
-					icon: "feather:code",
+					icon: "ri:code-box-line",
 				},
 				LinkPreset.Friends,
 				...(siteConfig.pages.sponsor ? [LinkPreset.Sponsor] : []), // 根据配置决定是否添加赞助页面
