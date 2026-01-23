@@ -11,13 +11,15 @@
 
 /* ===== 主题相关变量 ===== */
 :root {
-  --primary: oklch(56.86% 0.255 257.57); /* 蓝色，Kael的primary颜色 */
-  --secondary: #463AA2; /* 紫色-粉色，Kael的secondary颜色 */
-  --accent: #C148AC; /* 粉色，Kael的accent颜色 */
-  --page-bg: #F6F4FB;
-  --card-bg: white;
-  --card-bg-transparent: rgba(255, 255, 255, 0.8);
-  --text-color: rgba(0, 0, 0, 0.75); /* 浅色模式文本色 */
+  --primary: #4F46E5; /* 现代靛蓝色，作为主色调 */
+  --secondary: #6366F1; /* 淡靛蓝色，作为辅助色 */
+  --accent: #8B5CF6; /* 紫色，作为强调色 */
+  --page-bg: #F8FAFC;
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --card-bg-transparent: rgba(255, 255, 255, 0.6);
+  --text-color: #1E293B; /* 浅色模式文本色，提高对比度 */
+  --text-secondary: #64748B; /* 浅色模式辅助文本色 */
+  --text-muted: #94A3B8; /* 浅色模式次要文本色 */
   
   --btn-content: oklch(0.55 0.12 var(--hue));
   --btn-regular-bg: oklch(0.95 0.025 var(--hue));
@@ -105,13 +107,15 @@
 
 /* 暗色主题变量 */
 :root.dark {
-  --primary: #FE7AC7; /* 用户指定的粉色，作为暗黑模式下的主题色 */
-  --secondary: #C890F1; /* 用户指定的淡紫色 */
-  --accent: #C148AC; /* 粉色，Kael的accent颜色（保持与浅色模式一致的色调） */
-  --page-bg: #1a1b26;
-  --card-bg: #2b2d38;
-  --card-bg-transparent: rgba(43, 45, 56, 0.8);
-  --text-color: rgba(255, 255, 255, 0.75); /* 暗色模式文本色 */
+  --primary: #818CF8; /* 靛蓝色变体，适合暗色模式 */
+  --secondary: #6366F1; /* 淡靛蓝色，与浅色模式保持一致 */
+  --accent: #A78BFA; /* 紫色变体，适合暗色模式 */
+  --page-bg: #0F172A;
+  --card-bg: rgba(30, 41, 59, 0.8);
+  --card-bg-transparent: rgba(30, 41, 59, 0.6);
+  --text-color: #F1F5F9; /* 暗色模式文本色，提高对比度 */
+  --text-secondary: #94A3B8; /* 暗色模式辅助文本色 */
+  --text-muted: #64748B; /* 暗色模式次要文本色 */
   
   --btn-content: oklch(0.75 0.1 var(--hue));
   --btn-regular-bg: oklch(0.33 0.035 var(--hue));

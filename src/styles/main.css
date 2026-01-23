@@ -75,55 +75,89 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
         color: transparent;
     }
     .card-base-transparent {
-        @apply rounded-[var(--radius-large)] overflow-hidden bg-[var(--card-bg-transparent)] backdrop-blur-sm transition-colors duration-150;
+        @apply rounded-[var(--radius-large)] overflow-hidden bg-[var(--card-bg-transparent)] backdrop-blur-md transition-all duration-300 shadow-sm hover:shadow-md;
     }
     
     /* 全屏壁纸模式下的半透明效果 */
     .wallpaper-transparent .card-base {
-        @apply bg-[var(--card-bg-transparent)];
-        /* 移除高斯模糊以提升性能，大量重叠的 backdrop-filter 会导致 GPU 占用过高 */
-        /* @apply backdrop-blur-sm; */
+        @apply bg-[var(--card-bg-transparent)] backdrop-blur-md transition-all duration-300 shadow-sm hover:shadow-md;
     }
     
     .wallpaper-transparent .float-panel {
-        @apply bg-[var(--card-bg-transparent)];
-        /* 移除高斯模糊以提升性能 */
-        /* @apply backdrop-blur-sm; */
+        @apply bg-[var(--card-bg-transparent)] backdrop-blur-md transition-all duration-300 shadow-sm hover:shadow-md;
     }
     
-
+    
     
     .wallpaper-transparent .btn-card {
-        @apply bg-[var(--card-bg-transparent)];
-        /* 移除高斯模糊以提升性能 */
-        /* @apply backdrop-blur-sm; */
+        @apply bg-[var(--card-bg-transparent)] backdrop-blur-md transition-all duration-300;
     }
     
     h1, h2, h3, h4, h5, h6, p, a, span, li, ul, ol, blockquote, code, pre, table, th, td, strong {
-        @apply transition-colors duration-150;
+        @apply transition-colors duration-150 font-sans;
     }
+    
+    /* 优化标题排版 */
+    h1 {
+        @apply text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight mb-6;
+    }
+    
+    h2 {
+        @apply text-2xl md:text-3xl lg:text-4xl font-bold leading-tight tracking-tight mb-5;
+    }
+    
+    h3 {
+        @apply text-xl md:text-2xl lg:text-3xl font-semibold leading-tight tracking-tight mb-4;
+    }
+    
+    h4 {
+        @apply text-lg md:text-xl font-semibold leading-tight tracking-tight mb-3;
+    }
+    
+    /* 优化正文排版 */
+    p {
+        @apply text-base leading-relaxed tracking-wide mb-4 text-[var(--text-color)];
+    }
+    
+    /* 优化链接样式 */
+    a {
+        @apply text-[var(--primary)] hover:text-[var(--secondary)] transition-colors duration-200;
+    }
+    
+    /* 优化代码样式 */
+    code {
+        @apply font-mono text-sm;
+    }
+    
     .card-shadow {
         @apply drop-shadow-[0_2px_4px_rgba(0,0,0,0.005)]
     }
+    
     .expand-animation {
         @apply relative before:ease-out before:transition active:bg-none hover:before:bg-[var(--btn-plain-bg-hover)] active:before:bg-[var(--btn-plain-bg-active)] z-0
         before:absolute before:rounded-[inherit] before:inset-0 before:scale-[0.85] hover:before:scale-100 before:-z-10
     }
+    
     .link {
         @apply transition-colors duration-150 rounded-md p-1 -m-1 expand-animation;
     }
+    
     .link-lg {
         @apply transition-colors duration-150 rounded-md p-1.5 -m-1.5 expand-animation;
     }
+    
     .float-panel {
-        @apply top-[5.25rem] rounded-[var(--radius-large)] overflow-hidden bg-[var(--float-panel-bg)] transition-colors duration-150 shadow-xl dark:shadow-none
+        @apply top-[5.25rem] rounded-[var(--radius-large)] overflow-hidden bg-[var(--float-panel-bg)] transition-all duration-300 shadow-lg dark:shadow-xl backdrop-blur-md
     }
+    
     .float-panel-closed {
         @apply -translate-y-1 opacity-0 pointer-events-none
     }
+    
     .float-panel-closed * {
         @apply pointer-events-none
     }
+    
     .search-panel mark {
         @apply bg-transparent text-[var(--primary)]
     }

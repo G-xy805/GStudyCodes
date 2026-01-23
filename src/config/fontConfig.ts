@@ -1,16 +1,23 @@
 // 字体配置
 export const fontConfig = {
-	enable: false, // 禁用自定义字体功能，只使用系统字体
-	preload: false, // 禁用字体预加载
-	selected: ["system"], // 仅使用系统字体
+	enable: true, // 启用自定义字体功能
+	preload: true, // 启用字体预加载
+	selected: ["inter"], // 使用Inter字体作为主要字体
 	fonts: {
-		// 仅保留系统字体
+		// 系统字体
 		system: {
 			id: "system",
 			name: "系统字体",
 			src: "", // 系统字体无需 src
 			family:
 				"system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+		},
+		// Inter字体 - 现代无衬线字体，适合技术博客
+		inter: {
+			id: "inter",
+			name: "Inter",
+			src: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap",
+			family: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
 		},
 	},
 	fallback: [

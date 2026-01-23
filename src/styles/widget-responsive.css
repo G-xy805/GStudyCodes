@@ -56,17 +56,27 @@
 
 /* 移动端样式 (< 768px) */
 @media (max-width: 767px) {
+  /* 基础布局优化 */
   #dynamic-sidebar {
     padding: 0.5rem;
+    width: 100%;
   }
   
+  /* 内容区域优化 */
+  main.content-area {
+    padding: 0 0.75rem;
+  }
+  
+  /* 组件间距优化 */
   .sidebar-top-section,
   .sidebar-sticky-section {
     gap: var(--widget-gap-mobile);
   }
   
+  /* 组件高度优化 */
   .widget-container {
     max-height: var(--widget-max-height-mobile);
+    padding: 0.75rem;
   }
   
   /* 移动端隐藏的组件 */
@@ -81,12 +91,47 @@
   }
   
   /* 移动端组件简化显示 */
-  
   .widget-container[data-widget-type="categories"],
   .widget-container[data-widget-type="tags"] {
     /* 分类和标签在移动端可折叠 */
     max-height: 120px;
     overflow-y: auto;
+  }
+  
+  /* 移动端字体大小优化 */
+  .widget-container h3 {
+    font-size: 1rem;
+  }
+  
+  .widget-container p,
+  .widget-container a {
+    font-size: 0.875rem;
+  }
+  
+  /* 移动端卡片布局优化 */
+  .post-card-item {
+    margin-bottom: 1.25rem;
+  }
+  
+  /* 移动端导航栏优化 */
+  #navbar {
+    padding: 0 0.5rem;
+  }
+  
+  /* 移动端搜索栏优化 */
+  .search-container {
+    padding: 0 0.5rem;
+  }
+  
+  /* 移动端按钮尺寸优化 */
+  button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* 移动端链接样式优化 */
+  a {
+    padding: 0.5rem;
   }
 }
 
