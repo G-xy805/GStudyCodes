@@ -72,7 +72,7 @@ const pageNumbers = generatePageNumbers(currentPage, totalPages);
         disabled={currentPage === 1}
         aria-label={i18n(I18nKey.paginationPrev)}
       >
-        <Icon name="feather:chevron-left" class="text-[1.75rem]" />
+        <Icon name="ri:arrow-left-s-line" class="text-[1.75rem]" />
       </button>
 
       <!-- 移动端页码信息 -->
@@ -90,7 +90,7 @@ const pageNumbers = generatePageNumbers(currentPage, totalPages);
         disabled={currentPage === totalPages}
         aria-label={i18n(I18nKey.paginationNext)}
       >
-        <Icon name="feather:chevron-right" class="text-[1.75rem]" />
+        <Icon name="ri:arrow-right-s-line" class="text-[1.75rem]" />
       </button>
     </div>
 
@@ -104,13 +104,13 @@ const pageNumbers = generatePageNumbers(currentPage, totalPages);
         disabled={currentPage === 1}
         aria-label={i18n(I18nKey.paginationPrev)}
       >
-        <Icon name="feather:chevron-left" class="text-[1.75rem]" />
+        <Icon name="ri:arrow-left-s-line" class="text-[1.75rem]" />
       </button>
 
       <div class="bg-[var(--card-bg)] flex flex-row rounded-lg items-center text-neutral-700 dark:text-neutral-300 font-bold" data-page-numbers={sectionId}>
         {pageNumbers.map((pageItem) => (
           pageItem === '...' ? (
-            <Icon name="feather:more-horizontal" class="mx-1" />
+            <Icon name="ri:more-line" class="mx-1" />
           ) : (
             <button
               type="button"
@@ -140,7 +140,7 @@ const pageNumbers = generatePageNumbers(currentPage, totalPages);
         disabled={currentPage === totalPages}
         aria-label={i18n(I18nKey.paginationNext)}
       >
-        <Icon name="feather:chevron-right" class="text-[1.75rem]" />
+        <Icon name="ri:arrow-right-s-line" class="text-[1.75rem]" />
       </button>
     </div>
   </div>

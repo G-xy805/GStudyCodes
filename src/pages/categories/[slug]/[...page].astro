@@ -120,13 +120,13 @@ const pageTitle = `${i18n(I18nKey.categories)}: ${slug}`;
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <!-- 分类标题和文章数量 -->
         <div class="flex items-center gap-2">
-          <Icon icon="feather:folder" class="text-[var(--primary)]" size="2xl" />
+          <Icon icon="ri:folder-line" class="text-[var(--primary)]" size="2xl" />
           <h1 class="text-3xl font-bold text-[#394E6A] dark:text-[#F8F8F2]">{slug}</h1>
           <div class="badge rounded-full bg-[var(--primary)] text-white dark:text-black text-[0.8rem] px-4 py-0.4">{page.total} {i18n(page.total === 1 ? I18nKey.postCount : I18nKey.postsCount)}</div>
         </div>
         <!-- 所有分类链接 -->
         <a href="/categories/" class="transition-all duration-300 inline-flex items-center justify-center gap-1 px-4 py-1.5 border border-[#394E6A] text-[#394E6A] text-sm font-bold rounded-lg hover:bg-[#394E6A] hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black">
-          <Icon icon="feather:list" class="w-4 h-4" />
+          <Icon icon="ri:list-check-2" class="w-4 h-4" />
           <span class="mr-1">{i18n(I18nKey.allCategories)}</span>
         </a>
       </div>
@@ -153,7 +153,7 @@ const pageTitle = `${i18n(I18nKey.categories)}: ${slug}`;
       ))
     ) : (
       <div class="text-center py-12">
-        <Icon icon="feather:frown" class="mx-auto text-4xl text-gray-400 mb-4" />
+        <Icon icon="ri:empathize-line" class="mx-auto text-4xl text-gray-400 mb-4" />
         <p class="text-gray-600 dark:text-gray-300">{i18n(I18nKey.noPostsInCategory)}</p>
       </div>
     )}

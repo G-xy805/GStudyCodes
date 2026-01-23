@@ -75,7 +75,7 @@ const getPageUrl = (p: number) => {
       ]}
     >
       <Icon
-        name="feather:chevron-left"
+        name="ri:arrow-left-s-line"
         class="text-[1.75rem]"
       />
     </a>
@@ -85,7 +85,7 @@ const getPageUrl = (p: number) => {
       {
         pages.map((p) => {
           if (p == HIDDEN)
-            return <Icon name="feather:more-horizontal" class="mx-1" />;
+            return <Icon name="ri:more-line" class="mx-1" />;
           if (p == page.currentPage)
             return (
               <div
@@ -116,7 +116,7 @@ const getPageUrl = (p: number) => {
       ]}
     >
       <Icon
-        name="feather:chevron-right"
+        name="ri:arrow-right-s-line"
         class="text-[1.75rem]"
       />
     </a>

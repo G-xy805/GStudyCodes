@@ -135,7 +135,7 @@ const jsonLd = {
           <!-- Categories -->
           {entry.data.category && entry.data.category.trim() && (
             <a href={getCategoryUrl(entry.data.category)} class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm bg-[var(--btn-plain-bg-hover)] text-[var(--primary)] hover:bg-[var(--primary)]/10 transition-colors font-bold">
-              <Icon name="feather:folder" class="w-4 h-4" />
+              <Icon name="ri:folder-line" class="w-4 h-4" />
               <span>{entry.data.category}</span>
             </a>
           )}
@@ -143,7 +143,7 @@ const jsonLd = {
           <!-- Tags -->
           {entry.data.tags && entry.data.tags.length > 0 && entry.data.tags.map((tag: string) => (
             <a href={getTagUrl(tag)} class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm bg-[#F6F5FA] dark:bg-[#323241] text-[#463AA2] dark:text-[#BD93F9] hover:bg-gray-200 dark:hover:bg-[#44475A] transition-colors font-bold">
-              <Icon name="feather:tag" class="w-4 h-4 text-[#463AA2] dark:text-[#BD93F9]" />
+              <Icon name="ri:price-tag-3-line" class="w-4 h-4 text-[#463AA2] dark:text-[#BD93F9]" />
               <span>{tag}</span>
             </a>
           ))}
@@ -151,7 +151,7 @@ const jsonLd = {
           <!-- No category message -->
           {!entry.data.category && (
             <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm bg-[var(--btn-plain-bg-hover)] text-black/50 dark:text-white/50 font-bold">
-              <Icon name="feather:folder" class="w-4 h-4" />
+              <Icon name="ri:folder-line" class="w-4 h-4" />
               <span>无分类</span>
             </span>
           )}
@@ -159,7 +159,7 @@ const jsonLd = {
           <!-- No tags message -->
           {entry.data.tags && entry.data.tags.length === 0 && (
             <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm bg-[#F6F5FA] dark:bg-[#323241] text-[#463AA2]/50 dark:text-[#BD93F9] opacity-80 font-bold">
-              <Icon name="feather:tag" class="w-4 h-4 text-[#463AA2]/50 dark:text-[#BD93F9]" />
+              <Icon name="ri:price-tag-3-line" class="w-4 h-4 text-[#463AA2]/50 dark:text-[#BD93F9]" />
               <span>无标签</span>
             </span>
           )}
@@ -206,7 +206,7 @@ const jsonLd = {
         entry.data.nextSlug && (
           <div class="btn-card rounded-2xl w-full max-w-full px-8 py-4 flex items-center justify-center group hover:bg-[#0069FF] dark:hover:bg-[#FF79C6] min-h-[3.75rem]">
             <Icon
-              name="feather:chevron-left"
+              name="ri:arrow-left-s-line"
               class="text-[2rem] text-[var(--primary)] group-hover:text-[#CEE4FF] dark:group-hover:text-black absolute left-4"
             />
             <div class="transition max-w-[calc(100%_-_4rem)] text-black/75 dark:text-white/75 group-hover:text-[#CEE4FF] dark:group-hover:text-black text-center whitespace-normal">
@@ -231,7 +231,7 @@ const jsonLd = {
               {entry.data.prevTitle}
             </div>
             <Icon
-              name="feather:chevron-right"
+              name="ri:arrow-right-s-line"
               class="text-[2rem] text-[var(--primary)] group-hover:text-[#CEE4FF] dark:group-hover:text-black absolute right-4"
             />
           </div>

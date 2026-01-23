@@ -101,10 +101,10 @@ onMount(() => {
     <div class="absolute inset-0 rounded-full bg-[var(--primary)]/20 opacity-0 group-hover:opacity-30 transition-opacity duration-300 blur-md scale-0 group-hover:scale-150"></div>
     
     <div class="absolute icon-transition" class:opacity-0={mode !== LIGHT_MODE}>
-        <Icon icon="feather:sun" class="text-[1.25rem] text-[var(--primary)]"></Icon>
+        <Icon icon="ri:sun-line" class="text-[1.25rem] text-[var(--primary)]"></Icon>
     </div>
     <div class="absolute icon-transition" class:opacity-0={mode !== DARK_MODE}>
-        <Icon icon="feather:moon" class="text-[1.25rem] text-[var(--primary)]"></Icon>
+        <Icon icon="ri:moon-line" class="text-[1.25rem] text-[var(--primary)]"></Icon>
     </div>
 </button>
 
