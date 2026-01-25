@@ -508,6 +508,18 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
     }
 
     /* 无障碍支持 */
+    @media (prefers-reduced-motion: reduce) {
+        *, ::before, ::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+        .gradient-bg {
+            animation: none;
+        }
+    }
+
     .dropdown-container:focus-within .dropdown-menu {
         @apply opacity-100 visible translate-y-0;
     }
