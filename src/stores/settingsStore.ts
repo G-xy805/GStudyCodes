@@ -44,19 +44,25 @@ if (typeof localStorage !== 'undefined') {
  * 订阅主题变化并保存到 localStorage
  */
 theme.subscribe(value => {
-	localStorage.setItem('theme', value);
+	if (typeof localStorage !== 'undefined') {
+		localStorage.setItem('theme', value);
+	}
 });
 
 /**
  * 订阅壁纸模式变化并保存到 localStorage
  */
 wallpaperMode.subscribe(value => {
-	localStorage.setItem('wallpaperMode', value);
+	if (typeof localStorage !== 'undefined') {
+		localStorage.setItem('wallpaperMode', value);
+	}
 });
 
 /**
  * 订阅布局变化并保存到 localStorage
  */
 layoutMode.subscribe(value => {
-	localStorage.setItem('postListLayout', value);
+	if (typeof localStorage !== 'undefined') {
+		localStorage.setItem('postListLayout', value);
+	}
 });
