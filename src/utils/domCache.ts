@@ -12,15 +12,27 @@ export class DOMCache {
 
 	/**
 	 * 获取元素并缓存
+	 * 优先尝试 ID 查询，如果失败则尝试 querySelector
 	 */
-	get(id: string): HTMLElement | null {
-		if (!this.cache.has(id)) {
-			const element = document.getElementById(id);
+	get(selector: string): HTMLElement | null {
+		if (!this.cache.has(selector)) {
+			let element = document.getElementById(selector);
+			
+			// 如果 ID 查询失败，且字符串看起来像选择器（包含 . # [ : 等），尝试 querySelector
+			if (!element && /[\.\#\[\:]/.test(selector)) {
+				try {
+					element = document.querySelector(selector) as HTMLElement;
+				} catch (e) {
+					// 忽略无效的选择器错误
+					console.warn(`[DOMCache] Invalid selector: ${selector}`);
+				}
+			}
+
 			if (element) {
-				this.cache.set(id, element);
+				this.cache.set(selector, element);
 			}
 		}
-		return this.cache.get(id) || null;
+		return this.cache.get(selector) || null;
 	}
 
 	/**

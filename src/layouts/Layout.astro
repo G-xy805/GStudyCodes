@@ -296,8 +296,15 @@ const bannerOffset = `${BANNER_HEIGHT_EXTEND / 2}vh`;
         if (typeof window === "undefined" || typeof document === "undefined") {
           return;
         }
-        // 使用 requestAnimationFrame 确保在下一帧之前执行
-        requestAnimationFrame(function () {
+        
+        // 尝试应用壁纸模式，如果DOM未准备好则重试
+        function tryApply() {
+          // 必须等到body存在
+          if (!document.body) {
+            requestAnimationFrame(tryApply);
+            return;
+          }
+
           // 根据模式隐藏显示对应元素
           if (
             wallpaperMode === WALLPAPER_NONE ||
@@ -328,6 +335,14 @@ const bannerOffset = `${BANNER_HEIGHT_EXTEND / 2}vh`;
 
           // 处理banner和fullscreen wallpaper的显示
           const bannerWrapper = document.getElementById("banner-wrapper");
+          
+          // 如果bannerWrapper还不存在（可能在body中但解析器还未到达），继续等待
+          // 注意：bannerWrapper 是主要目标，如果它不存在，我们必须重试，否则它将保持 display: none
+          if (!bannerWrapper && wallpaperMode !== WALLPAPER_NONE && wallpaperMode !== WALLPAPER_OVERLAY) {
+             requestAnimationFrame(tryApply);
+             return;
+          }
+
           const fullscreenWallpaper = document.querySelector(
             "[data-fullscreen-wallpaper]"
           );
@@ -419,7 +434,10 @@ const bannerOffset = `${BANNER_HEIGHT_EXTEND / 2}vh`;
               bannerTextOverlay.classList.add("hidden");
             }
           }
-        });
+        }
+
+        // 启动尝试
+        requestAnimationFrame(tryApply);
       })();
     </script>
     <style
