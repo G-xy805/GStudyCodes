@@ -1,5 +1,5 @@
 import { writable, derived } from 'svelte/store';
-import { LIGHT_DARK_MODE, DARK_MODE, WALLPAPER_BANNER, WALLPAPER_OVERLAY, WALLPAPER_NONE } from '@/constants/constants';
+import { LIGHT_MODE, DARK_MODE, WALLPAPER_BANNER, WALLPAPER_OVERLAY, WALLPAPER_NONE } from '@/constants/constants';
 import type { LIGHT_DARK_MODE, WALLPAPER_MODE } from '@/types/config';
 
 /**
