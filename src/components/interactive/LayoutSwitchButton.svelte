@@ -1,113 +1,67 @@
 <script lang="ts">
-import { onMount } from "svelte";
+import { onMount, onDestroy } from "svelte";
 import { siteConfig } from "@/config";
-
-export let currentLayout: "list" | "grid" = "list";
+import { layoutMode } from "@/stores/settingsStore";
+import { BREAKPOINTS } from "@/constants/layoutConstants";
+import { useSwitchAnimation } from "@/hooks/useSwitchAnimation";
 
 let mounted = false;
 let isSmallScreen = false;
-let isSwitching = false;
+const { switch: switchLayout, isSwitching } = useSwitchAnimation(() => {
+	if (!mounted || isSmallScreen) return;
+	
+	const newMode = $layoutMode === 'list' ? 'grid' : 'list';
+	layoutMode.set(newMode);
+}, 500);
 
 function checkScreenSize() {
-	isSmallScreen = window.innerWidth < 1200;
+	isSmallScreen = window.innerWidth < BREAKPOINTS.DESKTOP;
 	if (isSmallScreen) {
-		currentLayout = "list";
+		layoutMode.set('list');
+	}
+}
+
+function handleKeyboardEvent(event: KeyboardEvent) {
+	if (event.key === 'Enter' || event.key === ' ') {
+		switchLayout();
 	}
 }
 
 onMount(() => {
 	mounted = true;
 	checkScreenSize();
-
-	// 从localStorage读取用户偏好，如果没有则使用传入的默认值
-	const savedLayout = localStorage.getItem("postListLayout");
-	if (savedLayout && (savedLayout === "list" || savedLayout === "grid")) {
-		currentLayout = savedLayout;
-	} else {
-		// 如果没有保存的偏好，使用传入的默认布局（从props）
-		// currentLayout已经在声明时设置了默认值
-	}
-
-	// 监听窗口大小变化
+	
 	window.addEventListener("resize", checkScreenSize);
-
+	window.addEventListener('keydown', handleKeyboardEvent);
+	
 	return () => {
 		window.removeEventListener("resize", checkScreenSize);
-	};
-});
-
-function switchLayout() {
-	if (!mounted || isSmallScreen || isSwitching) return;
-
-	isSwitching = true;
-	currentLayout = currentLayout === "list" ? "grid" : "list";
-	localStorage.setItem("postListLayout", currentLayout);
-
-	// 触发自定义事件，通知父组件布局已改变
-	const event = new CustomEvent("layoutChange", {
-		detail: { layout: currentLayout },
-	});
-	window.dispatchEvent(event);
-
-	// 动画完成后重置状态
-	setTimeout(() => {
-		isSwitching = false;
-	}, 500);
-}
-
-// 监听布局变化事件
-onMount(() => {
-	const handleCustomEvent = (event: Event) => {
-		const customEvent = event as CustomEvent<{ layout: "list" | "grid" }>;
-		currentLayout = customEvent.detail.layout;
-	};
-
-	window.addEventListener("layoutChange", handleCustomEvent);
-
-	return () => {
-		window.removeEventListener("layoutChange", handleCustomEvent);
-	};
-});
-
-// 监听PostPage的布局初始化事件
-onMount(() => {
-	const handleLayoutInit = () => {
-		// 从PostPage获取当前布局状态
-		const postListContainer = document.getElementById("post-list-container");
-		if (postListContainer) {
-			const isGridMode = postListContainer.classList.contains("grid-mode");
-			currentLayout = isGridMode ? "grid" : "list";
-		}
-	};
-
-	// 延迟执行，确保PostPage已经初始化
-	setTimeout(handleLayoutInit, 100);
-
-	return () => {
-		// 清理函数
+		window.removeEventListener('keydown', handleKeyboardEvent);
 	};
 });
 </script>
 
 {#if mounted && siteConfig.postListLayout.allowSwitch && !isSmallScreen}
   <button 
-    aria-label="切换文章列表布局" 
+    aria-label="切换文章列表布局"
+    aria-pressed={$layoutMode === 'grid'}
+    role="switch"
     class="btn-plain scale-animation rounded-lg h-11 w-11 active:scale-90 flex items-center justify-center theme-switch-btn {isSwitching ? 'switching' : ''}" 
     on:click={switchLayout}
     disabled={isSwitching}
-    title={currentLayout === 'list' ? '切换到网格模式' : '切换到列表模式'}
-  >
-      {#if currentLayout === 'list'}
+    title={$layoutMode === 'list' ? '切换到网格模式' : '切换到列表模式'}
+    >
+      {#if $layoutMode === 'list'}
         <!-- 列表图标 -->
         <svg class="w-5 h-5 icon-transition" fill="currentColor" viewBox="0 0 24 24">
           <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
         </svg>
-    {:else}
+      {:else}
       <!-- 网格图标 -->
       <svg class="w-5 h-5 icon-transition" fill="currentColor" viewBox="0 0 24 24">
         <path d="M3 3h7v7H3V3zm0 11h7v7H3v-7zm11-11h7v7h-7V3zm0 11h7v7h-7v-7z"/>
       </svg>
-    {/if}
+      {/if}
   </button>
 {/if}
 

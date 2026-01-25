@@ -4,6 +4,7 @@
 declare global {
 	interface ImportMetaEnv {
 		readonly MEILI_MASTER_KEY: string;
+		readonly DEV: boolean;
 	}
 
 	interface ITOCManager {

@@ -2,97 +2,42 @@
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import Icon from "@iconify/svelte";
-import { onMount } from "svelte";
+import { onMount, onDestroy } from "svelte";
 import { DARK_MODE, LIGHT_MODE } from "@/constants/constants";
-import type { LIGHT_DARK_MODE } from "@/types/config.ts";
-import {
-	applyThemeToDocument,
-	getStoredTheme,
-	setTheme,
-} from "@/utils/setting-utils";
+import { theme } from "@/stores/settingsStore";
+import { applyThemeToDocument } from "@/utils/setting-utils";
+import { useSwitchAnimation } from "@/hooks/useSwitchAnimation";
 
-// Define Swup type for window object
-interface SwupHooks {
-	on(event: string, callback: () => void): void;
+const { switch: switchTheme, isSwitching } = useSwitchAnimation(() => {
+	const newMode = $theme === LIGHT_MODE ? DARK_MODE : LIGHT_MODE;
+	theme.set(newMode);
+	applyThemeToDocument(newMode);
+}, 500);
+
+function handleKeyboardEvent(event: KeyboardEvent) {
+	if (event.key === 'Enter' || event.key === ' ') {
+		switchTheme();
+	}
 }
 
-interface SwupInstance {
-	hooks?: SwupHooks;
-}
-
-type WindowWithSwup = Window & { swup?: SwupInstance };
-
-let mode: LIGHT_DARK_MODE = LIGHT_MODE;
-let isSwitching = false;
-
-function switchTheme() {
-	if (isSwitching) return;
-
-	isSwitching = true;
-	const newMode = mode === LIGHT_MODE ? DARK_MODE : LIGHT_MODE;
-	mode = newMode;
-	setTheme(newMode);
-
-	// 动画完成后重置状态
-	setTimeout(() => {
-		isSwitching = false;
-	}, 500);
-}
-
-// 使用onMount确保在组件挂载后正确初始化
 onMount(() => {
-	// 立即获取并设置正确的主题
-	const storedTheme = getStoredTheme();
-	mode = storedTheme;
+	applyThemeToDocument($theme);
+	window.addEventListener('keydown', handleKeyboardEvent);
+});
 
-	// 确保DOM状态与存储的主题一致
-	const currentTheme = document.documentElement.classList.contains("dark")
-		? DARK_MODE
-		: LIGHT_MODE;
-	if (storedTheme !== currentTheme) {
-		applyThemeToDocument(storedTheme);
-	}
-
-	// 添加Swup监听
-	const handleContentReplace = () => {
-		const newTheme = getStoredTheme();
-		mode = newTheme;
-	};
-
-	// 检查Swup是否已经加载
-	const win = window as WindowWithSwup;
-	if (win.swup?.hooks) {
-		win.swup.hooks.on("content:replace", handleContentReplace);
-	} else {
-		document.addEventListener("swup:enable", () => {
-			const w = window as WindowWithSwup;
-			if (w.swup?.hooks) {
-				w.swup.hooks.on("content:replace", handleContentReplace);
-			}
-		});
-	}
-
-	// 监听主题变化事件
-	const handleThemeChange = () => {
-		const newTheme = getStoredTheme();
-		mode = newTheme;
-	};
-
-	window.addEventListener("theme-change", handleThemeChange);
-
-	// 清理函数
-	return () => {
-		window.removeEventListener("theme-change", handleThemeChange);
-	};
+onDestroy(() => {
+	window.removeEventListener('keydown', handleKeyboardEvent);
 });
 </script>
 
 <button 
     aria-label="Light/Dark Mode" 
+    aria-pressed={$theme === DARK_MODE}
+    role="switch"
     class="btn-plain scale-animation rounded-full h-11 w-11 active:scale-90 flex items-center justify-center theme-switch-btn {isSwitching ? 'switching' : ''} ml-3 mr-1 relative overflow-hidden group"
     on:click={switchTheme}
     disabled={isSwitching}
-    title={mode === LIGHT_MODE ? '切换到深色模式' : '切换到浅色模式'}
+    title={$theme === LIGHT_MODE ? '切换到深色模式' : '切换到浅色模式'}
 >
     <!-- 背景渐变效果 -->
     <div class="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/10 to-[var(--secondary)]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full"></div>

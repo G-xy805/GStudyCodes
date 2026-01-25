@@ -3,6 +3,8 @@
  * 用于 SidebarTOC 和 FloatingTOC 的共享逻辑
  */
 
+import { domCache } from "./domCache";
+
 export interface TOCConfig {
 	contentId: string;
 	indicatorId: string;
@@ -19,6 +21,7 @@ export class TOCManager {
 	private contentId: string;
 	private indicatorId: string;
 	private scrollOffset: number;
+	private contentContainer: Element | null = null;
 
 	constructor(config: TOCConfig) {
 		this.contentId = config.contentId;
@@ -28,18 +31,20 @@ export class TOCManager {
 	}
 
 	/**
-	 * 查找文章内容容器
+	 * 查找文章内容容器（使用缓存）
 	 */
 	private getContentContainer(): Element | null {
-		return (
-			document.querySelector(".custom-md") ||
-			document.querySelector(".prose") ||
-			document.querySelector(".markdown-content")
-		);
+		if (!this.contentContainer) {
+			this.contentContainer =
+				domCache.get(".custom-md") ||
+				domCache.get(".prose") ||
+				domCache.get(".markdown-content");
+		}
+		return this.contentContainer;
 	}
 
 	/**
-	 * 查找所有标题
+	 * 查找所有标题（使用缓存）
 	 */
 	private getAllHeadings(): NodeListOf<HTMLElement> {
 		const contentContainer = this.getContentContainer();
@@ -55,7 +60,7 @@ export class TOCManager {
 	private calculateMinDepth(headings: NodeListOf<HTMLElement>): number {
 		let minDepth = 10;
 		headings.forEach((heading) => {
-			const depth = Number.parseInt(heading.tagName.charAt(1), 10);
+			const depth = parseInt(heading.tagName.charAt(1), 10);
 			minDepth = Math.min(minDepth, depth);
 		});
 		return minDepth;
@@ -66,7 +71,7 @@ export class TOCManager {
 	 */
 	private filterHeadings(headings: NodeListOf<HTMLElement>): HTMLElement[] {
 		return Array.from(headings).filter((heading) => {
-			const depth = Number.parseInt(heading.tagName.charAt(1), 10);
+			const depth = parseInt(heading.tagName.charAt(1), 10);
 			return depth < this.minDepth + this.maxLevel;
 		});
 	}
@@ -122,10 +127,10 @@ export class TOCManager {
 	}
 
 	/**
-	 * 更新TOC内容
+	 * 更新TOC内容（使用缓存）
 	 */
 	public updateTOCContent(): void {
-		const tocContent = document.getElementById(this.contentId);
+		const tocContent = domCache.get(this.contentId);
 		if (!tocContent) return;
 
 		tocContent.innerHTML = this.generateTOCHTML();
@@ -206,10 +211,10 @@ export class TOCManager {
 	}
 
 	/**
-	 * 更新活动指示器
+	 * 更新活动指示器（使用缓存）
 	 */
 	private updateActiveIndicator(activeItems: HTMLElement[]): void {
-		const indicator = document.getElementById(this.indicatorId);
+		const indicator = domCache.get(this.indicatorId);
 		if (!indicator || !this.tocItems.length) return;
 
 		if (activeItems.length === 0) {
@@ -217,7 +222,7 @@ export class TOCManager {
 			return;
 		}
 
-		const tocContent = document.getElementById(this.contentId);
+		const tocContent = domCache.get(this.contentId);
 		if (!tocContent) return;
 
 		const contentRect = tocContent.getBoundingClientRect();

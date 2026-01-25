@@ -16,7 +16,6 @@ import { defaultFavicons } from "@/constants/icon";
 import type { Favicon } from "@/types/config";
 import { getDefaultBackground, isHomePage as checkIsHomePage } from "@/utils/layout-utils";
 import { url } from "@/utils/url-utils";
-
 import "katex/dist/katex.css";
 import "@/styles/main.css";
 import "@/styles/widget-responsive.css";
@@ -24,6 +23,7 @@ import "@/styles/navbar.css";
 import "@/styles/fancybox-custom.css";
 import "@/styles/layout-styles.css";
 import "@/styles/waves.css";
+import { logger } from "@/utils/logger";
 
 interface Props {
 	title?: string;
@@ -59,7 +59,6 @@ if (!banner || typeof banner !== "string" || banner.trim() === "") {
 	banner = getDefaultBackground();
 }
 
-// TODO don't use post cover as banner for now
 banner = getDefaultBackground();
 
 const enableBanner = enableBannerProp ?? siteConfig.backgroundWallpaper.mode === "banner";
@@ -531,7 +530,8 @@ const bannerOffset = `${BANNER_HEIGHT_EXTEND / 2}vh`;
   // 		]);
   // 		document.body.classList.remove("hidden");
   // 	} catch (error) {
-  // 		console.log("Failed to load fonts:", error);
+		logger.error("Failed to load fonts:", error);
+	}
   // 	}
   // })();
 
@@ -893,7 +893,7 @@ function disableAnimation() {
               },
             });
             document.dispatchEvent(pageLoadedEvent);
-            console.log(
+            logger.info(
               "Layout: 触发 firefly:page:loaded 事件，路径:",
               window.location.pathname
             );
