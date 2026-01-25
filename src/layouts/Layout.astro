@@ -1072,6 +1072,9 @@ function disableAnimation() {
         if (isArticlePage) {
           initCustomScrollbar();
         }
+        // Initialize wallpaper mode
+        initWallpaperMode();
+        initIconLoader();
       });
     } else {
       showBanner();
@@ -1081,17 +1084,9 @@ function disableAnimation() {
       if (isArticlePage) {
         initCustomScrollbar();
       }
-
       // Initialize wallpaper mode
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", () => {
-          initWallpaperMode();
-          initIconLoader();
-        });
-      } else {
-        initWallpaperMode();
-        initIconLoader();
-      }
+      initWallpaperMode();
+      initIconLoader();
     }
   }
 </script>
