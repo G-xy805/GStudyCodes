@@ -27,7 +27,7 @@ let links: NavBarLink[] = navBarConfig.links.map(
 	},
 );
 ---
-<div id="navbar" class="z-50 onload-animation navbar-animate" data-is-home={isHomePageCheck}>
+<div id="navbar" class="z-50" data-is-home={isHomePageCheck}>
     <div class="absolute h-8 left-0 right-0 -top-8 bg-[var(--card-bg)] transition"></div> <!-- used for onload animation -->
     <div class:list={[
         className,
@@ -74,21 +74,142 @@ let links: NavBarLink[] = navBarConfig.links.map(
 
 <script>
 function loadButtonScript() {
-    let menuBtn = document.getElementById("nav-menu-switch");
-    if (menuBtn) {
+    const menuBtn = document.getElementById("nav-menu-switch");
+    const menuPanel = document.getElementById("nav-menu-panel");
+
+    if (menuBtn && menuPanel) {
+        // 切换菜单状态
         menuBtn.onclick = function (e) {
-            e.stopPropagation(); // 阻止事件冒泡，防止被setClickOutsideToClose捕获
-            let menuPanel = document.getElementById("nav-menu-panel");
-            if (menuPanel) {
-                const isClosed = menuPanel.classList.toggle("float-panel-closed");
-                menuBtn.setAttribute("aria-expanded", (!isClosed).toString());
+            e.stopPropagation();
+            const isClosed = menuPanel.classList.contains("float-panel-closed");
+            
+            if (isClosed) {
+                openMenu();
+            } else {
+                closeMenu();
             }
         };
+
+        // 打开菜单
+        function openMenu() {
+            menuPanel.classList.remove("float-panel-closed");
+            menuBtn.setAttribute("aria-expanded", "true");
+            menuBtn.classList.add("active"); // 添加激活状态样式
+            
+            // 延迟添加监听器，防止立即触发
+            setTimeout(() => {
+                document.addEventListener('click', closeMenuOutside);
+                document.addEventListener('keydown', closeMenuEsc);
+            }, 0);
+        }
+
+        // 关闭菜单
+        function closeMenu() {
+            menuPanel.classList.add("float-panel-closed");
+            menuBtn.setAttribute("aria-expanded", "false");
+            menuBtn.classList.remove("active");
+            
+            document.removeEventListener('click', closeMenuOutside);
+            document.removeEventListener('keydown', closeMenuEsc);
+        }
+
+        // 点击外部关闭
+        function closeMenuOutside(e) {
+            if (!menuPanel.contains(e.target) && !menuBtn.contains(e.target)) {
+                closeMenu();
+            }
+        }
+
+        // ESC键关闭
+        function closeMenuEsc(e) {
+            if (e.key === 'Escape') {
+                closeMenu();
+            }
+        }
     }
 }
 
-loadButtonScript();
+function initSmartNavbar() {
+    const navbar = document.getElementById('navbar');
+    if (!navbar) return;
 
+    // 检测是否支持 hover (区分移动端和桌面端)
+    const isTouchDevice = window.matchMedia('(hover: none)').matches;
+    
+    // 初始化 ARIA 状态
+    if (!isTouchDevice) {
+        navbar.setAttribute('aria-hidden', 'true');
+    } else {
+        navbar.setAttribute('aria-hidden', 'false');
+    }
+
+    if (isTouchDevice) return; // 移动端不启用自动隐藏
+
+    let hideTimeout;
+    const TRIGGER_Height = 10; // 顶部触发区域高度
+    const HIDE_DELAY = 300; // 延迟隐藏时间
+
+    // 显示导航栏
+    function showNavbar() {
+        navbar.classList.add('navbar-visible');
+        navbar.setAttribute('aria-hidden', 'false');
+        if (hideTimeout) {
+            clearTimeout(hideTimeout);
+            hideTimeout = null;
+        }
+    }
+
+    // 隐藏导航栏
+    function hideNavbar() {
+        // 如果菜单打开，不隐藏
+        const menuBtn = document.getElementById("nav-menu-switch");
+        if (menuBtn && menuBtn.getAttribute("aria-expanded") === "true") return;
+        
+        // 只有当鼠标不在导航栏内且不在顶部触发区时才隐藏
+        navbar.classList.remove('navbar-visible');
+        navbar.setAttribute('aria-hidden', 'true');
+        hideTimeout = null;
+    }
+
+    // 鼠标移动处理
+    window.addEventListener('mousemove', (e) => {
+        const mouseY = e.clientY;
+        
+        // 鼠标在顶部触发区域 -> 显示
+        if (mouseY <= TRIGGER_Height) {
+            showNavbar();
+        } 
+        // 鼠标离开导航栏区域 (假设导航栏高度约 64px + padding) -> 准备隐藏
+        else if (mouseY > navbar.offsetHeight + 10) {
+            // 如果没有在等待隐藏，则开启延时
+            if (!hideTimeout && navbar.classList.contains('navbar-visible')) {
+                hideTimeout = setTimeout(hideNavbar, HIDE_DELAY);
+            }
+        }
+    });
+
+    // 鼠标进入导航栏 -> 取消隐藏
+    navbar.addEventListener('mouseenter', () => {
+        showNavbar();
+    });
+
+    // 鼠标离开导航栏 -> 准备隐藏
+    navbar.addEventListener('mouseleave', (e) => {
+        // 如果鼠标是向上离开（去往顶部触发区），不隐藏
+        if (e.clientY <= TRIGGER_Height) return;
+        
+        if (hideTimeout) {
+            clearTimeout(hideTimeout);
+        }
+        hideTimeout = setTimeout(hideNavbar, HIDE_DELAY);
+    });
+    
+    // 初始化：如果鼠标已经在顶部，显示
+    // 无法直接获取鼠标位置，但可以通过mousemove触发
+}
+
+loadButtonScript();
+initSmartNavbar();
 
 </script>
 
@@ -103,13 +224,31 @@ loadButtonScript();
 }
 
 #navbar {
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.95);
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease-in-out;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
     overflow: visible;
+    transform: translateY(-100%);
+}
+
+#navbar.navbar-visible {
+    transform: translateY(0);
+}
+
+@media (hover: none), (max-width: 768px) {
+    #navbar {
+        position: sticky;
+        top: 0;
+        transform: none;
+    }
 }
 
 #navbar::before {

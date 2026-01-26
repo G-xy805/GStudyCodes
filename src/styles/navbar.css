@@ -26,7 +26,13 @@
 .dark #navbar a,
 .dark #navbar button,
 .dark #navbar .btn-plain {
-    color: white; /* 黑暗模式颜色 */
+    color: var(--text-secondary); /* 保持一致性 */
+}
+
+.dark #navbar a:hover,
+.dark #navbar button:hover,
+.dark #navbar .btn-plain:hover {
+    color: var(--primary);
 }
 
 /* 增大主题切换按钮大小 */
@@ -40,8 +46,8 @@
 #navbar .btn-plain.scale-animation:hover,
 #navbar .dropdown-container:hover > a.btn-plain,
 #navbar .dropdown-container:hover > button.btn-plain {
-    color: var(--text-color); /* 悬停时保持原文本色，不显示主题色 */
-    background-color: transparent; /* 确保没有背景色 */
+    color: var(--primary); /* 悬停时显示主题色 */
+    background-color: var(--btn-plain-bg-hover); /* 悬停背景色 */
 }
 
 /* 覆盖expand-animation和scale-animation的伪元素效果 */

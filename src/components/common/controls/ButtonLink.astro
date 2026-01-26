@@ -3,41 +3,49 @@ interface Props {
 	badge?: string;
 	url?: string;
 	label?: string;
+    class?: string;
 }
 const { badge, url, label } = Astro.props;
+const className = Astro.props.class;
 ---
-<a href={url} aria-label={label}>
+<a href={url} aria-label={label} class="block mb-1">
     <div
-        class:list={`
-            w-full
-            h-10
+        class:list={[
+            `w-full
+            py-2
+            px-3
             rounded-lg
-            bg-none
+            bg-transparent
             hover:bg-[var(--btn-plain-bg-hover)]
-            active:bg-[var(--btn-plain-bg-active)]
             transition-all
-            pl-2
-            hover:pl-3
+            duration-300
             
-            text-neutral-700
+            text-[var(--text-secondary)]
             hover:text-[var(--primary)]
-            dark:text-neutral-300
-            dark:hover:text-[var(--primary)]
-        `
-        }
+            flex items-center justify-between
+            group`,
+            className
+        ]}
     >
-        <div class="flex items-center justify-between relative mr-2">
-            <div class="overflow-hidden text-left whitespace-nowrap overflow-ellipsis  ">
+        <div class="flex items-center overflow-hidden">
+            <div class="w-1 h-4 rounded-full bg-primary/0 group-hover:bg-primary/50 mr-2 transition-all duration-300"></div>
+            <span class="truncate font-medium">
                 <slot></slot>
-            </div>
-            { badge !== undefined && badge !== null && badge !== '' &&
-                <div class="transition px-2 h-7 ml-4 min-w-[2rem] rounded-lg text-sm font-bold
-                    text-[#394E6A] dark:text-white
-                    bg-[var(--btn-plain-bg-hover)] dark:bg-[var(--card-bg)]
-                    flex items-center justify-center">
-                    { badge }
-                </div>
-            }
+            </span>
         </div>
+        
+        { badge !== undefined && badge !== null && badge !== '' &&
+            <div class="
+                px-2 py-0.5 
+                rounded-md 
+                text-xs font-bold
+                bg-black/5 dark:bg-white/10
+                text-[var(--text-muted)]
+                group-hover:bg-primary/10 group-hover:text-primary
+                transition-colors duration-300
+            ">
+                { badge }
+            </div>
+        }
     </div>
 </a>

@@ -34,6 +34,7 @@ const style = Astro.props.style;
             url={c.url}
             badge={String(c.count)}
             label={`View all posts in the ${c.name.trim()} category`}
+            class="hover-scale"
         >
             {c.name.trim()}
         </ButtonLink>

@@ -28,13 +28,19 @@ function getWelcomeMessage() {
 }
 ---
 
-<div class="dynamic-welcome onload-animation mb-6" style="display: block !important; opacity: 1 !important; visibility: visible !important; background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); transition: transform 0.3s ease, box-shadow 0.3s ease; position: relative; z-index: 10;">
-  <h2 class="welcome-title text-2xl font-bold mb-2" style="background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: #007bff !important;">
-    {getWelcomeMessage()}
-  </h2>
-  <p class="welcome-subtitle" style="color: #394E6A !important; opacity: 0.75 !important;">
-    专注于C++、Astro和技术分享的博客，系统、高效、实用地记录和分享技术知识。
-  </p>
+<div class="dynamic-welcome onload-animation mb-6 card-base p-6 rounded-2xl relative z-10 overflow-hidden group">
+  <!-- 背景装饰 -->
+  <div class="absolute inset-0 bg-gradient-to-br from-white to-blue-50 dark:from-gray-800 dark:to-gray-900 opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
+  
+  <div class="relative z-10">
+    <h2 class="welcome-title text-2xl font-bold mb-2 flex items-center gap-2">
+      <span class="welcome-icon"></span>
+      <span class="welcome-text bg-gradient-to-r from-blue-500 to-blue-700 dark:from-blue-400 dark:to-blue-600 bg-clip-text text-transparent"></span>
+    </h2>
+    <p class="welcome-subtitle text-gray-600 dark:text-gray-300 transition-colors duration-300">
+      专注于C++、Astro和技术分享的博客，系统、高效、实用地记录和分享技术知识。
+    </p>
+  </div>
 </div>
 
 <script>
@@ -44,26 +50,30 @@ function getWelcomeMessage() {
     const hour = now.getHours();
     
     if (hour < 6) {
-      return "🌙 深夜了，注意休息！";
+      return { icon: "🌙", text: "深夜了，注意休息！" };
     } else if (hour < 9) {
-      return "🌅 早上好，开启美好的一天！";
+      return { icon: "🌅", text: "早上好，开启美好的一天！" };
     } else if (hour < 12) {
-      return "☀️ 上午好，今天也要加油！";
+      return { icon: "☀️", text: "上午好，今天也要加油！" };
     } else if (hour < 14) {
-      return "🍱 中午好，记得吃午饭！";
+      return { icon: "🍱", text: "中午好，记得吃午饭！" };
     } else if (hour < 18) {
-      return "🌤️ 下午好，保持专注！";
+      return { icon: "🌤️", text: "下午好，保持专注！" };
     } else if (hour < 22) {
-      return "🌆 晚上好，回顾一天的收获！";
+      return { icon: "🌆", text: "晚上好，回顾一天的收获！" };
     } else {
-      return "🌙 夜深了，早点休息！";
+      return { icon: "🌙", text: "夜深了，早点休息！" };
     }
   }
   
   document.addEventListener('DOMContentLoaded', () => {
-    const titleElement = document.querySelector('.welcome-title');
-    if (titleElement) {
-      titleElement.textContent = getWelcomeMessage();
+    const iconElement = document.querySelector('.welcome-icon');
+    const textElement = document.querySelector('.welcome-text');
+    
+    if (iconElement && textElement) {
+      const message = getWelcomeMessage();
+      iconElement.textContent = message.icon;
+      textElement.textContent = message.text;
     }
   });
 </script>

@@ -4,10 +4,28 @@ interface Props {
 	dot?: boolean;
 	href?: string;
 	label?: string;
+    class?: string;
 }
 const { dot, href, label }: Props = Astro.props;
+const className = Astro.props.class;
 ---
-<a href={href} aria-label={label} class="btn-regular h-6 text-base px-2 inline-flex items-center justify-center rounded-md border transition-all">
-    {dot && <div class="h-1 w-1 bg-[var(--btn-content)] dark:bg-[var(--card-bg)] transition rounded-md mr-2"></div>}
+<a 
+    href={href} 
+    aria-label={label} 
+    class:list={[
+        `h-8 text-sm px-3.5 
+        inline-flex items-center justify-center 
+        rounded-lg 
+        font-medium
+        transition-all duration-300 ease-out
+        border border-[var(--primary)]/20
+        bg-[var(--primary)]/5 text-[var(--primary)]
+        hover:bg-[var(--primary)] hover:text-white hover:border-[var(--primary)]
+        focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 focus-visible:outline-none
+        active:scale-95`,
+        className
+    ]}
+>
+    {dot && <div class="h-1.5 w-1.5 bg-current rounded-full mr-2 opacity-80"></div>}
     <slot></slot>
 </a>

@@ -2,98 +2,81 @@
 import type { CollectionEntry } from "astro:content";
 import { getPostUrlBySlug } from "@utils/url-utils";
 import { getSortedPosts } from "@/utils/content-utils";
+import { Icon } from "astro-icon/components";
+import WidgetLayout from "@/components/widget/WidgetLayout.astro";
 
 const allPosts = await getSortedPosts();
-// 取前5篇文章作为热门文章（基于置顶状态和发布日期）
 const popularPosts = allPosts.slice(0, 5);
 
-// 类型别名避免Fragment语法问题
 type PostEntry = CollectionEntry<"posts">;
+
+interface Props {
+  class?: string;
+  style?: string;
+}
+const className = Astro.props.class;
+const style = Astro.props.style;
+
+// 简单的字数统计和阅读时间估算
+function getReadingTime(content: string) {
+  const wordsPerMinute = 200;
+  const wordCount = content.length;
+  const minutes = Math.ceil(wordCount / wordsPerMinute);
+  return `${minutes} min`;
+}
 ---
 
-<div class="popular-posts onload-animation mb-6">
-  <h2 class="section-title text-xl font-bold mb-3 flex items-center">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-    </svg>
-    热门文章
-  </h2>
-  
-  <div class="posts-list bg-card rounded-lg shadow-sm p-4">
+<WidgetLayout name="热门文章" id="popular-posts" class={className} style={style}>
+  <div class="flex flex-col gap-3 pb-2">
     {popularPosts.length > 0 ? (
-      <ul class="space-y-3">
-        {popularPosts.map((post: PostEntry, index: number) => (
-          <li class="popular-post-item flex items-start gap-3">
-            <span class="popular-rank flex items-center justify-center w-6 h-6 rounded-full bg-primary/20 text-primary font-bold text-sm shrink-0">
-              {index + 1}
-            </span>
-            <div class="popular-post-content flex-1 min-w-0">
-              <a 
-                href={getPostUrlBySlug(post.id)} 
-                class="popular-post-title text-sm font-medium hover:text-primary line-clamp-1"
-                title={post.data.title}
-              >
-                {post.data.title}
-              </a>
-              <p class="popular-post-meta text-xs text-gray-500 dark:text-gray-400 mt-1">
-                {post.data.published}
-                {post.data.category && (
-                  <span class="mx-2">•</span>
-                )}
-                {post.data.category}
-              </p>
+      popularPosts.map((post: PostEntry, index: number) => (
+        <a 
+          href={getPostUrlBySlug(post.id)} 
+          class="group relative flex items-start gap-3 p-2.5 rounded-xl hover:bg-[var(--btn-plain-bg-hover)] transition-all duration-300 border border-transparent hover:border-[var(--line-divider)] hover-scale"
+        >
+          <!-- Rank Badge -->
+          <div class={`flex-none flex flex-col items-center justify-center w-8 h-10 rounded-lg shadow-sm transition-all duration-300 ${
+            index === 0 ? 'bg-gradient-to-br from-yellow-100 to-yellow-50 dark:from-yellow-900/30 dark:to-yellow-800/10 text-yellow-600 dark:text-yellow-400 border border-yellow-200/50 dark:border-yellow-700/30' :
+            index === 1 ? 'bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-700/30 dark:to-slate-800/10 text-slate-600 dark:text-slate-400 border border-slate-200/50 dark:border-slate-600/30' :
+            index === 2 ? 'bg-gradient-to-br from-orange-100 to-orange-50 dark:from-orange-900/30 dark:to-orange-800/10 text-orange-600 dark:text-orange-400 border border-orange-200/50 dark:border-orange-700/30' :
+            'bg-[var(--card-bg)] text-[var(--text-muted)] border border-[var(--line-divider)]'
+          }`}>
+            <span class="text-xs font-bold font-mono">{String(index + 1).padStart(2, '0')}</span>
+            {index < 3 && <Icon name="ri:vip-crown-2-fill" class="w-2.5 h-2.5 opacity-60 mt-0.5" />}
+          </div>
+          
+          <!-- Content -->
+          <div class="flex-1 min-w-0 pt-0.5">
+            <h3 
+              class="text-sm font-bold text-[var(--text-color)] group-hover:text-primary transition-colors line-clamp-2 leading-snug mb-1.5"
+              title={post.data.title}
+            >
+              {post.data.title}
+            </h3>
+            
+            <div class="flex items-center flex-wrap gap-x-3 gap-y-1 text-xs text-[var(--text-muted)] opacity-80 group-hover:opacity-100 transition-opacity">
+              <!-- Date -->
+              <span class="flex items-center gap-1">
+                <Icon name="ri:calendar-line" class="w-3 h-3" />
+                {post.data.published.toString().split('T')[0]}
+              </span>
+              
+              <!-- Category -->
+              {post.data.category && (
+                 <span class="flex items-center gap-1 text-[var(--primary)] bg-primary/5 px-1.5 py-0.5 rounded text-[10px]">
+                    <Icon name="ri:folder-line" class="w-2.5 h-2.5" />
+                    {post.data.category}
+                 </span>
+              )}
             </div>
-          </li>
-        ))}
-      </ul>
+          </div>
+        </a>
+      ))
     ) : (
-      <p class="text-sm text-gray-500 dark:text-gray-400">暂无文章</p>
+      <div class="p-8 text-center text-[var(--text-muted)] flex flex-col items-center gap-2 opacity-60">
+        <Icon name="ri:inbox-line" class="w-8 h-8" />
+        <span class="text-sm">暂无热门文章</span>
+      </div>
     )}
   </div>
-</div>
-
-<style>
-  .popular-posts {
-    animation-delay: var(--content-delay);
-  }
-  
-  .section-title {
-    color: var(--text-primary);
-  }
-  
-  .posts-list {
-    background: var(--card-bg);
-  }
-  
-  .popular-post-item {
-    transition: all 0.2s ease;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid var(--border-color);
-  }
-  
-  .popular-post-item:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-  
-  .popular-post-item:hover {
-    transform: translateX(4px);
-  }
-  
-  .popular-rank {
-    font-weight: 600;
-  }
-  
-  .popular-post-title {
-    color: var(--text-primary);
-    transition: color 0.2s ease;
-  }
-  
-  .popular-post-title:hover {
-    color: var(--theme-color);
-  }
-  
-  .popular-post-meta {
-    color: var(--text-secondary);
-  }
-</style>
+</WidgetLayout>

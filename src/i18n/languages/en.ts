@@ -44,6 +44,7 @@ export const en: Translation = {
 	[Key.systemMode]: "System",
 
 	[Key.more]: "More",
+	[Key.collapse]: "Collapse",
 
 	[Key.author]: "Author",
 	[Key.publishedAt]: "Published at",
