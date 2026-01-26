@@ -11,6 +11,7 @@ import type { LIGHT_DARK_MODE, WALLPAPER_MODE } from "@/types/config";
 import { expressiveCodeConfig, siteConfig } from "../config";
 import { domCache } from "./domCache";
 import { theme, wallpaperMode } from "@/stores/settingsStore";
+import { get as getStore } from "svelte/store";
 
 
 
@@ -81,7 +82,7 @@ export function setTheme(theme: LIGHT_DARK_MODE): void {
 }
 
 export function getStoredTheme(): LIGHT_DARK_MODE {
-	return $theme;
+	return getStore(theme);
 }
 
 
@@ -377,5 +378,5 @@ export function initWallpaperMode(): void {
 }
 
 export function getStoredWallpaperMode(): WALLPAPER_MODE {
-	return $wallpaperMode;
+	return getStore(wallpaperMode);
 }
