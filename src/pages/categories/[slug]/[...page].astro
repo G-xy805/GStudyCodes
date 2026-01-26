@@ -148,7 +148,7 @@ const pageTitle = `${i18n(I18nKey.categories)}: ${slug}`;
           image={post.data.image}
           description={post.data.description}
           style={`animation-delay: calc(var(--content-delay) + ${index * 50}ms);`}
-          class:list="onload-animation"
+          class:list={["onload-animation", slug === "C++" ? "category-cpp-card" : ""]}
         />
       ))
     ) : (
