@@ -122,10 +122,20 @@ onMount(async () => {
                                         <a
                                                 href={getPostUrlBySlug(post.id)}
                                                 aria-label={post.data.title}
-                                                class="archive-card"
+                                                class="archive-card group"
                                         >
                                             <time class="archive-date">{formatDate(post.data.published)}</time>
-                                            <h4 class="archive-title">{post.data.title}</h4>
+                                            <h4 class="archive-title group-hover:text-[var(--primary)] transition-colors">{post.data.title}</h4>
+                                            
+                                            {#if post.data.tags && post.data.tags.length > 0}
+                                                <div class="flex flex-wrap gap-2 mt-3">
+                                                    {#each post.data.tags as tag}
+                                                        <span class="text-xs px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/10 text-black/60 dark:text-white/60 group-hover:bg-[var(--primary)] group-hover:text-white transition-colors duration-300">
+                                                            #{tag}
+                                                        </span>
+                                                    {/each}
+                                                </div>
+                                            {/if}
                                         </a>
                                     </li>
                                 {/each}

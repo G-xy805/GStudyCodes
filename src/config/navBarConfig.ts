@@ -42,7 +42,7 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		// 归档
 		{
 			name: "归档",
-			url: "/archives/",
+			url: "/archive/",
 			icon: "ri:calendar-line",
 		},
 		// 关于
