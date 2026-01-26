@@ -1,9 +1,7 @@
 ---
 import FancyboxManager from "@components/effects/FancyboxManager.astro";
-
-import ConfigCarrier from "@components/layout/ConfigCarrier.astro";
-
 import FontManager from "@components/interactive/FontManager.astro";
+import ConfigCarrier from "@components/layout/ConfigCarrier.astro";
 
 import { expressiveCodeConfig, profileConfig, siteConfig } from "@/config";
 import {
@@ -14,7 +12,10 @@ import {
 } from "@/constants/constants";
 import { defaultFavicons } from "@/constants/icon";
 import type { Favicon } from "@/types/config";
-import { getDefaultBackground, isHomePage as checkIsHomePage } from "@/utils/layout-utils";
+import {
+	isHomePage as checkIsHomePage,
+	getDefaultBackground,
+} from "@/utils/layout-utils";
 import { url } from "@/utils/url-utils";
 import "katex/dist/katex.css";
 import "@/styles/main.css";
@@ -38,8 +39,17 @@ interface Props {
 	isWallpaperSwitchable?: boolean;
 }
 
-let { title, banner, description, lang, setOGTypeArticle, postSlug, isHomePage, enableBanner: enableBannerProp, isWallpaperSwitchable: isWallpaperSwitchableProp } =
-	Astro.props;
+let {
+	title,
+	banner,
+	description,
+	lang,
+	setOGTypeArticle,
+	postSlug,
+	isHomePage,
+	enableBanner: enableBannerProp,
+	isWallpaperSwitchable: isWallpaperSwitchableProp,
+} = Astro.props;
 
 // 判断当前页面类型
 const isArticlePage = Boolean(postSlug || setOGTypeArticle);
@@ -62,7 +72,8 @@ if (!banner || typeof banner !== "string" || banner.trim() === "") {
 
 banner = getDefaultBackground();
 
-const enableBanner = enableBannerProp ?? siteConfig.backgroundWallpaper.mode === "banner";
+const enableBanner =
+	enableBannerProp ?? siteConfig.backgroundWallpaper.mode === "banner";
 
 let pageTitle: string;
 if (title) {

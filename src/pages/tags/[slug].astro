@@ -1,39 +1,37 @@
 ---
 import { getCollection } from "astro:content";
+import PostCard from "@components/content/PostCard.astro";
+import Icon from "@components/misc/Icon.astro";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
-import PostCard from "@components/content/PostCard.astro";
 import { getPostUrlBySlug } from "@utils/url-utils";
-import Icon from "@components/misc/Icon.astro";
 
 // 获取所有标签列表
 export async function getStaticPaths() {
-  const allPosts = await getCollection("posts", ({ data }) => {
-    return import.meta.env.PROD ? data.draft !== true : true;
-  });
+	const allPosts = await getCollection("posts", ({ data }) => {
+		return import.meta.env.PROD ? data.draft !== true : true;
+	});
 
-  // 提取所有唯一标签
-  const tagMap = new Map<string, number>();
-  allPosts.forEach((post) => {
-    if (post.data.tags && Array.isArray(post.data.tags)) {
-      post.data.tags.forEach((tag: string) => {
-        if (typeof tag !== "string") {
-          tag = String(tag);
-        }
-        tag = tag.trim();
-        if (tag) {
-          tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
-        }
-      });
-    }
-  });
+	// 提取所有唯一标签
+	const tagMap = new Map<string, number>();
+	allPosts.forEach((post) => {
+		if (post.data.tags && Array.isArray(post.data.tags)) {
+			post.data.tags.forEach((tag) => {
+				const t = typeof tag === "string" ? tag : String(tag);
+				const tt = t.trim();
+				if (tt) {
+					tagMap.set(tt, (tagMap.get(tt) || 0) + 1);
+				}
+			});
+		}
+	});
 
-  // 转换为路由参数
-  return Array.from(tagMap.entries()).map(([name, count]) => ({
-    params: { slug: name },
-    props: { tagName: name, postCount: count },
-  }));
+	// 转换为路由参数
+	return Array.from(tagMap.entries()).map(([name, count]) => ({
+		params: { slug: name },
+		props: { tagName: name, postCount: count },
+	}));
 }
 
 // 获取当前标签的参数和属性
@@ -42,21 +40,23 @@ const { tagName, postCount } = Astro.props;
 
 // 获取当前标签下的所有文章
 const tagPosts = await getCollection("posts", ({ data }) => {
-  const isVisible = import.meta.env.PROD ? data.draft !== true : true;
-  if (!data.tags || !Array.isArray(data.tags)) {
-    return false;
-  }
-  return isVisible && data.tags.some((tag: any) => {
-    if (typeof tag !== "string") {
-      tag = String(tag);
-    }
-    return tag.trim() === slug;
-  });
+	const isVisible = import.meta.env.PROD ? data.draft !== true : true;
+	if (!data.tags || !Array.isArray(data.tags)) {
+		return false;
+	}
+	return (
+		isVisible &&
+		data.tags.some((tag) => {
+			const t = typeof tag === "string" ? tag : String(tag);
+			return t.trim() === slug;
+		})
+	);
 });
 
 // 按发布日期排序（最新的在前）
 tagPosts.sort(
-  (a, b) => new Date(b.data.published).getTime() - new Date(a.data.published).getTime()
+	(a, b) =>
+		new Date(b.data.published).getTime() - new Date(a.data.published).getTime(),
 );
 
 // 页面标题

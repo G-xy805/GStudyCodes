@@ -156,5 +156,4 @@ export const ja: Translation = {
 	[Key.allTags]: "すべてのタグ",
 	[Key.browseAllPostsInTag]: "このタグのすべての投稿を閲覧",
 	[Key.noPostsInTag]: "このタグに投稿はありません",
-
 };

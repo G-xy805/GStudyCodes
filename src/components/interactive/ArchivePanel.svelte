@@ -1,9 +1,7 @@
 <script lang="ts">
-import { onMount } from "svelte";
-
-
-import { getPostUrlBySlug } from "@/utils/url-utils";
 import Icon from "@iconify/svelte";
+import { onMount } from "svelte";
+import { getPostUrlBySlug } from "@/utils/url-utils";
 
 export let sortedPosts: Post[] = [];
 
@@ -36,11 +34,22 @@ function formatDate(date: Date) {
 }
 
 function formatMonth(date: Date) {
-	const months = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
+	const months = [
+		"一月",
+		"二月",
+		"三月",
+		"四月",
+		"五月",
+		"六月",
+		"七月",
+		"八月",
+		"九月",
+		"十月",
+		"十一月",
+		"十二月",
+	];
 	return months[date.getMonth()];
 }
-
-
 
 onMount(async () => {
 	// 按发布时间倒序排序，确保不受置顶影响
@@ -52,7 +61,9 @@ onMount(async () => {
 	const grouped = filteredPosts.reduce(
 		(acc, post) => {
 			const year = post.data.published.getFullYear();
-			const month = (post.data.published.getMonth() + 1).toString().padStart(2, "0");
+			const month = (post.data.published.getMonth() + 1)
+				.toString()
+				.padStart(2, "0");
 			if (!acc[year]) {
 				acc[year] = {};
 			}
@@ -70,7 +81,7 @@ onMount(async () => {
 		.map((yearStr) => {
 			const year = Number.parseInt(yearStr, 10);
 			const months = Object.keys(grouped[year])
-				.sort((a, b) => parseInt(b) - parseInt(a))
+				.sort((a, b) => Number.parseInt(b, 10) - Number.parseInt(a, 10))
 				.map((monthStr) => ({
 					month: monthStr,
 					posts: grouped[year][monthStr],

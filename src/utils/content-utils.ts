@@ -17,16 +17,22 @@ async function getRawSortedPosts() {
 		// 如果置顶状态相同，则按发布日期排序（最新的在前）
 		const dateA = new Date(a.data.published);
 		const dateB = new Date(b.data.published);
-		
+
 		// 如果发布日期不同，则按日期排序
 		if (dateA.getTime() !== dateB.getTime()) {
 			return dateA > dateB ? -1 : 1;
 		}
-		
+
 		// 如果发布日期相同，则按order字段排序（数字小的在前）
-		const orderA = typeof a.data.order !== 'undefined' ? a.data.order : Number.MAX_SAFE_INTEGER;
-		const orderB = typeof b.data.order !== 'undefined' ? b.data.order : Number.MAX_SAFE_INTEGER;
-		
+		const orderA =
+			typeof a.data.order !== "undefined"
+				? a.data.order
+				: Number.MAX_SAFE_INTEGER;
+		const orderB =
+			typeof b.data.order !== "undefined"
+				? b.data.order
+				: Number.MAX_SAFE_INTEGER;
+
 		return orderA - orderB; // 按order升序（数字小的在前）
 	});
 	return sorted;
@@ -179,14 +185,10 @@ export async function getCategoriesWithPosts(): Promise<CategoryWithPosts[]> {
  */
 export function getTagColorClass(count: number, max: number): string {
 	const ratio = count / max;
-	if (ratio > 0.8)
-		return "tag-high";
-	if (ratio > 0.6)
-		return "tag-medium-high";
-	if (ratio > 0.4)
-		return "tag-medium";
-	if (ratio > 0.2)
-		return "tag-medium-low";
+	if (ratio > 0.8) return "tag-high";
+	if (ratio > 0.6) return "tag-medium-high";
+	if (ratio > 0.4) return "tag-medium";
+	if (ratio > 0.2) return "tag-medium-low";
 	return "tag-low";
 }
 
@@ -197,7 +199,11 @@ export function getTagColorClass(count: number, max: number): string {
  * @param min 最小计数
  * @returns 字体大小 (rem)
  */
-export function getTagFontSize(count: number, max: number, min: number): number {
+export function getTagFontSize(
+	count: number,
+	max: number,
+	min: number,
+): number {
 	// 将计数值规范化到 0-1 之间
 	const normalized = (count - min) / (max - min || 1);
 	// 映射到 0.9rem 到 2rem 之间的字体大小

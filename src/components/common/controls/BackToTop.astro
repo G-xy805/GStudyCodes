@@ -181,6 +181,8 @@ import { Icon } from "astro-icon/components";
   // 响应式返回顶部按钮管理器
   if (typeof window.BackToTopManager === "undefined") {
     window.BackToTopManager = class BackToTopManager {
+      button;
+      wrapper;
       constructor() {
         this.button = document.getElementById("back-to-top-btn");
         this.wrapper = document.querySelector(".back-to-top-wrapper");
@@ -215,15 +217,15 @@ import { Icon } from "astro-icon/components";
 
   // 页面加载完成后初始化
   document.addEventListener("DOMContentLoaded", () => {
-    new BackToTopManager();
+    new window.BackToTopManager();
   });
 
   // 如果页面已经加载完成，立即初始化
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => {
-      new BackToTopManager();
+      new window.BackToTopManager();
     });
   } else {
-    new BackToTopManager();
+    new window.BackToTopManager();
   }
 </script>

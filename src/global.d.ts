@@ -19,6 +19,8 @@ declare global {
 				}>;
 			}>;
 		};
+		BackToTopManager?: unknown;
+		initMobileDropdowns?: () => void;
 	}
 
 	interface MediaQueryList {

@@ -305,7 +305,7 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
     }
     
     .float-panel {
-        @apply top-[5.25rem] rounded-[var(--radius-large)] overflow-hidden bg-[var(--float-panel-bg)] transition-all duration-300 shadow-lg dark:shadow-xl backdrop-blur-md
+        @apply rounded-[var(--radius-large)] overflow-hidden bg-[var(--float-panel-bg)] transition-all duration-300 shadow-lg dark:shadow-xl backdrop-blur-md
     }
     
     .float-panel-closed {
@@ -418,6 +418,37 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
         color: var(--primary) !important;
     }
 
+    /*
+     * 链接与标题悬停清晰度优化
+     * 原因：部分卡片标题在 hover 时使用 text-transparent + bg-clip-text 渐变，会在复杂背景下降低可读性；
+     * Markdown 默认 hover 背景/装饰也可能影响文本对比度。
+     * 方案：在 hover 态明确设定高对比前景色、移除不必要的阴影/混合/透明度，保留平滑的颜色过渡。
+     */
+    a:hover h1,
+    a:hover h2,
+    a:hover h3,
+    a:hover h4,
+    a:hover h5,
+    a:hover h6 {
+        color: var(--primary) !important;                /* 提升前景与背景对比度 */
+        text-shadow: none !important;                    /* 移除可能造成模糊的阴影 */
+        opacity: 1 !important;                           /* 禁止文本在 hover 降低不透明度 */
+        mix-blend-mode: normal !important;               /* 避免混合模式导致的渲染不稳定 */
+        -webkit-text-fill-color: initial !important;     /* 修复 WebKit 透明填充 */
+        transition: color .2s ease-in-out;               /* 保持平滑但不影响清晰度 */
+    }
+
+    /* 卡片标题统一清晰规则（覆盖渐变剪裁导致的文字透明） */
+    .post-card-title:hover {
+        color: var(--primary) !important;
+        background: none !important;
+        text-shadow: none !important;
+        opacity: 1 !important;
+        mix-blend-mode: normal !important;
+        -webkit-text-fill-color: initial !important;
+        transition: color .2s ease-in-out;
+    }
+
     .toc-hide,
     .toc-not-ready {
         @apply opacity-0 pointer-events-none
@@ -465,7 +496,7 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
     }
 
     .dropdown-menu {
-        @apply absolute top-[calc(100%-0.5rem)] left-0 pt-2 opacity-0 invisible transition-all duration-200 ease-out transform translate-y-2 z-50;
+        @apply absolute top-[100%] left-0 mt-0 opacity-0 invisible transition-all duration-200 ease-out transform translate-y-0 z-50;
     }
 
     .dropdown-container:hover .dropdown-menu,

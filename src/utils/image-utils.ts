@@ -3,9 +3,7 @@
  * @param image - 文章frontmatter中的image字段值
  * @returns 处理后的图片URL
  */
-export function processCoverImageSync(
-	image: string | undefined,
-): string {
+export function processCoverImageSync(image: string | undefined): string {
 	// 如果image不存在或为空，直接返回
 	if (!image || image === "") {
 		return "";

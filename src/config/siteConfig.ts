@@ -9,7 +9,8 @@ export const siteConfig: SiteConfig = {
 	title: "Gxy' Blog",
 	subtitle: "系统 · 高效 · 实用的技术分享",
 	site_url: "https://gstudycodes.pages.dev",
-	description: "专注于C++、Astro和技术分享的博客，系统、高效、实用地记录和分享技术知识。",
+	description:
+		"专注于C++、Astro和技术分享的博客，系统、高效、实用地记录和分享技术知识。",
 	keywords: [
 		"Gxy",
 		"技术博客",
@@ -126,19 +127,19 @@ export const siteConfig: SiteConfig = {
 				},
 			},
 			credit: {
-		enable: {
-			desktop: false, // 桌面端显示横幅图片来源文本
-			mobile: false, // 移动端显示横幅图片来源文本
-		},
-		text: {
-			desktop: "", // 桌面端要显示的来源文本
-			mobile: "", // 移动端要显示的来源文本
-		},
-		url: {
-			desktop: "", // 桌面端原始艺术品或艺术家页面的 URL 链接
-			mobile: "", // 移动端原始艺术品或艺术家页面的 URL 链接
-		},
-	},
+				enable: {
+					desktop: false, // 桌面端显示横幅图片来源文本
+					mobile: false, // 移动端显示横幅图片来源文本
+				},
+				text: {
+					desktop: "", // 桌面端要显示的来源文本
+					mobile: "", // 移动端要显示的来源文本
+				},
+				url: {
+					desktop: "", // 桌面端原始艺术品或艺术家页面的 URL 链接
+					mobile: "", // 移动端原始艺术品或艺术家页面的 URL 链接
+				},
+			},
 			navbar: {
 				transparentMode: "semifull", // 导航栏透明模式："semi" 半透明加圆角，"full" 完全透明，"semifull" 动态透明
 			},

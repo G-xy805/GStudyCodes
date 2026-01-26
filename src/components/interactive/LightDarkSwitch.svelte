@@ -2,11 +2,11 @@
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import Icon from "@iconify/svelte";
-import { onMount, onDestroy } from "svelte";
+import { onDestroy, onMount } from "svelte";
 import { DARK_MODE, LIGHT_MODE } from "@/constants/constants";
+import { useSwitchAnimation } from "@/hooks/useSwitchAnimation";
 import { theme } from "@/stores/settingsStore";
 import { applyThemeToDocument } from "@/utils/setting-utils";
-import { useSwitchAnimation } from "@/hooks/useSwitchAnimation";
 
 const { toggle: toggleTheme, isSwitching } = useSwitchAnimation(() => {
 	const newMode = $theme === LIGHT_MODE ? DARK_MODE : LIGHT_MODE;
@@ -15,18 +15,18 @@ const { toggle: toggleTheme, isSwitching } = useSwitchAnimation(() => {
 }, 500);
 
 function handleKeyboardEvent(event: KeyboardEvent) {
-	if (event.key === 'Enter' || event.key === ' ') {
+	if (event.key === "Enter" || event.key === " ") {
 		toggleTheme();
 	}
 }
 
 onMount(() => {
 	applyThemeToDocument($theme);
-	window.addEventListener('keydown', handleKeyboardEvent);
+	window.addEventListener("keydown", handleKeyboardEvent);
 });
 
 onDestroy(() => {
-	window.removeEventListener('keydown', handleKeyboardEvent);
+	window.removeEventListener("keydown", handleKeyboardEvent);
 });
 </script>
 

@@ -152,5 +152,4 @@ export const zh_TW: Translation = {
 	[Key.allTags]: "所有標籤",
 	[Key.browseAllPostsInTag]: "瀏覽此標籤下的所有文章",
 	[Key.noPostsInTag]: "此標籤下暫無文章",
-
 };

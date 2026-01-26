@@ -136,8 +136,6 @@ export const zh_CN: Translation = {
 	[Key.siteStatsDaysAgo]: "{days} 天前",
 	[Key.siteStatsDays]: "{days} 天",
 
-
-
 	// 分享
 	[Key.share]: "分享这篇博客",
 	[Key.close]: "关闭",
@@ -154,5 +152,4 @@ export const zh_CN: Translation = {
 	[Key.allTags]: "所有标签",
 	[Key.browseAllPostsInTag]: "浏览此标签下的所有文章",
 	[Key.noPostsInTag]: "此标签下暂无文章",
-
 };

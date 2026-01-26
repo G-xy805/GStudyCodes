@@ -17,12 +17,12 @@ export class DOMCache {
 	get(selector: string): HTMLElement | null {
 		if (!this.cache.has(selector)) {
 			let element = document.getElementById(selector);
-			
+
 			// 如果 ID 查询失败，且字符串看起来像选择器（包含 . # [ : 等），尝试 querySelector
-			if (!element && /[\.\#\[\:]/.test(selector)) {
+			if (!element && /[.#[:]/.test(selector)) {
 				try {
 					element = document.querySelector(selector) as HTMLElement;
-				} catch (e) {
+				} catch (_e) {
 					// 忽略无效的选择器错误
 					console.warn(`[DOMCache] Invalid selector: ${selector}`);
 				}

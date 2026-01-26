@@ -3,7 +3,7 @@
  * 提供统一的日志接口，支持不同日志级别
  */
 
-type LogLevel = 'debug' | 'info' | 'warn' | 'error';
+type LogLevel = "debug" | "info" | "warn" | "error";
 
 const LOG_LEVELS: Record<LogLevel, number> = {
 	debug: 0,
@@ -15,24 +15,24 @@ const LOG_LEVELS: Record<LogLevel, number> = {
 const currentLevel = import.meta.env.DEV ? LOG_LEVELS.debug : LOG_LEVELS.info;
 
 export const logger = {
-	debug: (...args: any[]) => {
+	debug: (...args: unknown[]) => {
 		if (currentLevel <= LOG_LEVELS.debug) {
-			console.debug('[DEBUG]', ...args);
+			console.debug("[DEBUG]", ...args);
 		}
 	},
-	info: (...args: any[]) => {
+	info: (...args: unknown[]) => {
 		if (currentLevel <= LOG_LEVELS.info) {
-			console.info('[INFO]', ...args);
+			console.info("[INFO]", ...args);
 		}
 	},
-	warn: (...args: any[]) => {
+	warn: (...args: unknown[]) => {
 		if (currentLevel <= LOG_LEVELS.warn) {
-			console.warn('[WARN]', ...args);
+			console.warn("[WARN]", ...args);
 		}
 	},
-	error: (...args: any[]) => {
+	error: (...args: unknown[]) => {
 		if (currentLevel <= LOG_LEVELS.error) {
-			console.error('[ERROR]', ...args);
+			console.error("[ERROR]", ...args);
 		}
 	},
 };

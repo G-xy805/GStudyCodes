@@ -23,7 +23,7 @@ type PostEntry = CollectionEntry<"posts">;
     {popularPosts.length > 0 ? (
       <ul class="space-y-3">
         {popularPosts.map((post: PostEntry, index: number) => (
-          <li key={post.id} class="popular-post-item flex items-start gap-3">
+          <li class="popular-post-item flex items-start gap-3">
             <span class="popular-rank flex items-center justify-center w-6 h-6 rounded-full bg-primary/20 text-primary font-bold text-sm shrink-0">
               {index + 1}
             </span>

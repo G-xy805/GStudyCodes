@@ -1,5 +1,3 @@
-
-
 /**
  * 移除文件扩展名（.md, .mdx, .markdown）
  * 用于将 Astro v5 Content Layer API 的 id 转换为 URL 友好的 slug
@@ -31,11 +29,7 @@ export function getTagUrl(tag: string | null): string {
 }
 
 export function getCategoryUrl(category: string | null): string {
-	if (
-		!category ||
-		category.trim() === ""
-	)
-		return url("/categories/");
+	if (!category || category.trim() === "") return url("/categories/");
 	return url(`/categories/${encodeURIComponent(category.trim())}/`);
 }
 

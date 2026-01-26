@@ -141,8 +141,6 @@ export const en: Translation = {
 	[Key.siteStatsDaysAgo]: "{days} days ago",
 	[Key.siteStatsDays]: "{days} days",
 
-
-
 	// Share
 	[Key.share]: "Share this article",
 	[Key.close]: "Close",
@@ -159,5 +157,4 @@ export const en: Translation = {
 	[Key.allTags]: "All Tags",
 	[Key.browseAllPostsInTag]: "Browse all posts in this tag",
 	[Key.noPostsInTag]: "No posts in this tag",
-
 };

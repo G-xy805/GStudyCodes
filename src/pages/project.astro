@@ -4,90 +4,91 @@ import MainGridLayout from "@/layouts/MainGridLayout.astro";
 
 // 项目数据，与Kael-blog-demo保持一致
 const projects = [
-  {
-    name: "HomePage",
-    avatar: "/assets/images/home.svg",
-    description: "一个毛玻璃透明风格的简约个人主页 / 导航页",
-    url: "https://zayck-top.pages.dev",
-    type: "主页"
-  },
-  {
-    name: "Hexo",
-    avatar: "/assets/images/hexo.svg",
-    description: "Hexo 框架 Butterfly 主题博客。我的第一个博客版本",
-    url: "https://zayck.netlify.app",
-    type: "博客"
-  },
-  {
-    name: "Hugo",
-    avatar: "/assets/images/hugo.svg",
-    description: "Hugo 框架 Stack 主题博客。简洁的卡片式布局风格",
-    url: "https://zayck-teek.pages.dev",
-    type: "博客"
-  },
-  {
-    name: "Rin",
-    avatar: "https://zayck-img.pages.dev/file/1765007987280_BandiView_R.jpg",
-    description: "Cloudflare全家桶的简洁博客，个人觉得不如 Hugo-Stack 主题好看",
-    url: "https://zayck-rin.pages.dev",
-    type: "博客"
-  },
-  {
-    name: "Firefly",
-    avatar: "https://zayck-img.pages.dev/file/1765005605410_BandiView_firefly.webp",
-    description: "清新美观的 Astro 博客主题模板，作者基于 Fuwari 二次开发",
-    url: "https://zayck-firefly.pages.dev",
-    type: "博客"
-  },
-  {
-    name: "Kael",
-    avatar: "/assets/images/goat.png",
-    description: "一款简洁大气的 Astro 框架博客主题，目前正在使用的博客",
-    url: "/",
-    type: "博客"
-  },
-  {
-    name: "Solara",
-    avatar: "https://zayck-img.pages.dev/file/1765007272170_music.png",
-    description: "一个极简风格的基于免费 API 的音乐播放器",
-    url: "https://zayck-music.pages.dev",
-    type: "音乐"
-  },
-  {
-    name: "Telegraph-Img",
-    avatar: "/assets/images/图片 (3).svg",
-    description: "Cloudflare + Telegram 实现的免费图床。网站刚刚打开时很慢",
-    url: "https://zayck-image.pages.dev",
-    type: "图床"
-  },
-  {
-    name: "Sanyue ImgHub",
-    avatar: "https://zayck-img.pages.dev/file/1765007752168_pi.png",
-    description: "Cloudflare + Telegram 实现的免费图床。目前自用中……",
-    url: "https://zayck-img.pages.dev",
-    type: "图床"
-  },
-  {
-    name: "MoonTV",
-    avatar: "/assets/images/TV1.svg",
-    description: "MoonTV - 个人视频点播站，支持多种格式",
-    url: "https://zayck-tv.pages.dev",
-    type: "视频"
-  },
-  {
-    name: "moemail",
-    avatar: "/assets/images/邮箱.svg",
-    description: "一个像素风格的无限临时 / 永久邮箱服务。目前自用中……",
-    url: "https://zayck34.dpdns.org/zh-CN",
-    type: "邮箱"
-  },
-  {
-    name: "News Now",
-    avatar: "/assets/images/新闻.svg",
-    description: "一个卡片布局风格的新闻热搜聚合站",
-    url: "https://zayck-hot.pages.dev",
-    type: "热点"
-  }
+	{
+		name: "HomePage",
+		avatar: "/assets/images/home.svg",
+		description: "一个毛玻璃透明风格的简约个人主页 / 导航页",
+		url: "https://zayck-top.pages.dev",
+		type: "主页",
+	},
+	{
+		name: "Hexo",
+		avatar: "/assets/images/hexo.svg",
+		description: "Hexo 框架 Butterfly 主题博客。我的第一个博客版本",
+		url: "https://zayck.netlify.app",
+		type: "博客",
+	},
+	{
+		name: "Hugo",
+		avatar: "/assets/images/hugo.svg",
+		description: "Hugo 框架 Stack 主题博客。简洁的卡片式布局风格",
+		url: "https://zayck-teek.pages.dev",
+		type: "博客",
+	},
+	{
+		name: "Rin",
+		avatar: "https://zayck-img.pages.dev/file/1765007987280_BandiView_R.jpg",
+		description: "Cloudflare全家桶的简洁博客，个人觉得不如 Hugo-Stack 主题好看",
+		url: "https://zayck-rin.pages.dev",
+		type: "博客",
+	},
+	{
+		name: "Firefly",
+		avatar:
+			"https://zayck-img.pages.dev/file/1765005605410_BandiView_firefly.webp",
+		description: "清新美观的 Astro 博客主题模板，作者基于 Fuwari 二次开发",
+		url: "https://zayck-firefly.pages.dev",
+		type: "博客",
+	},
+	{
+		name: "Kael",
+		avatar: "/assets/images/goat.png",
+		description: "一款简洁大气的 Astro 框架博客主题，目前正在使用的博客",
+		url: "/",
+		type: "博客",
+	},
+	{
+		name: "Solara",
+		avatar: "https://zayck-img.pages.dev/file/1765007272170_music.png",
+		description: "一个极简风格的基于免费 API 的音乐播放器",
+		url: "https://zayck-music.pages.dev",
+		type: "音乐",
+	},
+	{
+		name: "Telegraph-Img",
+		avatar: "/assets/images/图片 (3).svg",
+		description: "Cloudflare + Telegram 实现的免费图床。网站刚刚打开时很慢",
+		url: "https://zayck-image.pages.dev",
+		type: "图床",
+	},
+	{
+		name: "Sanyue ImgHub",
+		avatar: "https://zayck-img.pages.dev/file/1765007752168_pi.png",
+		description: "Cloudflare + Telegram 实现的免费图床。目前自用中……",
+		url: "https://zayck-img.pages.dev",
+		type: "图床",
+	},
+	{
+		name: "MoonTV",
+		avatar: "/assets/images/TV1.svg",
+		description: "MoonTV - 个人视频点播站，支持多种格式",
+		url: "https://zayck-tv.pages.dev",
+		type: "视频",
+	},
+	{
+		name: "moemail",
+		avatar: "/assets/images/邮箱.svg",
+		description: "一个像素风格的无限临时 / 永久邮箱服务。目前自用中……",
+		url: "https://zayck34.dpdns.org/zh-CN",
+		type: "邮箱",
+	},
+	{
+		name: "News Now",
+		avatar: "/assets/images/新闻.svg",
+		description: "一个卡片布局风格的新闻热搜聚合站",
+		url: "https://zayck-hot.pages.dev",
+		type: "热点",
+	},
 ];
 
 // 页面标题

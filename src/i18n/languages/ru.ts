@@ -159,5 +159,4 @@ export const ru: Translation = {
 	[Key.allTags]: "Все теги",
 	[Key.browseAllPostsInTag]: "Просмотреть все записи с этим тегом",
 	[Key.noPostsInTag]: "Нет записей с этим тегом",
-
 };

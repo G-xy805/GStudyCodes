@@ -28,7 +28,7 @@ export function AdmonitionComponent(properties, children, type) {
 
 	return h("blockquote", { class: `admonition bdm-${type}` }, [
 		h("span", { class: "bdm-title" }, [
-			h("span", {}, label ? label : type.toUpperCase())
+			h("span", {}, label ? label : type.toUpperCase()),
 		]),
 		...children,
 	]);

@@ -1,508 +1,519 @@
-import { pathsEqual, url } from "@/utils/url-utils";
+import { expressiveCodeConfig, siteConfig } from "@/config";
 import {
-  BANNER_HEIGHT,
-  BANNER_HEIGHT_HOME,
-  BANNER_HEIGHT_EXTEND,
+	BANNER_HEIGHT,
+	BANNER_HEIGHT_EXTEND,
+	BANNER_HEIGHT_HOME,
 } from "@/constants/constants";
-import { siteConfig, expressiveCodeConfig } from "@/config";
-import { initWallpaperMode } from "@/utils/setting-utils";
 import { initIconLoader } from "@/utils/icon-loader";
 import { logger } from "@/utils/logger";
+import { initWallpaperMode } from "@/utils/setting-utils";
+import { pathsEqual, url } from "@/utils/url-utils";
 
 // 确保所有代码只在客户端执行
-if (typeof window !== 'undefined' && typeof document !== 'undefined') {
-  const bannerEnabled = !!document.getElementById("banner-wrapper");
+if (typeof window !== "undefined" && typeof document !== "undefined") {
+	const bannerEnabled = !!document.getElementById("banner-wrapper");
 
-  function setClickOutsideToClose(panel: string, ignores: string[]) {
-    document.addEventListener("click", (event) => {
-      let panelDom = document.getElementById(panel);
-      let tDom = event.target;
-      if (!(tDom instanceof Node)) return; // Ensure the event target is an HTML Node
-      for (let ig of ignores) {
-        let ie = document.getElementById(ig);
-        if (ie == tDom || ie?.contains(tDom)) {
-          return;
-        }
-      }
-      if (panelDom) {
-        panelDom.classList.add("float-panel-closed");
-      }
-    });
-  }
-  setClickOutsideToClose("display-setting", [
-    "display-setting",
-    "display-settings-switch",
-  ]);
-  setClickOutsideToClose("nav-menu-panel", [
-    "nav-menu-panel",
-    "nav-menu-switch",
-  ]);
-  setClickOutsideToClose("search-panel", [
-    "search-panel",
-    "search-bar",
-    "search-switch",
-  ]);
-  setClickOutsideToClose("wallpaper-mode-panel", [
-    "wallpaper-mode-panel",
-    "wallpaper-mode-switch",
-  ]);
-  setClickOutsideToClose("theme-mode-panel", [
-    "theme-mode-panel",
-    "scheme-switch",
-  ]);
+	function setClickOutsideToClose(panel: string, ignores: string[]) {
+		document.addEventListener("click", (event) => {
+			const panelDom = document.getElementById(panel);
+			const tDom = event.target;
+			if (!(tDom instanceof Node)) return; // Ensure the event target is an HTML Node
+			for (const ig of ignores) {
+				const ie = document.getElementById(ig);
+				if (ie === tDom || ie?.contains(tDom)) {
+					return;
+				}
+			}
+			if (panelDom) {
+				panelDom.classList.add("float-panel-closed");
+			}
+		});
+	}
+	setClickOutsideToClose("display-setting", [
+		"display-setting",
+		"display-settings-switch",
+	]);
+	setClickOutsideToClose("nav-menu-panel", [
+		"nav-menu-panel",
+		"nav-menu-switch",
+	]);
+	setClickOutsideToClose("search-panel", [
+		"search-panel",
+		"search-bar",
+		"search-switch",
+	]);
+	setClickOutsideToClose("wallpaper-mode-panel", [
+		"wallpaper-mode-panel",
+		"wallpaper-mode-switch",
+	]);
+	setClickOutsideToClose("theme-mode-panel", [
+		"theme-mode-panel",
+		"scheme-switch",
+	]);
 
-  function initCustomScrollbar() {
-    // 只处理katex元素的滚动条，使用浏览器原生滚动条
-    const katexElements = document.querySelectorAll(
-      ".katex-display:not([data-scrollbar-initialized])"
-    ) as NodeListOf<HTMLElement>;
-    katexElements.forEach((element) => {
-      if (!element.parentNode) return;
+	function initCustomScrollbar() {
+		// 只处理katex元素的滚动条，使用浏览器原生滚动条
+		const katexElements = document.querySelectorAll(
+			".katex-display:not([data-scrollbar-initialized])",
+		) as NodeListOf<HTMLElement>;
+		katexElements.forEach((element) => {
+			if (!element.parentNode) return;
 
-      const container = document.createElement("div");
-      container.className = "katex-display-container";
-      element.parentNode.insertBefore(container, element);
-      container.appendChild(element);
+			const container = document.createElement("div");
+			container.className = "katex-display-container";
+			element.parentNode.insertBefore(container, element);
+			container.appendChild(element);
 
-      // 使用浏览器原生滚动条，无自定义样式
-      container.style.cssText = `
+			// 使用浏览器原生滚动条，无自定义样式
+			container.style.cssText = `
       overflow-x: auto;
     `;
 
-      element.setAttribute("data-scrollbar-initialized", "true");
-    });
-  }
+			element.setAttribute("data-scrollbar-initialized", "true");
+		});
+	}
 
-  function showBanner() {
-    const isBannerMode = siteConfig.backgroundWallpaper.mode === "banner";
-    if (!isBannerMode) return;
+	function showBanner() {
+		const isBannerMode = siteConfig.backgroundWallpaper.mode === "banner";
+		if (!isBannerMode) return;
 
-    // 使用requestAnimationFrame优化DOM操作
-    requestAnimationFrame(() => {
-      // Handle single image banner (desktop)
-      const banner = document.getElementById("banner");
-      if (banner) {
-        banner.classList.remove("opacity-0", "scale-105");
-      }
+		// 使用requestAnimationFrame优化DOM操作
+		requestAnimationFrame(() => {
+			// Handle single image banner (desktop)
+			const banner = document.getElementById("banner");
+			if (banner) {
+				banner.classList.remove("opacity-0", "scale-105");
+			}
 
-      // Handle mobile single image banner - 使用与电脑端相同的逻辑
-      const mobileBanner = document.querySelector(
-        '.block.lg\\:hidden[alt="Mobile banner image of the blog"]'
-      );
-      if (mobileBanner) {
-        // 移动端使用与电脑端相同的初始化逻辑
-        mobileBanner.classList.remove("opacity-0", "scale-105");
-        mobileBanner.classList.add("opacity-100");
-      }
-    });
-  }
+			// Handle mobile single image banner - 使用与电脑端相同的逻辑
+			const mobileBanner = document.querySelector(
+				'.block.lg\\:hidden[alt="Mobile banner image of the blog"]',
+			);
+			if (mobileBanner) {
+				// 移动端使用与电脑端相同的初始化逻辑
+				mobileBanner.classList.remove("opacity-0", "scale-105");
+				mobileBanner.classList.add("opacity-100");
+			}
+		});
+	}
 
-  const setup = () => {
-    // @ts-ignore
-    window.swup.hooks.on("link:click", () => {
-      // Remove the delay for the first time page load
-      document.documentElement.style.setProperty("--content-delay", "0ms");
+	const setup = () => {
+		// @ts-expect-error
+		window.swup.hooks.on("link:click", () => {
+			// Remove the delay for the first time page load
+			document.documentElement.style.setProperty("--content-delay", "0ms");
 
-      // 添加页面切换保护，防止导航栏闪烁
-      document.documentElement.classList.add("is-page-transitioning");
+			// 添加页面切换保护，防止导航栏闪烁
+			document.documentElement.classList.add("is-page-transitioning");
 
-      // 简化navbar处理逻辑
-      if (bannerEnabled) {
-        const navbar = document.getElementById("navbar-wrapper");
-        if (navbar && document.body.classList.contains("lg:is-home")) {
-          const threshold = window.innerHeight * (BANNER_HEIGHT / 100) - 88;
-          if (document.documentElement.scrollTop >= threshold) {
-            navbar.classList.add("navbar-hidden");
-          }
-        }
-      }
-    });
-    // @ts-ignore
-    window.swup.hooks.on("content:replace", () => {
-      // 重新初始化图标加载器
-      import("@/utils/icon-loader").then(({ initIconLoader }) => {
-        initIconLoader();
-      });
-      
-      // 重新初始化导航栏JavaScript功能
-      // @ts-ignore
-      if (typeof loadButtonScript === 'function') {
-        // @ts-ignore
-        setTimeout(loadButtonScript, 100); // 延迟执行确保DOM已更新
-      }
-      
-      // 重新初始化移动端下拉菜单
-      if (typeof window !== 'undefined' && (window as any).initMobileDropdowns) {
-        setTimeout((window as any).initMobileDropdowns, 150); // 稍晚一点执行
-      }
+			// 简化navbar处理逻辑
+			if (bannerEnabled) {
+				const navbar = document.getElementById("navbar-wrapper");
+				if (navbar && document.body.classList.contains("lg:is-home")) {
+					const threshold = window.innerHeight * (BANNER_HEIGHT / 100) - 88;
+					if (document.documentElement.scrollTop >= threshold) {
+						navbar.classList.add("navbar-hidden");
+					}
+				}
+			}
+		});
+		// @ts-expect-error
+		window.swup.hooks.on("content:replace", () => {
+			// 重新初始化图标加载器
+			import("@/utils/icon-loader").then(({ initIconLoader }) => {
+				initIconLoader();
+			});
 
-    // 只在文章页面处理数学公式滚动条和TOC组件
-    // 客户端重新计算是否为文章页面
-    const isArticlePage = document.querySelector(".post-container") !== null;
-    if (isArticlePage) {
-      // 处理katex元素的容器，使用浏览器原生滚动条
-      initCustomScrollbar();
-      
-      // 检查当前页面是否为文章页面（有TOC元素）
-      const tocWrapper = document.getElementById("toc-wrapper");
-      if (tocWrapper) {
-        const tocElement = document.querySelector("table-of-contents");
-        if (tocElement && typeof (tocElement as any).init === "function") {
-          setTimeout(() => {
-            (tocElement as any).init();
-          }, 100);
-        }
-      }
-    }
+			// 重新初始化导航栏JavaScript功能
+			// @ts-expect-error
+			if (typeof loadButtonScript === "function") {
+				// @ts-expect-error
+				setTimeout(loadButtonScript, 100); // 延迟执行确保DOM已更新
+			}
 
-    // 在页面切换后恢复布局状态（支持文章详情页的布局切换）
-    setTimeout(() => {
-      const savedLayout = localStorage.getItem("postListLayout");
-      if (savedLayout) {
-        const mainGrid = document.getElementById("main-grid");
-        
-        // 根据保存的布局状态调整布局
-        if (savedLayout === "grid") {
-          if (mainGrid) {
-            mainGrid.classList.add("grid-layout-active");
-          }
-        } else {
-          if (mainGrid) {
-            mainGrid.classList.remove("grid-layout-active");
-          }
-        }
-      }
-    }, 50);
-  });
-  // @ts-ignore
-  window.swup.hooks.on("visit:start", (visit: { to: { url: string } }) => {
-    // change banner height immediately when a link is clicked
-    const bodyElement = document.querySelector("body");
-    const isHomePage = pathsEqual(visit.to.url, url("/"));
+			// 重新初始化移动端下拉菜单
+			if (typeof window !== "undefined" && window.initMobileDropdowns) {
+				setTimeout(window.initMobileDropdowns, 150); // 稍晚一点执行
+			}
 
-    if (isHomePage) {
-      bodyElement!.classList.add("lg:is-home");
-    } else {
-      bodyElement!.classList.remove("lg:is-home");
-    }
+			// 只在文章页面处理数学公式滚动条和TOC组件
+			// 客户端重新计算是否为文章页面
+			const isArticlePage = document.querySelector(".post-container") !== null;
+			if (isArticlePage) {
+				// 处理katex元素的容器，使用浏览器原生滚动条
+				initCustomScrollbar();
 
-    // Control banner text visibility based on page
-    const bannerTextOverlay = document.querySelector(".banner-text-overlay");
-    if (bannerTextOverlay) {
-      if (isHomePage) {
-        bannerTextOverlay.classList.remove("hidden");
-      } else {
-        bannerTextOverlay.classList.add("hidden");
-      }
-    }
+				// 检查当前页面是否为文章页面（有TOC元素）
+				const tocWrapper = document.getElementById("toc-wrapper");
+				if (tocWrapper) {
+					const tocElement = document.querySelector("table-of-contents") as
+						| (HTMLElement & { init?: () => void })
+						| null;
+					if (tocElement && typeof tocElement.init === "function") {
+						setTimeout(() => {
+							tocElement.init?.();
+						}, 100);
+					}
+				}
+			}
 
-    // Control navbar transparency based on page
-    const navbar = document.getElementById("navbar");
-    if (navbar) {
-      navbar.setAttribute("data-is-home", isHomePage.toString());
-    }
+			// 在页面切换后恢复布局状态（支持文章详情页的布局切换）
+			setTimeout(() => {
+				const savedLayout = localStorage.getItem("postListLayout");
+				if (savedLayout) {
+					const mainGrid = document.getElementById("main-grid");
 
-    // Control mobile banner visibility based on page with improved staging animation
-    // 只在移动端（1024px以下）处理banner隐藏
-    const isMobile = window.innerWidth < 1024;
-    
-    // 在移动端禁用文章列表容器的过渡动画，防止与主内容区位置变化冲突
-    if (isMobile) {
-      const postListContainer = document.getElementById("post-list-container");
-      if (postListContainer) {
-        postListContainer.style.transition = "none";
-      }
-    }
+					// 根据保存的布局状态调整布局
+					if (savedLayout === "grid") {
+						if (mainGrid) {
+							mainGrid.classList.add("grid-layout-active");
+						}
+					} else {
+						if (mainGrid) {
+							mainGrid.classList.remove("grid-layout-active");
+						}
+					}
+				}
+			}, 50);
+		});
+		// @ts-expect-error
+		window.swup.hooks.on("visit:start", (visit: { to: { url: string } }) => {
+			// change banner height immediately when a link is clicked
+			const bodyElement = document.querySelector("body");
+			const isHomePage = pathsEqual(visit.to.url, url("/"));
 
-    const bannerWrapper = document.getElementById("banner-wrapper");
-    const mainContentWrapper = document.querySelector(
-      ".absolute.w-full.z-30"
-    ) as HTMLElement | null;
+			if (isHomePage) {
+				bodyElement?.classList.add("lg:is-home");
+			} else {
+				bodyElement?.classList.remove("lg:is-home");
+			}
 
-    if (isMobile && bannerWrapper && mainContentWrapper) {
-      if (isHomePage) {
-        // 首页：禁用主内容区域的过渡动画，防止文章列表下移
-        mainContentWrapper.style.transition = "none";
-        
-        // 先显示banner，然后移除隐藏类让其优雅出现
-        bannerWrapper.style.display = "";
-        setTimeout(() => {
-          bannerWrapper.classList.remove("mobile-hide-banner");
-        }, 100);
-        setTimeout(() => {
-          mainContentWrapper.classList.remove("mobile-main-no-banner");
-          // 在移除类之后立即恢复过渡动画（下次导航时使用）
-          setTimeout(() => {
-            mainContentWrapper.style.transition = "";
-          }, 50);
-        }, 150);
-      } else {
-        // 非首页：分阶段隐藏，先隐藏banner，再移动内容
-        bannerWrapper.classList.add("mobile-hide-banner");
-        // 延迟移动内容，让banner先完全消失
-        setTimeout(() => {
-          mainContentWrapper.classList.add("mobile-main-no-banner");
-        }, 100);
-      }
-    } else if (!isMobile && bannerWrapper) {
-      // 桌面端：确保banner正常显示
-      bannerWrapper.style.display = "";
-      bannerWrapper.classList.remove("mobile-hide-banner");
-      if (mainContentWrapper) {
-        mainContentWrapper.classList.remove("mobile-main-no-banner");
-      }
-    }
+			// Control banner text visibility based on page
+			const bannerTextOverlay = document.querySelector(".banner-text-overlay");
+			if (bannerTextOverlay) {
+				if (isHomePage) {
+					bannerTextOverlay.classList.remove("hidden");
+				} else {
+					bannerTextOverlay.classList.add("hidden");
+				}
+			}
 
-    // increase the page height during page transition to prevent the scrolling animation from jumping
-    const heightExtend = document.getElementById("page-height-extend");
-    if (heightExtend) {
-      heightExtend.classList.remove("hidden");
-    }
+			// Control navbar transparency based on page
+			const navbar = document.getElementById("navbar");
+			if (navbar) {
+				navbar.setAttribute("data-is-home", isHomePage.toString());
+			}
 
-    // Hide the TOC while scrolling back to top
-    let toc = document.getElementById("toc-wrapper");
-    if (toc) {
-      toc.classList.add("toc-not-ready");
-    }
-  });
-  // @ts-ignore
-  window.swup.hooks.on("page:view", () => {
-    // hide the temp high element when the transition is done
-    const heightExtend = document.getElementById("page-height-extend");
-    if (heightExtend) {
-      heightExtend.classList.remove("hidden");
-    }
+			// Control mobile banner visibility based on page with improved staging animation
+			// 只在移动端（1024px以下）处理banner隐藏
+			const isMobile = window.innerWidth < 1024;
 
-    // 确保页面滚动到顶部，使用平滑滚动避免侧边栏闪烁
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+			// 在移动端禁用文章列表容器的过渡动画，防止与主内容区位置变化冲突
+			if (isMobile) {
+				const postListContainer = document.getElementById(
+					"post-list-container",
+				);
+				if (postListContainer) {
+					postListContainer.style.transition = "none";
+				}
+			}
 
-    // 在移动端恢复文章列表容器的过渡动画（在主内容区位置动画完成后）
-    const isMobile = window.innerWidth < 1024;
-    if (isMobile) {
-      setTimeout(() => {
-        const postListContainer = document.getElementById("post-list-container");
-        if (postListContainer) {
-          postListContainer.style.transition = "";
-        }
-      }, 600); // 等待主内容区动画完成（0.4s + 0.1s delay + 100ms buffer）
-    }
+			const bannerWrapper = document.getElementById("banner-wrapper");
+			const mainContentWrapper = document.querySelector(
+				".absolute.w-full.z-30",
+			) as HTMLElement | null;
 
-    // 只在文章页面同步主题状态 - 解决从首页进入文章页面时代码块渲染问题
-    // 客户端重新计算是否为文章页面
-    const isArticlePage = document.querySelector(".post-container") !== null;
-    if (isArticlePage) {
-      const storedTheme = localStorage.getItem("theme") || "light";
-      let isDark = false;
-      
-      // 处理 system 模式
-      if (storedTheme === "system") {
-        isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      } else {
-        isDark = storedTheme === "dark";
-      }
-      
-      const expectedTheme = isDark
-        ? expressiveCodeConfig.darkTheme
-        : expressiveCodeConfig.lightTheme;
-      const currentTheme = document.documentElement.getAttribute("data-theme");
+			if (isMobile && bannerWrapper && mainContentWrapper) {
+				if (isHomePage) {
+					// 首页：禁用主内容区域的过渡动画，防止文章列表下移
+					mainContentWrapper.style.transition = "none";
 
-      // 如果主题不匹配，静默更新（不触发事件，避免重新加载效果）
-      if (currentTheme !== expectedTheme) {
-        document.documentElement.setAttribute("data-theme", expectedTheme);
-      }
-    }
+					// 先显示banner，然后移除隐藏类让其优雅出现
+					bannerWrapper.style.display = "";
+					setTimeout(() => {
+						bannerWrapper.classList.remove("mobile-hide-banner");
+					}, 100);
+					setTimeout(() => {
+						mainContentWrapper.classList.remove("mobile-main-no-banner");
+						// 在移除类之后立即恢复过渡动画（下次导航时使用）
+						setTimeout(() => {
+							mainContentWrapper.style.transition = "";
+						}, 50);
+					}, 150);
+				} else {
+					// 非首页：分阶段隐藏，先隐藏banner，再移动内容
+					bannerWrapper.classList.add("mobile-hide-banner");
+					// 延迟移动内容，让banner先完全消失
+					setTimeout(() => {
+						mainContentWrapper.classList.add("mobile-main-no-banner");
+					}, 100);
+				}
+			} else if (!isMobile && bannerWrapper) {
+				// 桌面端：确保banner正常显示
+				bannerWrapper.style.display = "";
+				bannerWrapper.classList.remove("mobile-hide-banner");
+				if (mainContentWrapper) {
+					mainContentWrapper.classList.remove("mobile-main-no-banner");
+				}
+			}
 
-    // 只在文章页面和友链页面触发评论系统初始化
-    const needCommentSystem = window.location.pathname.startsWith('/posts/') || window.location.pathname.startsWith('/links/');
-    if (needCommentSystem) {
-      setTimeout(() => {
-        if (document.getElementById("tcomment")) {
-          // 触发自定义事件，通知评论系统页面已完全加载
-          const pageLoadedEvent = new CustomEvent("firefly:page:loaded", {
-            detail: {
-              path: window.location.pathname,
-              timestamp: Date.now(),
-            },
-          });
-          document.dispatchEvent(pageLoadedEvent);
-          logger.info(
-            "Layout: 触发 firefly:page:loaded 事件，路径:",
-            window.location.pathname
-          );
-        }
-      }, 300);
-    }
-  });
-  // @ts-ignore
-  window.swup.hooks.on("visit:end", (_visit: { to: { url: string } }) => {
-    setTimeout(() => {
-      const heightExtend = document.getElementById("page-height-extend");
-      if (heightExtend) {
-        heightExtend.classList.add("hidden");
-      }
+			// increase the page height during page transition to prevent the scrolling animation from jumping
+			const heightExtend = document.getElementById("page-height-extend");
+			if (heightExtend) {
+				heightExtend.classList.remove("hidden");
+			}
 
-      // Just make the transition looks better
-      const toc = document.getElementById("toc-wrapper");
-      if (toc) {
-        toc.classList.remove("toc-not-ready");
-      }
+			// Hide the TOC while scrolling back to top
+			const toc = document.getElementById("toc-wrapper");
+			if (toc) {
+				toc.classList.add("toc-not-ready");
+			}
+		});
+		// @ts-expect-error
+		window.swup.hooks.on("page:view", () => {
+			// hide the temp high element when the transition is done
+			const heightExtend = document.getElementById("page-height-extend");
+			if (heightExtend) {
+				heightExtend.classList.remove("hidden");
+			}
 
-      // 移除页面切换保护，恢复过渡动画
-      document.documentElement.classList.remove("is-page-transitioning");
-    }, 200);
-  });
-  };
+			// 确保页面滚动到顶部，使用平滑滚动避免侧边栏闪烁
+			window.scrollTo({
+				top: 0,
+				behavior: "smooth",
+			});
 
-  // 全局布局切换监听器 - 支持在任何页面（包括文章详情页）切换布局
-  window.addEventListener("layoutChange", (event: CustomEvent) => {
-    const newLayout = event.detail.layout;
-    const mainGrid = document.getElementById("main-grid");
-    const postContainer = document.getElementById("post-container");
-    const swupContainer = document.getElementById("swup-container");
-    
-    // 只在文章详情页为文章容器添加切换动画
-    // 客户端重新计算是否为文章页面
-    const isArticlePage = document.querySelector(".post-container") !== null;
-    if (isArticlePage && postContainer) {
-      postContainer.classList.add("layout-switching");
-      setTimeout(() => {
-        postContainer.classList.remove("layout-switching");
-      }, 400);
-    }
-    
-    // 为主内容区添加切换动画
-    if (swupContainer) {
-      swupContainer.classList.add("layout-transitioning");
-      setTimeout(() => {
-        swupContainer.classList.remove("layout-transitioning");
-      }, 500);
-    }
-    
-    // 根据新布局状态调整布局
-    if (newLayout === "grid") {
-      if (mainGrid) {
-        mainGrid.classList.add("grid-layout-active");
-      }
-    } else {
-      if (mainGrid) {
-        mainGrid.classList.remove("grid-layout-active");
-      }
-    }
-  });
+			// 在移动端恢复文章列表容器的过渡动画（在主内容区位置动画完成后）
+			const isMobile = window.innerWidth < 1024;
+			if (isMobile) {
+				setTimeout(() => {
+					const postListContainer = document.getElementById(
+						"post-list-container",
+					);
+					if (postListContainer) {
+						postListContainer.style.transition = "";
+					}
+				}, 600); // 等待主内容区动画完成（0.4s + 0.1s delay + 100ms buffer）
+			}
 
-  // @ts-ignore
-  if (window?.swup?.hooks) {
-    setup();
-  } else {
-    document.addEventListener("swup:enable", setup);
-  }
+			// 只在文章页面同步主题状态 - 解决从首页进入文章页面时代码块渲染问题
+			// 客户端重新计算是否为文章页面
+			const isArticlePage = document.querySelector(".post-container") !== null;
+			if (isArticlePage) {
+				const storedTheme = localStorage.getItem("theme") || "light";
+				let isDark = false;
 
-  let backToTopBtn = document.getElementById("back-to-top-btn");
-  let toc = document.getElementById("toc-wrapper");
-  let navbar = document.getElementById("navbar-wrapper");
+				// 处理 system 模式
+				if (storedTheme === "system") {
+					isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+				} else {
+					isDark = storedTheme === "dark";
+				}
 
-  // 优化的滚动处理函数
-  function scrollFunction() {
-    const scrollTop = document.documentElement.scrollTop;
-    const bannerHeight = window.innerHeight * (BANNER_HEIGHT / 100);
+				const expectedTheme = isDark
+					? expressiveCodeConfig.darkTheme
+					: expressiveCodeConfig.lightTheme;
+				const currentTheme =
+					document.documentElement.getAttribute("data-theme");
 
-    // 使用批量DOM操作优化性能
-    const operations: (() => void)[] = [];
+				// 如果主题不匹配，静默更新（不触发事件，避免重新加载效果）
+				if (currentTheme !== expectedTheme) {
+					document.documentElement.setAttribute("data-theme", expectedTheme);
+				}
+			}
 
-    if (backToTopBtn) {
-      operations.push(() => {
-        if (scrollTop > bannerHeight) {
-          backToTopBtn.classList.remove("hide");
-        } else {
-          backToTopBtn.classList.add("hide");
-        }
-      });
-    }
+			// 只在文章页面和友链页面触发评论系统初始化
+			const needCommentSystem =
+				window.location.pathname.startsWith("/posts/") ||
+				window.location.pathname.startsWith("/links/");
+			if (needCommentSystem) {
+				setTimeout(() => {
+					if (document.getElementById("tcomment")) {
+						// 触发自定义事件，通知评论系统页面已完全加载
+						const pageLoadedEvent = new CustomEvent("firefly:page:loaded", {
+							detail: {
+								path: window.location.pathname,
+								timestamp: Date.now(),
+							},
+						});
+						document.dispatchEvent(pageLoadedEvent);
+						logger.info(
+							"Layout: 触发 firefly:page:loaded 事件，路径:",
+							window.location.pathname,
+						);
+					}
+				}, 300);
+			}
+		});
+		// @ts-expect-error
+		window.swup.hooks.on("visit:end", (_visit: { to: { url: string } }) => {
+			setTimeout(() => {
+				const heightExtend = document.getElementById("page-height-extend");
+				if (heightExtend) {
+					heightExtend.classList.add("hidden");
+				}
 
-    if (bannerEnabled && toc) {
-      operations.push(() => {
-        if (scrollTop > bannerHeight) {
-          toc.classList.remove("toc-hide");
-        } else {
-          toc.classList.add("toc-hide");
-        }
-      });
-    }
+				// Just make the transition looks better
+				const toc = document.getElementById("toc-wrapper");
+				if (toc) {
+					toc.classList.remove("toc-not-ready");
+				}
 
-    if (bannerEnabled && navbar) {
-      operations.push(() => {
-        const isHome =
-          document.body.classList.contains("lg:is-home") &&
-          window.innerWidth >= 1024;
-        const currentBannerHeight = isHome ? BANNER_HEIGHT_HOME : BANNER_HEIGHT;
-        const threshold = window.innerHeight * (currentBannerHeight / 100) - 88;
+				// 移除页面切换保护，恢复过渡动画
+				document.documentElement.classList.remove("is-page-transitioning");
+			}, 200);
+		});
+	};
 
-        if (scrollTop >= threshold) {
-          navbar.classList.add("navbar-hidden");
-        } else {
-          navbar.classList.remove("navbar-hidden");
-        }
-      });
-    }
+	// 全局布局切换监听器 - 支持在任何页面（包括文章详情页）切换布局
+	window.addEventListener("layoutChange", (event: CustomEvent) => {
+		const newLayout = event.detail.layout;
+		const mainGrid = document.getElementById("main-grid");
+		const postContainer = document.getElementById("post-container");
+		const swupContainer = document.getElementById("swup-container");
 
-    // 批量执行DOM操作
-    if (operations.length > 0) {
-      requestAnimationFrame(() => {
-        operations.forEach((op) => op());
-      });
-    }
-  }
+		// 只在文章详情页为文章容器添加切换动画
+		// 客户端重新计算是否为文章页面
+		const isArticlePage = document.querySelector(".post-container") !== null;
+		if (isArticlePage && postContainer) {
+			postContainer.classList.add("layout-switching");
+			setTimeout(() => {
+				postContainer.classList.remove("layout-switching");
+			}, 400);
+		}
 
-  // 使用优化的滚动性能处理
-  let scrollTimeout: number;
-  window.addEventListener(
-    "scroll",
-    () => {
-      if (scrollTimeout) {
-        cancelAnimationFrame(scrollTimeout);
-      }
-      scrollTimeout = requestAnimationFrame(scrollFunction);
-    },
-    { passive: true }
-  );
+		// 为主内容区添加切换动画
+		if (swupContainer) {
+			swupContainer.classList.add("layout-transitioning");
+			setTimeout(() => {
+				swupContainer.classList.remove("layout-transitioning");
+			}, 500);
+		}
 
-  window.onresize = () => {
-    // calculate the --banner-height-extend, which needs to be a multiple of 4 to avoid blurry text
-    let offset = Math.floor(window.innerHeight * (BANNER_HEIGHT_EXTEND / 100));
-    offset = offset - (offset % 4);
-    document.documentElement.style.setProperty(
-      "--banner-height-extend",
-      `${offset}px`
-    );
-  };
+		// 根据新布局状态调整布局
+		if (newLayout === "grid") {
+			if (mainGrid) {
+				mainGrid.classList.add("grid-layout-active");
+			}
+		} else {
+			if (mainGrid) {
+				mainGrid.classList.remove("grid-layout-active");
+			}
+		}
+	});
 
-  // 页面加载完成后初始化banner和katex容器
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => {
-      showBanner();
-      // 只在文章页面初始化数学公式容器
-      // 客户端重新计算是否为文章页面
-      const isArticlePage = document.querySelector(".post-container") !== null;
-      if (isArticlePage) {
-        initCustomScrollbar();
-      }
-      // Initialize wallpaper mode
-      initWallpaperMode();
-      initIconLoader();
-    });
-  } else {
-    showBanner();
-    // 只在文章页面初始化数学公式容器
-    // 客户端重新计算是否为文章页面
-    const isArticlePage = document.querySelector(".post-container") !== null;
-    if (isArticlePage) {
-      initCustomScrollbar();
-    }
-    // Initialize wallpaper mode
-    initWallpaperMode();
-    initIconLoader();
-  }
+	// @ts-expect-error
+	if (window?.swup?.hooks) {
+		setup();
+	} else {
+		document.addEventListener("swup:enable", setup);
+	}
+
+	const backToTopBtn = document.getElementById("back-to-top-btn");
+	const toc = document.getElementById("toc-wrapper");
+	const navbar = document.getElementById("navbar-wrapper");
+
+	// 优化的滚动处理函数
+	function scrollFunction() {
+		const scrollTop = document.documentElement.scrollTop;
+		const bannerHeight = window.innerHeight * (BANNER_HEIGHT / 100);
+
+		// 使用批量DOM操作优化性能
+		const operations: (() => void)[] = [];
+
+		if (backToTopBtn) {
+			operations.push(() => {
+				if (scrollTop > bannerHeight) {
+					backToTopBtn.classList.remove("hide");
+				} else {
+					backToTopBtn.classList.add("hide");
+				}
+			});
+		}
+
+		if (bannerEnabled && toc) {
+			operations.push(() => {
+				if (scrollTop > bannerHeight) {
+					toc.classList.remove("toc-hide");
+				} else {
+					toc.classList.add("toc-hide");
+				}
+			});
+		}
+
+		if (bannerEnabled && navbar) {
+			operations.push(() => {
+				const isHome =
+					document.body.classList.contains("lg:is-home") &&
+					window.innerWidth >= 1024;
+				const currentBannerHeight = isHome ? BANNER_HEIGHT_HOME : BANNER_HEIGHT;
+				const threshold = window.innerHeight * (currentBannerHeight / 100) - 88;
+
+				if (scrollTop >= threshold) {
+					navbar.classList.add("navbar-hidden");
+				} else {
+					navbar.classList.remove("navbar-hidden");
+				}
+			});
+		}
+
+		// 批量执行DOM操作
+		if (operations.length > 0) {
+			requestAnimationFrame(() => {
+				operations.forEach((op) => {
+					op();
+				});
+			});
+		}
+	}
+
+	// 使用优化的滚动性能处理
+	let scrollTimeout: number;
+	window.addEventListener(
+		"scroll",
+		() => {
+			if (scrollTimeout) {
+				cancelAnimationFrame(scrollTimeout);
+			}
+			scrollTimeout = requestAnimationFrame(scrollFunction);
+		},
+		{ passive: true },
+	);
+
+	window.onresize = () => {
+		// calculate the --banner-height-extend, which needs to be a multiple of 4 to avoid blurry text
+		let offset = Math.floor(window.innerHeight * (BANNER_HEIGHT_EXTEND / 100));
+		offset = offset - (offset % 4);
+		document.documentElement.style.setProperty(
+			"--banner-height-extend",
+			`${offset}px`,
+		);
+	};
+
+	// 页面加载完成后初始化banner和katex容器
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", () => {
+			showBanner();
+			// 只在文章页面初始化数学公式容器
+			// 客户端重新计算是否为文章页面
+			const isArticlePage = document.querySelector(".post-container") !== null;
+			if (isArticlePage) {
+				initCustomScrollbar();
+			}
+			// Initialize wallpaper mode
+			initWallpaperMode();
+			initIconLoader();
+		});
+	} else {
+		showBanner();
+		// 只在文章页面初始化数学公式容器
+		// 客户端重新计算是否为文章页面
+		const isArticlePage = document.querySelector(".post-container") !== null;
+		if (isArticlePage) {
+			initCustomScrollbar();
+		}
+		// Initialize wallpaper mode
+		initWallpaperMode();
+		initIconLoader();
+	}
 }

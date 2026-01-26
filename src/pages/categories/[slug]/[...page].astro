@@ -1,113 +1,150 @@
 ---
-import type { GetStaticPaths } from "astro";
+import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
-import Pagination from "@/components/common/controls/Pagination.astro";
-import MainGridLayout from "@layouts/MainGridLayout.astro";
 import PostCard from "@components/content/PostCard.astro";
-import { getPostUrlBySlug } from "@utils/url-utils";
 import Icon from "@components/misc/Icon.astro";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { getPostUrlBySlug } from "@utils/url-utils";
+import type { GetStaticPaths } from "astro";
+import Pagination from "@/components/common/controls/Pagination.astro";
 import { siteConfig } from "@/config";
 
 export async function getStaticPaths() {
-  // 获取所有文章
-  const allPosts = await getCollection("posts", ({ data }) => {
-    return import.meta.env.PROD ? data.draft !== true : true;
-  });
+	// 获取所有文章
+	const allPosts = await getCollection("posts", ({ data }) => {
+		return import.meta.env.PROD ? data.draft !== true : true;
+	});
 
-  // 提取所有唯一分类
-  const categorySet = new Set<string>();
-  allPosts.forEach((post) => {
-    let category = post.data.category;
-    if (!category) {
-      category = i18n(I18nKey.uncategorized);
-    }
-    if (typeof category !== "string") {
-      category = String(category);
-    }
-    category = category.trim();
-    categorySet.add(category);
-  });
+	// 提取所有唯一分类
+	const categorySet = new Set<string>();
+	allPosts.forEach((post) => {
+		let category = post.data.category;
+		if (!category) {
+			category = i18n(I18nKey.uncategorized);
+		}
+		if (typeof category !== "string") {
+			category = String(category);
+		}
+		category = category.trim();
+		categorySet.add(category);
+	});
 
-  // 为每个分类生成路由
-  const paths = [];
+	// 为每个分类生成路由
+	const paths: Array<{
+		params: { slug: string; page: string };
+		props: { page: PageInfo };
+	}> = [];
 
-  for (const category of categorySet) {
-    // 获取当前分类下的所有文章
-    const categoryPosts = allPosts
-      .filter((post) => {
-        let postCategory = post.data.category;
-        if (!postCategory) {
-          postCategory = i18n(I18nKey.uncategorized);
-        }
-        if (typeof postCategory !== "string") {
-          postCategory = String(postCategory);
-        }
-        postCategory = postCategory.trim();
-        return postCategory === category;
-      })
-      .sort((a, b) => {
-        // 首先按置顶状态排序
-        if (a.data.pinned && !b.data.pinned) return -1;
-        if (!a.data.pinned && b.data.pinned) return 1;
+	for (const category of categorySet) {
+		// 获取当前分类下的所有文章
+		const categoryPosts = allPosts
+			.filter((post) => {
+				let postCategory = post.data.category;
+				if (!postCategory) {
+					postCategory = i18n(I18nKey.uncategorized);
+				}
+				if (typeof postCategory !== "string") {
+					postCategory = String(postCategory);
+				}
+				postCategory = postCategory.trim();
+				return postCategory === category;
+			})
+			.sort((a, b) => {
+				// 首先按置顶状态排序
+				if (a.data.pinned && !b.data.pinned) return -1;
+				if (!a.data.pinned && b.data.pinned) return 1;
 
-        // 如果置顶状态相同，则按发布日期排序（最新的在前）
-        const dateA = new Date(a.data.published);
-        const dateB = new Date(b.data.published);
-        
-        // 如果发布日期不同，则按日期排序
-        if (dateA.getTime() !== dateB.getTime()) {
-          return dateA > dateB ? -1 : 1;
-        }
-        
-        // 如果发布日期相同，则按order字段排序（数字小的在前）
-        const orderA = typeof a.data.order !== 'undefined' ? a.data.order : Number.MAX_SAFE_INTEGER;
-        const orderB = typeof b.data.order !== 'undefined' ? b.data.order : Number.MAX_SAFE_INTEGER;
-        
-        return orderA - orderB; // 按order升序（数字小的在前）
-      });
+				// 如果置顶状态相同，则按发布日期排序（最新的在前）
+				const dateA = new Date(a.data.published);
+				const dateB = new Date(b.data.published);
 
-    // 计算分页信息
-    const pageSize = siteConfig.pagination.postsPerPage;
-    
-    // 只有当文章数量超过每页限制时才生成分页路由
-    if (categoryPosts.length > pageSize) {
-      // 计算总页数（从第2页开始）
-      const totalPages = Math.ceil(categoryPosts.length / pageSize);
-      
-      // 为第2页及以后的页面生成路由
-      for (let pageNum = 2; pageNum <= totalPages; pageNum++) {
-        const startIndex = (pageNum - 1) * pageSize;
-        const endIndex = startIndex + pageSize;
-        const pagePosts = categoryPosts.slice(startIndex, endIndex);
-        
-        paths.push({
-          params: { slug: category, page: String(pageNum) },
-          props: { 
-            page: {
-              data: pagePosts,
-              total: categoryPosts.length,
-              size: pageSize,
-              currentPage: pageNum,
-              lastPage: totalPages,
-              url: {
-                prev: pageNum > 2 ? `/categories/${category}/${pageNum - 1}/` : `/categories/${category}/`,
-                next: pageNum < totalPages ? `/categories/${category}/${pageNum + 1}/` : undefined
-              }
-            }
-          }
-        });
-      }
-    }
-  }
+				// 如果发布日期不同，则按日期排序
+				if (dateA.getTime() !== dateB.getTime()) {
+					return dateA > dateB ? -1 : 1;
+				}
 
-  return paths;
+				// 如果发布日期相同，则按order字段排序（数字小的在前）
+				const orderA =
+					typeof a.data.order !== "undefined"
+						? a.data.order
+						: Number.MAX_SAFE_INTEGER;
+				const orderB =
+					typeof b.data.order !== "undefined"
+						? b.data.order
+						: Number.MAX_SAFE_INTEGER;
+
+				return orderA - orderB; // 按order升序（数字小的在前）
+			});
+
+		// 计算分页信息
+		const pageSize = siteConfig.pagination.postsPerPage;
+
+		// 只有当文章数量超过每页限制时才生成分页路由
+		if (categoryPosts.length > pageSize) {
+			// 计算总页数（从第2页开始）
+			const totalPages = Math.ceil(categoryPosts.length / pageSize);
+
+			// 为第2页及以后的页面生成路由
+			for (let pageNum = 2; pageNum <= totalPages; pageNum++) {
+				const startIndex = (pageNum - 1) * pageSize;
+				const endIndex = startIndex + pageSize;
+				const pagePosts = categoryPosts.slice(startIndex, endIndex);
+
+				paths.push({
+					params: { slug: category, page: String(pageNum) },
+					props: {
+						page: {
+							data: pagePosts,
+							total: categoryPosts.length,
+							size: pageSize,
+							currentPage: pageNum,
+							lastPage: totalPages,
+							start: startIndex + 1,
+							end: Math.min(endIndex, categoryPosts.length),
+							url: {
+								current: `/categories/${category}/${pageNum}/`,
+								prev:
+									pageNum > 2
+										? `/categories/${category}/${pageNum - 1}/`
+										: `/categories/${category}/`,
+								next:
+									pageNum < totalPages
+										? `/categories/${category}/${pageNum + 1}/`
+										: undefined,
+								first: `/categories/${category}/`,
+								last: `/categories/${category}/${totalPages}/`,
+							},
+						},
+					},
+				});
+			}
+		}
+	}
+
+	return paths;
 }
 
 // 获取当前分类和页码参数
 const { slug } = Astro.params;
-const { page } = Astro.props;
+interface PageInfo {
+	data: CollectionEntry<"posts">[];
+	total: number;
+	size: number;
+	currentPage: number;
+	lastPage: number;
+	start: number;
+	end: number;
+	url: {
+		current: string;
+		prev: string | undefined;
+		next: string | undefined;
+		first: string | undefined;
+		last: string | undefined;
+	};
+}
+const { page } = Astro.props as { page: PageInfo };
 
 // 页面标题
 const pageTitle = `${i18n(I18nKey.categories)}: ${slug}`;

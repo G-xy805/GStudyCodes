@@ -1,9 +1,13 @@
 ---
+import Icon from "@components/misc/Icon.astro";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
-import { getTagList, getTagColorClass, getTagFontSize } from "@/utils/content-utils";
-import Icon from "@components/misc/Icon.astro";
+import {
+	getTagColorClass,
+	getTagFontSize,
+	getTagList,
+} from "@/utils/content-utils";
 
 const tagList = await getTagList();
 
@@ -11,8 +15,10 @@ const tagList = await getTagList();
 const tagEntries = tagList.sort((a, b) => b.count - a.count);
 
 // 找到最大和最小计数，用于缩放
-const maxCount = tagEntries.length > 0 ? Math.max(...tagEntries.map(tag => tag.count)) : 0;
-const minCount = tagEntries.length > 0 ? Math.min(...tagEntries.map(tag => tag.count)) : 0;
+const maxCount =
+	tagEntries.length > 0 ? Math.max(...tagEntries.map((tag) => tag.count)) : 0;
+const minCount =
+	tagEntries.length > 0 ? Math.min(...tagEntries.map((tag) => tag.count)) : 0;
 
 // 统计总标签数
 const totalTags = tagList.length;

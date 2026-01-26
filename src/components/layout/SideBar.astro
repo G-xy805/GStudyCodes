@@ -18,7 +18,10 @@ const { class: className, headings } = Astro.props;
 
 // 由于项目已没有右侧边栏，总是使用左侧边栏配置
 const topComponents = widgetManager.getComponentsByPosition("top", "left");
-const stickyComponents = widgetManager.getComponentsByPosition("sticky", "left");
+const stickyComponents = widgetManager.getComponentsByPosition(
+	"sticky",
+	"left",
+);
 
 // 组件类型到ID的映射
 const componentTypeToId = {
@@ -63,7 +66,8 @@ const componentMap = {
 	tags: Tags,
 	sidebarToc: SidebarTOC,
 	stats: SiteStats,
-	popularPosts: (await import("@/components/content/PopularPosts.astro")).default,
+	popularPosts: (await import("@/components/content/PopularPosts.astro"))
+		.default,
 };
 
 // 渲染组件的辅助函数

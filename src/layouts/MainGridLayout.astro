@@ -65,8 +65,6 @@ const performanceConfig =
 const waveQuality = performanceConfig?.quality || "high";
 const hardwareAcceleration = performanceConfig?.hardwareAcceleration ?? true;
 
-
-
 // 检查是否为首页
 const isHomePageCheck = isHomePage(Astro.url.pathname);
 
@@ -103,8 +101,6 @@ const sidebarConfig = getResponsiveSidebarConfig();
 const { gridCols } = generateGridClasses(sidebarConfig);
 const sidebarClass = generateSidebarClasses(sidebarConfig);
 const mainContentClass = generateMainContentClasses(sidebarConfig);
-
-
 ---
 
 <Layout title={title} banner={banner} description={description} lang={lang} setOGTypeArticle={setOGTypeArticle} postSlug={postSlug} isHomePage={isHomePageCheck} enableBanner={isBannerMode} isWallpaperSwitchable={isWallpaperSwitchable}>

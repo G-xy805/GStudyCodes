@@ -6,14 +6,12 @@ import {
 	WALLPAPER_NONE,
 	WALLPAPER_OVERLAY,
 } from "@constants/constants";
-import { BREAKPOINTS, SCROLL_OFFSET } from "@/constants/layoutConstants";
+import { get as getStore } from "svelte/store";
+import { BREAKPOINTS } from "@/constants/layoutConstants";
+import { theme, wallpaperMode } from "@/stores/settingsStore";
 import type { LIGHT_DARK_MODE, WALLPAPER_MODE } from "@/types/config";
 import { expressiveCodeConfig, siteConfig } from "../config";
 import { domCache } from "./domCache";
-import { theme, wallpaperMode } from "@/stores/settingsStore";
-import { get as getStore } from "svelte/store";
-
-
 
 export function getDefaultTheme(): LIGHT_DARK_MODE {
 	// 如果配置文件中设置了 defaultMode，使用配置的值
@@ -76,16 +74,14 @@ export function applyThemeToDocument(theme: LIGHT_DARK_MODE) {
 	}
 }
 
-export function setTheme(theme: LIGHT_DARK_MODE): void {
-	theme.set(theme);
-	applyThemeToDocument(theme);
+export function setTheme(newTheme: LIGHT_DARK_MODE): void {
+	theme.set(newTheme);
+	applyThemeToDocument(newTheme);
 }
 
 export function getStoredTheme(): LIGHT_DARK_MODE {
 	return getStore(theme);
 }
-
-
 
 // Wallpaper mode functions
 export function applyWallpaperModeToDocument(mode: WALLPAPER_MODE) {
@@ -144,8 +140,6 @@ export function applyWallpaperModeToDocument(mode: WALLPAPER_MODE) {
 				hideAllWallpapers();
 				break;
 		}
-
-
 
 		// 在下一帧移除过渡保护类
 		requestAnimationFrame(() => {

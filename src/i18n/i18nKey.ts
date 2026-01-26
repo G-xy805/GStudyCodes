@@ -16,7 +16,6 @@ enum I18nKey {
 	commentSubtitle = "commentSubtitle",
 	commentNotConfigured = "commentNotConfigured",
 
-
 	untitled = "untitled",
 	uncategorized = "uncategorized",
 	noTags = "noTags",
@@ -133,8 +132,6 @@ enum I18nKey {
 	siteStatsDaysAgo = "siteStatsDaysAgo",
 	siteStatsDays = "siteStatsDays",
 
-
-
 	// 分享
 	share = "share",
 	close = "close",
@@ -151,7 +148,6 @@ enum I18nKey {
 	allTags = "allTags",
 	browseAllPostsInTag = "browseAllPostsInTag",
 	noPostsInTag = "noPostsInTag",
-
 }
 
 export default I18nKey;

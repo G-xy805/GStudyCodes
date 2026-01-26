@@ -27,10 +27,26 @@
     
         &:hover, &:active {
             @apply decoration-transparent;
-            background: var(--btn-plain-bg-hover);
+            /* 调整为无背景覆盖，避免文字与背景混合导致模糊 */
+            background: transparent;
             border-bottom: 1px dashed var(--link-hover);
             text-decoration: none;
         }
+    }
+
+    /* Markdown 标题内链接的悬停清晰度提升 */
+    h1 a:hover,
+    h2 a:hover,
+    h3 a:hover,
+    h4 a:hover,
+    h5 a:hover,
+    h6 a:hover {
+        color: var(--primary) !important;
+        text-shadow: none !important;
+        opacity: 1 !important;
+        mix-blend-mode: normal !important;
+        -webkit-text-fill-color: initial !important;
+        transition: color .2s ease-in-out;
     }
 
     code {

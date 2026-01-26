@@ -1,28 +1,28 @@
 <script lang="ts">
-import { onMount, onDestroy } from "svelte";
+import { onDestroy, onMount } from "svelte";
 import { siteConfig } from "@/config";
-import { layoutMode } from "@/stores/settingsStore";
 import { BREAKPOINTS } from "@/constants/layoutConstants";
 import { useSwitchAnimation } from "@/hooks/useSwitchAnimation";
+import { layoutMode } from "@/stores/settingsStore";
 
 let mounted = false;
 let isSmallScreen = false;
 const { toggle: toggleLayout, isSwitching } = useSwitchAnimation(() => {
 	if (!mounted || isSmallScreen) return;
-	
-	const newMode = $layoutMode === 'list' ? 'grid' : 'list';
+
+	const newMode = $layoutMode === "list" ? "grid" : "list";
 	layoutMode.set(newMode);
 }, 500);
 
 function checkScreenSize() {
 	isSmallScreen = window.innerWidth < BREAKPOINTS.DESKTOP;
 	if (isSmallScreen) {
-		layoutMode.set('list');
+		layoutMode.set("list");
 	}
 }
 
 function handleKeyboardEvent(event: KeyboardEvent) {
-	if (event.key === 'Enter' || event.key === ' ') {
+	if (event.key === "Enter" || event.key === " ") {
 		toggleLayout();
 	}
 }
@@ -30,13 +30,13 @@ function handleKeyboardEvent(event: KeyboardEvent) {
 onMount(() => {
 	mounted = true;
 	checkScreenSize();
-	
+
 	window.addEventListener("resize", checkScreenSize);
-	window.addEventListener('keydown', handleKeyboardEvent);
-	
+	window.addEventListener("keydown", handleKeyboardEvent);
+
 	return () => {
 		window.removeEventListener("resize", checkScreenSize);
-		window.removeEventListener('keydown', handleKeyboardEvent);
+		window.removeEventListener("keydown", handleKeyboardEvent);
 	};
 });
 </script>

@@ -60,7 +60,7 @@ export class TOCManager {
 	private calculateMinDepth(headings: NodeListOf<HTMLElement>): number {
 		let minDepth = 10;
 		headings.forEach((heading) => {
-			const depth = parseInt(heading.tagName.charAt(1), 10);
+			const depth = Number.parseInt(heading.tagName.charAt(1), 10);
 			minDepth = Math.min(minDepth, depth);
 		});
 		return minDepth;
@@ -71,7 +71,7 @@ export class TOCManager {
 	 */
 	private filterHeadings(headings: NodeListOf<HTMLElement>): HTMLElement[] {
 		return Array.from(headings).filter((heading) => {
-			const depth = parseInt(heading.tagName.charAt(1), 10);
+			const depth = Number.parseInt(heading.tagName.charAt(1), 10);
 			return depth < this.minDepth + this.maxLevel;
 		});
 	}

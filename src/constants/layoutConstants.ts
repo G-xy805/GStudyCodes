@@ -18,9 +18,9 @@ export const ANIMATION_DURATION = {
 export const SCROLL_OFFSET = 80;
 
 export const BANNER_HEIGHT = {
-	NORMAL: 'var(--banner-height)',
-	EXTENDED: 'var(--banner-height-extend)',
-	HOME: 'var(--banner-height-home)',
+	NORMAL: "var(--banner-height)",
+	EXTENDED: "var(--banner-height-extend)",
+	HOME: "var(--banner-height-home)",
 } as const;
 
 export const TOC_MAX_LEVEL = 3;

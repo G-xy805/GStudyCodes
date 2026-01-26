@@ -7,7 +7,6 @@ export type {
 	ExpressiveCodeConfig,
 	FooterConfig,
 	LicenseConfig,
-
 	NavBarConfig,
 	ProfileConfig,
 	SidebarLayoutConfig,

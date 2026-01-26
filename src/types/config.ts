@@ -27,8 +27,6 @@ export type SiteConfig = {
 	// 站点开始日期，用于计算运行天数
 	siteStartDate?: string; // 格式: "YYYY-MM-DD"
 
-
-
 	backgroundWallpaper: BackgroundWallpaperConfig;
 	generateOgImages: boolean;
 	favicon: Array<{
@@ -262,8 +260,6 @@ export type FooterConfig = {
 	customHtml?: string; // 自定义HTML内容，用于添加备案号等信息
 };
 
-
-
 // 组件配置类型定义
 export type WidgetComponentType =
 	| "profile"
@@ -273,6 +269,7 @@ export type WidgetComponentType =
 	| "advertisement"
 	| "stats"
 	| "calendar"
+	| "popularPosts"
 	| "custom";
 
 export type WidgetComponentConfig = {
@@ -398,8 +395,6 @@ export type BackgroundWallpaperConfig = {
 	};
 };
 
-
-
 // 友链配置
 export type FriendLink = {
 	title: string; // 友链标题
@@ -410,8 +405,6 @@ export type FriendLink = {
 	weight: number; // 权重，数字越大排序越靠前
 	enabled: boolean; // 是否启用
 };
-
-
 
 // 赞助方式类型
 export type SponsorMethod = {
