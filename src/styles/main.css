@@ -825,13 +825,15 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
 
 .category-cpp-card .post-card-tag {
     background-image: none !important;
-    @apply bg-[var(--primary)]/10 rounded-md px-2.5 py-1 font-medium shadow-none !important;
+    background-color: rgba(var(--primary-rgb), 0.1) !important;
+    @apply rounded-md px-2.5 py-1 font-medium shadow-none !important;
     color: var(--primary) !important;
 }
 
 .category-cpp-card .post-card-tag:hover {
     background-image: none !important;
-    @apply bg-[var(--primary)] text-white shadow-sm !important;
+    background-color: var(--primary) !important;
+    @apply text-white shadow-sm !important;
     transform: translateY(-1px) !important;
 }
 
