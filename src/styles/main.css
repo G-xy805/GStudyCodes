@@ -409,6 +409,15 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
         hover:decoration-[var(--link-hover)] active:decoration-[var(--link-active)] underline-offset-[0.25rem]
     }
 
+    .link:hover span {
+        color: var(--primary) !important;
+        -webkit-text-fill-color: initial !important;
+        opacity: 1 !important;
+    }
+    :root.dark .link:hover span {
+        color: var(--primary) !important;
+    }
+
     .toc-hide,
     .toc-not-ready {
         @apply opacity-0 pointer-events-none
@@ -836,4 +845,3 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
     @apply text-white shadow-sm !important;
     transform: translateY(-1px) !important;
 }
-
