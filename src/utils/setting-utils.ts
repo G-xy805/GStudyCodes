@@ -72,6 +72,17 @@ export function applyThemeToDocument(theme: LIGHT_DARK_MODE) {
 	if (needsCodeThemeUpdate) {
 		document.documentElement.setAttribute("data-theme", expectedTheme);
 	}
+
+	// 如果主题发生了变化，触发 theme:changed 事件
+	if (needsThemeChange) {
+		// 使用 requestAnimationFrame 确保在下一帧触发事件
+		requestAnimationFrame(() => {
+			const themeChangedEvent = new CustomEvent("theme:changed", {
+				detail: { theme: targetIsDark ? "dark" : "light" }
+			});
+			document.dispatchEvent(themeChangedEvent);
+		});
+	}
 }
 
 export function setTheme(newTheme: LIGHT_DARK_MODE): void {

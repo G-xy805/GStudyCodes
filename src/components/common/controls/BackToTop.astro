@@ -39,16 +39,18 @@ import { Icon } from "astro-icon/components";
     opacity: 1
     cursor: pointer
     pointer-events: auto
-    z-index: 1000
+    z-index: 9999
     transition: all 0.3s ease
     border-radius: 50%
     background-color: #ffffff
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15)
     border: none
-    width: 3rem
-    height: 3rem
+    width: 4rem
+    height: 4rem
     svg
-        font-size: 1.25rem
+        font-size: 2rem
+        width: 2rem
+        height: 2rem
     &.hide
         transform: scale(0.9) translateY(20px)
         opacity: 0
@@ -84,23 +86,27 @@ import { Icon } from "astro-icon/components";
     .back-to-top-btn
         right: 0.75rem
         bottom: 6rem
-        width: 2.75rem
-        height: 2.75rem
+        width: 3.5rem
+        height: 3.5rem
         font-size: 1.5rem
         border-radius: 50%
         svg
-            font-size: 1.25rem
+            font-size: 1.75rem
+            width: 1.75rem
+            height: 1.75rem
 
 @media (max-width: 480px)
     .back-to-top-btn
         right: 0.5rem
         bottom: 4rem
-        width: 2.5rem
-        height: 2.5rem
-        font-size: 1.25rem
+        width: 3rem
+        height: 3rem
+        font-size: 1.5rem
         border-radius: 50%
         svg
-            font-size: 1rem
+            font-size: 1.5rem
+            width: 1.5rem
+            height: 1.5rem
 
 /* 高缩放比例适配 */
 @media (min-resolution: 2dppx)
@@ -129,13 +135,13 @@ import { Icon } from "astro-icon/components";
 /* 确保按钮始终在可视区域内 */
 .back-to-top-btn
     /* 防止按钮被裁剪 */
-    min-width: 1.25rem
-    min-height: 1.25rem
+    min-width: 1.5rem
+    min-height: 1.5rem
     /* 确保按钮有足够的点击区域 */
-    padding: 0.25rem
+    padding: 0.5rem
     /* 防止按钮超出屏幕 */
-    max-width: 3rem
-    max-height: 3rem
+    max-width: 4rem
+    max-height: 4rem
     /* 确保圆角在所有尺寸下都正确 */
     border-radius: 50% !important
 
@@ -173,9 +179,64 @@ import { Icon } from "astro-icon/components";
 </style>
 
 <script>
-  function backToTop() {
-    // 直接使用原生滚动，避免OverlayScrollbars冲突
-    window.scroll({ top: 0, behavior: "smooth" });
+  // 定义在全局作用域中，以便 onclick 属性可以访问
+  window.backToTop = function() {
+    // 尝试多种滚动方法确保兼容性
+    try {
+      console.log('Back to top button clicked!');
+      console.log('Current scroll position:', {
+        htmlScrollTop: document.documentElement.scrollTop,
+        windowScrollY: window.scrollY
+      });
+      
+      // 方法1: 使用 scrollIntoView（最可靠）
+      const topElement = document.querySelector('body > a[href="#swup-container"]');
+      if (topElement) {
+        console.log('Using scrollIntoView on top element...');
+        topElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        console.log('scrollIntoView called successfully');
+        return;
+      }
+      
+      // 方法2: 使用 document.scrollingElement
+      const scrollContainer = document.scrollingElement || document.documentElement;
+      if (scrollContainer) {
+        console.log('Using scroll on scrollingElement...');
+        scrollContainer.scroll({ top: 0, left: 0, behavior: 'smooth' });
+        console.log('scroll called on scrollingElement');
+      }
+      
+      // 方法3: 同时滚动多个容器
+      if (document.body) {
+        console.log('Scrolling body...');
+        document.body.scroll({ top: 0, left: 0, behavior: 'smooth' });
+      }
+      
+      if (document.documentElement) {
+        console.log('Scrolling documentElement...');
+        document.documentElement.scroll({ top: 0, left: 0, behavior: 'smooth' });
+      }
+      
+      // 方法4: 滚动 window
+      console.log('Scrolling window...');
+      window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+      
+    } catch (e) {
+      console.error('Back to top error:', e);
+      // 最后的备用方案
+      try {
+        console.log('Using backup scroll method...');
+        const scrollContainer = document.scrollingElement || document.documentElement;
+        if (scrollContainer) {
+          scrollContainer.scrollTop = 0;
+        }
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+        window.scrollTo(0, 0);
+      } catch (backupError) {
+        console.error('Backup scroll error:', backupError);
+      }
+    }
   }
 
   // 响应式返回顶部按钮管理器

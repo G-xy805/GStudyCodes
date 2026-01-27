@@ -491,20 +491,8 @@ if (typeof window !== "undefined" && typeof document !== "undefined") {
 	};
 
 	// 页面加载完成后初始化banner和katex容器
-	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", () => {
-			showBanner();
-			// 只在文章页面初始化数学公式容器
-			// 客户端重新计算是否为文章页面
-			const isArticlePage = document.querySelector(".post-container") !== null;
-			if (isArticlePage) {
-				initCustomScrollbar();
-			}
-			// Initialize wallpaper mode
-			initWallpaperMode();
-			initIconLoader();
-		});
-	} else {
+if (document.readyState === "loading") {
+	document.addEventListener("DOMContentLoaded", () => {
 		showBanner();
 		// 只在文章页面初始化数学公式容器
 		// 客户端重新计算是否为文章页面
@@ -515,5 +503,82 @@ if (typeof window !== "undefined" && typeof document !== "undefined") {
 		// Initialize wallpaper mode
 		initWallpaperMode();
 		initIconLoader();
+		// 添加主题切换监听器
+		addThemeChangeListener();
+	});
+} else {
+	showBanner();
+	// 只在文章页面初始化数学公式容器
+	// 客户端重新计算是否为文章页面
+	const isArticlePage = document.querySelector(".post-container") !== null;
+	if (isArticlePage) {
+		initCustomScrollbar();
 	}
+	// Initialize wallpaper mode
+	initWallpaperMode();
+	initIconLoader();
+	// 添加主题切换监听器
+	addThemeChangeListener();
+}
+
+// 添加主题切换监听器，动态更新背景图片
+function addThemeChangeListener() {
+	// 监听主题切换事件
+	document.addEventListener('theme:changed', () => {
+		// 延迟执行，确保DOM已经更新
+		setTimeout(() => {
+			updateBackgroundImages();
+		}, 100);
+	});
+	
+	// 监听系统主题变化
+	window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+		// 延迟执行，确保DOM已经更新
+		setTimeout(() => {
+			updateBackgroundImages();
+		}, 100);
+	});
+}
+
+// 更新背景图片
+function updateBackgroundImages() {
+	// 查找桌面端图片元素（在id="banner"的div内部）
+	const bannerDiv = document.getElementById('banner');
+	const desktopImg = bannerDiv ? bannerDiv.querySelector('img') : null;
+	
+	// 查找移动端图片元素（在class包含"lg:hidden"的div内部）
+	const mobileDiv = document.querySelector('#banner-wrapper div[class*="lg:hidden"]');
+	const mobileImg = mobileDiv ? mobileDiv.querySelector('img') : null;
+	
+	if (desktopImg || mobileImg) {
+		// 获取当前主题
+		const isDark = document.documentElement.classList.contains('dark');
+		
+		// 定义背景图片路径 - 与siteConfig中的配置一致
+		const lightImages = {
+			desktop: '/assets/images/banner-light.jpg',
+			mobile: '/assets/images/banner-light.jpg'
+		};
+		
+		const darkImages = {
+			desktop: '/assets/images/banner-dark.jpg',
+			mobile: '/assets/images/banner-dark.jpg'
+		};
+		
+		// 根据主题选择图片
+		const selectedImages = isDark ? darkImages : lightImages;
+		
+		// 更新桌面端图片
+		if (desktopImg) {
+			desktopImg.setAttribute('src', selectedImages.desktop + '?t=' + Date.now());
+		}
+		
+		// 更新移动端图片
+		if (mobileImg) {
+			mobileImg.setAttribute('src', selectedImages.mobile + '?t=' + Date.now());
+		}
+		
+		console.log(`背景图片已更新为${isDark ? '暗色' : '亮色'}主题`);
+	}
+}
 }

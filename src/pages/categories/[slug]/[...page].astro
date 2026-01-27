@@ -32,13 +32,10 @@ export async function getStaticPaths() {
 	});
 
 	// 为每个分类生成路由
-	const paths: Array<{
-		params: { slug: string; page: string };
-		props: { page: PageInfo };
-	}> = [];
+	const paths: any[] = [];
 
 	for (const category of categorySet) {
-		// 获取当前分类下的所有文章
+		// ... existing logic to get categoryPosts ...
 		const categoryPosts = allPosts
 			.filter((post) => {
 				let postCategory = post.data.category;
@@ -51,47 +48,28 @@ export async function getStaticPaths() {
 				postCategory = postCategory.trim();
 				return postCategory === category;
 			})
+			// ... sort logic ...
 			.sort((a, b) => {
-				// 首先按置顶状态排序
 				if (a.data.pinned && !b.data.pinned) return -1;
 				if (!a.data.pinned && b.data.pinned) return 1;
-
-				// 如果置顶状态相同，则按发布日期排序（最新的在前）
 				const dateA = new Date(a.data.published);
 				const dateB = new Date(b.data.published);
-
-				// 如果发布日期不同，则按日期排序
-				if (dateA.getTime() !== dateB.getTime()) {
-					return dateA > dateB ? -1 : 1;
-				}
-
-				// 如果发布日期相同，则按order字段排序（数字小的在前）
-				const orderA =
-					typeof a.data.order !== "undefined"
-						? a.data.order
-						: Number.MAX_SAFE_INTEGER;
-				const orderB =
-					typeof b.data.order !== "undefined"
-						? b.data.order
-						: Number.MAX_SAFE_INTEGER;
-
-				return orderA - orderB; // 按order升序（数字小的在前）
+				if (dateA.getTime() !== dateB.getTime()) return dateA > dateB ? -1 : 1;
+				const orderA = typeof a.data.order !== "undefined" ? a.data.order : Number.MAX_SAFE_INTEGER;
+				const orderB = typeof b.data.order !== "undefined" ? b.data.order : Number.MAX_SAFE_INTEGER;
+				return orderA - orderB;
 			});
 
-		// 计算分页信息
 		const pageSize = siteConfig.pagination.postsPerPage;
 
-		// 只有当文章数量超过每页限制时才生成分页路由
 		if (categoryPosts.length > pageSize) {
-			// 计算总页数（从第2页开始）
 			const totalPages = Math.ceil(categoryPosts.length / pageSize);
-
-			// 为第2页及以后的页面生成路由
 			for (let pageNum = 2; pageNum <= totalPages; pageNum++) {
 				const startIndex = (pageNum - 1) * pageSize;
 				const endIndex = startIndex + pageSize;
 				const pagePosts = categoryPosts.slice(startIndex, endIndex);
 
+				// 原始路径
 				paths.push({
 					params: { slug: category, page: String(pageNum) },
 					props: {
@@ -105,20 +83,40 @@ export async function getStaticPaths() {
 							end: Math.min(endIndex, categoryPosts.length),
 							url: {
 								current: `/categories/${category}/${pageNum}/`,
-								prev:
-									pageNum > 2
-										? `/categories/${category}/${pageNum - 1}/`
-										: `/categories/${category}/`,
-								next:
-									pageNum < totalPages
-										? `/categories/${category}/${pageNum + 1}/`
-										: undefined,
+								prev: pageNum > 2 ? `/categories/${category}/${pageNum - 1}/` : `/categories/${category}/`,
+								next: pageNum < totalPages ? `/categories/${category}/${pageNum + 1}/` : undefined,
 								first: `/categories/${category}/`,
 								last: `/categories/${category}/${totalPages}/`,
 							},
 						},
 					},
 				});
+
+				// 如果分类名称包含特殊字符，也生成一个编码后的版本作为备份
+				const encoded = encodeURIComponent(category);
+				if (encoded !== category) {
+					paths.push({
+						params: { slug: encoded, page: String(pageNum) },
+						props: {
+							page: {
+								data: pagePosts,
+								total: categoryPosts.length,
+								size: pageSize,
+								currentPage: pageNum,
+								lastPage: totalPages,
+								start: startIndex + 1,
+								end: Math.min(endIndex, categoryPosts.length),
+								url: {
+									current: `/categories/${encoded}/${pageNum}/`,
+									prev: pageNum > 2 ? `/categories/${encoded}/${pageNum - 1}/` : `/categories/${encoded}/`,
+									next: pageNum < totalPages ? `/categories/${encoded}/${pageNum + 1}/` : undefined,
+									first: `/categories/${encoded}/`,
+									last: `/categories/${encoded}/${totalPages}/`,
+								},
+							},
+						},
+					});
+				}
 			}
 		}
 	}
@@ -128,6 +126,8 @@ export async function getStaticPaths() {
 
 // 获取当前分类和页码参数
 const { slug } = Astro.params;
+const decodedSlug = slug ? decodeURIComponent(slug) : "";
+
 interface PageInfo {
 	data: CollectionEntry<"posts">[];
 	total: number;
@@ -147,29 +147,39 @@ interface PageInfo {
 const { page } = Astro.props as { page: PageInfo };
 
 // 页面标题
-const pageTitle = `${i18n(I18nKey.categories)}: ${slug}`;
+const pageTitle = `${i18n(I18nKey.categories)}: ${decodedSlug}`;
 ---
 
 <MainGridLayout title={pageTitle}>
   <!-- 分类信息卡片 -->
-  <div class="card-base mb-4">
-    <div class="px-6 py-6">
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <!-- 分类标题和文章数量 -->
-        <div class="flex items-center gap-2">
-          <Icon icon="ri:folder-line" class="text-[var(--primary)]" size="3xl" />
-          <h1 class="text-3xl font-bold text-[#394E6A] dark:text-[#F8F8F2]">{slug}</h1>
-          <div class="badge rounded-full bg-[var(--primary)] text-white dark:text-black text-[0.8rem] px-4 py-0.4">{page.total} {i18n(page.total === 1 ? I18nKey.postCount : I18nKey.postsCount)}</div>
+  <div class="card-base mb-4 px-6 py-6">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+      <!-- 左侧信息 -->
+      <div class="flex items-center gap-4 w-full md:w-auto">
+        <!-- 图标容器 -->
+        <div class="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-[var(--primary)]/10 text-[var(--primary)] shrink-0">
+          <Icon icon="ri:folder-line" class="w-10 h-10 md:w-12 md:h-12" />
         </div>
-        <!-- 所有分类链接 -->
-        <a href="/categories/" class="transition-all duration-300 inline-flex items-center justify-center gap-1 px-4 py-1.5 border border-[#394E6A] text-[#394E6A] text-sm font-bold rounded-lg hover:bg-[#394E6A] hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black">
-          <Icon icon="ri:list-check-2" class="w-4 h-4" />
-          <span class="mr-1">{i18n(I18nKey.allCategories)}</span>
-        </a>
+        
+        <!-- 文字信息 -->
+        <div class="flex flex-col justify-center">
+          <div class="flex items-center gap-3">
+              <h1 class="text-base md:text-lg font-bold text-black/90 dark:text-white/90">{decodedSlug}</h1>
+              <div class="badge rounded-md bg-[var(--primary)] text-white dark:text-black/90 text-[10px] md:text-xs px-2 py-0.5 border-none">
+                  {page.total} {i18n(page.total === 1 ? I18nKey.postCount : I18nKey.postsCount)}
+              </div>
+          </div>
+          <div class="text-[10px] md:text-xs text-black/50 dark:text-white/50 mt-1">
+              {i18n(I18nKey.browseAllPostsInCategory)}
+          </div>
+        </div>
       </div>
-      <div class="divider my-6"></div>
-      <div class="border-t border-[1.5px] border-[#EBEDF0] dark:border-[rgba(255,255,255,0.2)] mt-4 mb-6"></div>
-      <div class="text-sm text-[#6B7A8F] dark:text-[#C5C5C3]">{i18n(I18nKey.browseAllPostsInCategory)}</div>
+
+      <!-- 右侧按钮 -->
+      <a href="/categories/" class="w-full md:w-auto transition-all duration-300 flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-[var(--primary)]/5 hover:bg-[var(--primary)]/10 text-[var(--primary)] group">
+        <Icon icon="ri:list-check-2" class="w-5 h-5" />
+        <span class="text-sm font-bold">{i18n(I18nKey.allCategories)}</span>
+      </a>
     </div>
   </div>
 

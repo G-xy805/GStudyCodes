@@ -13,7 +13,7 @@ const className = Astro.props.class;
     href={href} 
     aria-label={label} 
     class:list={[
-        `h-8 text-sm px-3.5 
+        `h-9 text-sm px-4 
         inline-flex items-center justify-center 
         rounded-lg 
         font-medium
@@ -26,6 +26,6 @@ const className = Astro.props.class;
         className
     ]}
 >
-    {dot && <div class="h-1.5 w-1.5 bg-current rounded-full mr-2 opacity-80"></div>}
+    {dot && <div class="h-2 w-2 bg-current rounded-full mr-2.5 opacity-80"></div>}
     <slot></slot>
 </a>

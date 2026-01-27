@@ -7,21 +7,55 @@
 :root {
   --radius-large: 1rem;
   --content-delay: 150ms;
+  
+  /* 字体系统 */
+  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-code: 'JetBrains Mono', 'Fira Code', monospace;
+  
+  /* 字号层级 */
+  --text-xs: 0.75rem;      /* 12px - 辅助信息 */
+  --text-sm: 0.875rem;     /* 14px - 正文 */
+  --text-base: 1rem;       /* 16px - 标准 */
+  --text-lg: 1.125rem;      /* 18px - 小标题 */
+  --text-xl: 1.25rem;       /* 20px - 大标题 */
+  --text-2xl: 1.5rem;      /* 24px - 页面标题 */
+  --text-3xl: 1.875rem;     /* 28px - 主标题 */
+  
+  /* 行高 */
+  --leading-tight: 1.25;   /* 紧凑 - 标题 */
+  --leading-normal: 1.5;    /* 标准 - 正文 */
+  --leading-relaxed: 1.75;  /* 宽松 - 长文本 */
+  
+  /* 字间距 */
+  --tracking-tight: -0.025em; /* 紧凑 - 大标题 */
+  --tracking-normal: 0;       /* 标准 - 正文 */
 }
 
 /* ===== 主题相关变量 ===== */
 :root {
-  --primary: #4338CA; /* 更深的靛蓝色，作为主色调，增强对比度 */
-  --primary-rgb: 67, 56, 202;
-  --secondary: #6366F1; /* 淡靛蓝色，作为辅助色 */
+  --primary: #5B4FE4; /* 更鲜亮的靛蓝色，提升活力 */
+  --primary-rgb: 91, 79, 228;
+  --secondary: #7B8FF6; /* 更明亮的青蓝色，作为辅助色 */
   --accent: #A855F7; /* 更鲜艳的紫色，作为强调色 */
   --tertiary: #EC4899; /* 粉色，作为第三强调色，增加色彩丰富度 */
-  --page-bg: #F1F5F9;
-  --card-bg: rgba(255, 255, 255, 0.85);
-  --card-bg-transparent: rgba(255, 255, 255, 0.7);
-  --text-color: #0F172A; /* 浅色模式文本色，提高对比度 */
-  --text-secondary: #475569; /* 浅色模式辅助文本色 */
+  --page-bg: #F8FAFC; /* 更浅的蓝紫色，提升对比度 */
+  --card-bg: rgba(255, 255, 255, 0.92); /* 增加不透明度 */
+  --card-bg-transparent: rgba(255, 255, 255, 0.75);
+  --card-bg-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+  --text-color: #1E293B; /* 更深的文本色，提高可读性 */
+  --text-secondary: #64748B; /* 优化辅助文本色 */
   --text-muted: #94A3B8; /* 浅色模式次要文本色 */
+  
+  --primary-gradient: linear-gradient(135deg, #5B4FE4 0%, #4338CA 100%);
+  --secondary-gradient: linear-gradient(135deg, #7B8FF6 0%, #6366F1 100%);
+  
+  --shadow-primary: 0 4px 12px rgba(91, 79, 228, 0.25);
+  --shadow-accent: 0 4px 12px rgba(168, 85, 247, 0.25);
+  
+  --card-border: rgba(91, 79, 228, 0.1);
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.02), 0 12px 24px rgba(0, 0, 0, 0.04), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  --card-hover-shadow: 0 20px 40px rgba(91, 79, 228, 0.15);
+  --card-hover-border: rgba(91, 79, 228, 0.2);
   
   --btn-content: oklch(0.55 0.12 var(--hue));
   --btn-regular-bg: oklch(0.95 0.025 var(--hue));
@@ -117,9 +151,21 @@
   --page-bg: #0F172A;
   --card-bg: rgba(30, 41, 59, 0.9);
   --card-bg-transparent: rgba(30, 41, 59, 0.75);
+  --card-bg-gradient: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(30, 41, 59, 0.85) 100%);
   --text-color: #F8FAFC; /* 暗色模式文本色，提高对比度 */
   --text-secondary: #CBD5E1; /* 暗色模式辅助文本色，提高可读性 */
   --text-muted: #94A3B8; /* 暗色模式次要文本色 */
+  
+  --primary-gradient: linear-gradient(135deg, #A5B4FC 0%, #818CF8 100%);
+  --secondary-gradient: linear-gradient(135deg, #818CF8 0%, #6366F1 100%);
+  
+  --shadow-primary: 0 4px 12px rgba(165, 180, 252, 0.25);
+  --shadow-accent: 0 4px 12px rgba(192, 132, 252, 0.25);
+  
+  --card-border: rgba(165, 180, 252, 0.15);
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 12px 24px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  --card-hover-shadow: 0 20px 40px rgba(165, 180, 252, 0.25);
+  --card-hover-border: rgba(165, 180, 252, 0.3);
   
   --btn-content: oklch(0.75 0.1 var(--hue));
   --btn-regular-bg: oklch(0.33 0.035 var(--hue));
@@ -202,7 +248,15 @@
   --container-md: 100%;
   --container-lg: 1024px;
   --container-xl: 1280px;
-  --container-2xl: 1536px;
+  --container-2xl: 1440px;
+  
+  /* 网格系统 */
+  --grid-cols: 12;
+  --gap-xs: 0.5rem;
+  --gap-sm: 1rem;
+  --gap-md: 1.5rem;
+  --gap-lg: 2rem;
+  --gap-xl: 3rem;
 }
 
 /* ===== 动画变量 ===== */
@@ -212,6 +266,10 @@
   --ease-decelerate: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --ease-accelerate: cubic-bezier(0.55, 0.055, 0.675, 0.19);
   --ease-sharp: cubic-bezier(0.4, 0, 0.6, 1);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   
   /* 动画时长 */
   --duration-fast: 150ms;
@@ -223,7 +281,7 @@
   /* 动画延迟 */
   --delay-none: 0ms;
   --delay-short: 50ms;
-  --duration-medium: 100ms;
+  --delay-medium: 100ms;
   --delay-long: 150ms;
   --delay-longer: 200ms;
 }
@@ -256,17 +314,17 @@
 /* ===== 阴影变量 ===== */
 :root {
   /* 基础阴影 */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
-  --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.25);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.16);
+  --shadow-2xl: 0 20px 40px rgba(0, 0, 0, 0.24);
+  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.06);
   
-  /* 特殊阴影 */
-  --shadow-navbar: 0 4px 16px rgba(0, 0, 0, 0.1);
-  --shadow-navbar-dark: 0 4px 16px rgba(0, 0, 0, 0.2);
-  --shadow-button: 0 4px 12px rgba(0, 0, 0, 0.15);
-  --shadow-button-dark: 0 4px 12px rgba(255, 255, 255, 0.1);
+  /* 彩色阴影 */
+  --shadow-primary: 0 4px 12px rgba(91, 79, 228, 0.25);
+  --shadow-accent: 0 4px 12px rgba(168, 85, 247, 0.25);
 }
 
 /* ===== 边框半径变量 ===== */

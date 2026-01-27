@@ -30,13 +30,20 @@ export async function getStaticPaths() {
 	});
 
 	// 为每个分类生成路由
-	return Array.from(categorySet).map((category) => ({
-		params: { slug: category },
-	}));
+	return Array.from(categorySet).flatMap((category) => {
+		const paths = [{ params: { slug: category } }];
+		// 如果分类名称包含特殊字符，也生成一个编码后的版本作为备份
+		const encoded = encodeURIComponent(category);
+		if (encoded !== category) {
+			paths.push({ params: { slug: encoded } });
+		}
+		return paths;
+	});
 }
 
 // 获取当前分类的参数
 const { slug } = Astro.params;
+const decodedSlug = slug ? decodeURIComponent(slug) : "";
 
 // 获取当前分类下的所有文章
 const allPosts = await getCollection("posts", ({ data }) => {
@@ -54,7 +61,7 @@ const categoryPosts = allPosts
 			postCategory = String(postCategory);
 		}
 		postCategory = postCategory.trim();
-		return postCategory === slug;
+		return postCategory === decodedSlug || postCategory === slug;
 	})
 	.sort((a, b) => {
 		// 首先按置顶状态排序
@@ -90,7 +97,7 @@ const totalPosts = categoryPosts.length;
 const hasMore = totalPosts > pageSize;
 
 // 页面标题
-const pageTitle = `${i18n(I18nKey.categories)}: ${slug}`;
+const pageTitle = `${i18n(I18nKey.categories)}: ${decodedSlug}`;
 ---
 
 <MainGridLayout title={pageTitle}>
@@ -98,31 +105,33 @@ const pageTitle = `${i18n(I18nKey.categories)}: ${slug}`;
   <div class="card-base mb-4 px-6 py-6">
     <div class="flex flex-col md:flex-row justify-between items-center gap-4">
       <!-- 左侧信息 -->
-      <div class="flex items-center gap-4 w-full md:w-auto">
+      <div class="flex items-center gap-6 w-full md:w-auto">
         <!-- 图标容器 -->
-        <div class="flex items-center justify-center w-14 h-14 rounded-2xl bg-[var(--primary)]/10 text-[var(--primary)]">
-          <Icon icon="ri:folder-line" class="w-8 h-8" />
+        <div class="flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-[var(--primary)]/10 text-[var(--primary)] shrink-0">
+          <Icon icon="ri:folder-5-fill" class="w-16 h-16 md:w-18 md:h-18" />
         </div>
         
         <!-- 文字信息 -->
-        <div class="flex flex-col">
+        <div class="flex flex-col justify-center">
           <div class="flex items-center gap-3">
-              <h1 class="text-2xl font-bold text-black/90 dark:text-white/90">{slug}</h1>
-              <div class="badge rounded-md bg-[var(--primary)] text-white dark:text-black/90 text-xs px-2 py-0.5 border-none">
+              <h1 class="text-lg md:text-xl font-bold text-black/90 dark:text-white/90 leading-tight">{decodedSlug}</h1>
+              <div class="gradient-badge">
                   {totalPosts} {i18n(totalPosts === 1 ? I18nKey.postCount : I18nKey.postsCount)}
               </div>
           </div>
-          <div class="text-sm text-black/50 dark:text-white/50 mt-1">
+          <div class="text-[10px] md:text-xs text-black/50 dark:text-white/50 mt-1">
               {i18n(I18nKey.browseAllPostsInCategory)}
           </div>
         </div>
       </div>
 
-      <!-- 右侧按钮 -->
-      <a href="/categories/" class="w-full md:w-auto transition-all duration-300 flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-[var(--primary)]/5 hover:bg-[var(--primary)]/10 text-[var(--primary)] group">
-        <Icon icon="ri:list-check-2" class="w-5 h-5" />
-        <span class="text-sm font-bold">{i18n(I18nKey.allCategories)}</span>
-      </a>
+      <!-- 右侧按钮（悬停显示） -->
+      <div class="hover-button-container w-full md:w-auto">
+        <a href="/categories/" class="hover-button transition-all duration-300 flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-white font-bold">
+          <Icon icon="ri:list-check-2" class="w-5 h-5" />
+          <span class="text-sm">{i18n(I18nKey.allCategories)}</span>
+        </a>
+      </div>
     </div>
   </div>
 

@@ -38,30 +38,30 @@ const getSizeClasses = (size: string) => {
 	switch (size) {
 		case "small":
 			return {
-				container: "p-3",
-				value: "text-xl",
-				title: "text-xs",
-				subtitle: "text-xs",
-				icon: "text-lg",
-				iconContainer: "w-8 h-8",
-			};
-		case "large":
-			return {
-				container: "p-6",
-				value: "text-4xl",
-				title: "text-base",
-				subtitle: "text-sm",
-				icon: "text-2xl",
-				iconContainer: "w-12 h-12",
-			};
-		default: // medium
-			return {
 				container: "p-4",
 				value: "text-2xl",
 				title: "text-sm",
 				subtitle: "text-xs",
 				icon: "text-xl",
 				iconContainer: "w-10 h-10",
+			};
+		case "large":
+			return {
+				container: "p-7",
+				value: "text-5xl",
+				title: "text-lg",
+				subtitle: "text-base",
+				icon: "text-3xl",
+				iconContainer: "w-14 h-14",
+			};
+		default: // medium
+			return {
+				container: "p-5",
+				value: "text-3xl",
+				title: "text-base",
+				subtitle: "text-sm",
+				icon: "text-2xl",
+				iconContainer: "w-12 h-12",
 			};
 	}
 };
@@ -88,7 +88,7 @@ const getIconStyle = () => {
 >
   <div class={sizeClasses.container}>
     <!-- 顶部：图标和趋势 -->
-    <div class="flex items-start justify-between mb-3">
+    <div class="flex items-start justify-between mb-4">
       <!-- 图标 -->
       {icon && (
         <div 
@@ -104,9 +104,9 @@ const getIconStyle = () => {
         <div class={`flex items-center gap-1 ${trend.isPositive ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
           <iconify-icon 
             icon={trend.isPositive ? 'ri:arrow-up-line' : 'ri:arrow-down-line'} 
-            class="text-sm"
+            class="text-base"
           ></iconify-icon>
-          <span class="text-xs font-medium">
+          <span class="text-sm font-medium">
             {trend.isPositive ? '+' : ''}{trend.value}%
           </span>
         </div>
@@ -114,25 +114,25 @@ const getIconStyle = () => {
     </div>
     
     <!-- 主要数值 -->
-    <div class={`font-bold mb-1 ${sizeClasses.value}`} style={`color: ${color}`}>
+    <div class={`font-bold mb-2 ${sizeClasses.value}`} style={`color: ${color}`}>
       {value}
     </div>
     
     <!-- 标题 -->
-    <div class={`font-medium text-black/70 dark:text-white/70 mb-1 ${sizeClasses.title}`}>
+    <div class={`font-medium text-black/70 dark:text-white/70 mb-2 ${sizeClasses.title}`}>
       {title}
     </div>
     
     <!-- 副标题 -->
     {subtitle && (
-      <div class={`text-black/60 dark:text-white/60 ${sizeClasses.subtitle}`}>
+      <div class={`text-black/60 dark:text-white/60 mb-2 ${sizeClasses.subtitle}`}>
         {subtitle}
       </div>
     )}
     
     <!-- 趋势标签 -->
     {trend && trend.label && (
-      <div class={`text-black/50 dark:text-white/50 mt-1 ${sizeClasses.subtitle}`}>
+      <div class={`text-black/50 dark:text-white/50 mt-1 mb-2 ${sizeClasses.subtitle}`}>
         {trend.label}
       </div>
     )}

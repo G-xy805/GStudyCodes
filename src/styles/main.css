@@ -166,9 +166,10 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
     
     .card-base {
         @apply rounded-2xl overflow-hidden bg-[var(--card-bg)] w-full transition-all duration-400 ease-out;
-        backdrop-filter: blur(16px);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.12);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(20px) saturate(180%);
+        background: var(--card-bg-gradient);
+        border: 1px solid var(--card-border);
+        box-shadow: var(--card-shadow);
         position: relative;
         overflow: hidden;
     }
@@ -177,41 +178,97 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
         content: '';
         position: absolute;
         top: 0;
-        left: -100%;
+        left: 0;
         right: 0;
-        height: 2px;
+        height: 3px;
         background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+        border-radius: 3px 3px 0 0;
         transform: scaleX(0);
-        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), left 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         pointer-events: none;
     }
     
-    .card-base::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
-        opacity: 0;
-        transition: opacity 0.3s ease-in-out;
-        pointer-events: none;
+    .card-base:hover {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: var(--card-hover-shadow);
+        border-color: var(--card-hover-border);
     }
     
     .card-base:hover::before {
         transform: scaleX(1);
-        left: 0;
     }
     
-    .card-base:hover::after {
+    /* 组合悬停效果：徽章和按钮的联动动画 */
+    .card-base:hover .gradient-badge {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(var(--primary-rgb), 0.5);
+    }
+    
+    /* 暗色主题组合悬停效果 */
+    :root.dark .card-base:hover {
+        box-shadow: 
+            0 20px 40px rgba(var(--primary-rgb), 0.25),
+            0 0 0 1px rgba(var(--primary-rgb), 0.2);
+    }
+    
+    /* 渐变徽章样式 */
+    .gradient-badge {
+        @apply rounded-md text-white dark:text-white/95 text-[10px] md:text-xs px-2 py-0.5 border-none font-semibold;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .gradient-badge:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.4);
+    }
+    
+    /* 暗色主题渐变徽章 */
+    :root.dark .gradient-badge {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        box-shadow: 0 2px 12px rgba(var(--primary-rgb), 0.4);
+    }
+    
+    /* 悬停按钮容器样式 */
+    .hover-button-container {
+        opacity: 0;
+        transform: translateX(10px);
+        transition: all 0.3s ease;
+    }
+    
+    .card-base:hover .hover-button-container {
         opacity: 1;
+        transform: translateX(0);
     }
     
-    .card-base:hover {
-        transform: translateY(-8px) scale(1.03);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12), 0 6px 20px rgba(0, 0, 0, 0.18);
-        border-color: rgba(255, 255, 255, 0.5);
+    /* 移动端适配：悬停按钮始终显示 */
+    @media (max-width: 768px) {
+        .hover-button-container {
+            opacity: 1;
+            transform: translateX(0);
+            margin-top: 8px;
+        }
+    }
+    
+    /* 悬停按钮样式 */
+    .hover-button {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        color: white;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.3);
+    }
+    
+    .hover-button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.4);
+    }
+    
+    /* 暗色主题悬停按钮 */
+    :root.dark .hover-button {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        color: rgba(255, 255, 255, 0.95);
     }
     
     .post-card {
@@ -400,10 +457,10 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
         @apply bg-[var(--btn-plain-bg-hover)] text-[var(--primary)];
     }
     .btn-regular {
-        @apply transition-all duration-300 ease-in-out flex items-center justify-center rounded-full px-4 py-2 font-medium text-sm relative overflow-hidden;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        @apply transition-all duration-300 ease-in-out flex items-center justify-center rounded-full px-4 py-2 font-medium text-sm relative overflow-hidden btn-ripple;
+        background: var(--primary-gradient);
         color: white;
-        box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        box-shadow: 0 4px 12px rgba(91, 79, 228, 0.3);
         border: none;
     }
     
@@ -423,14 +480,117 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
     }
     
     .btn-regular:hover {
-        transform: translateY(-3px) scale(1.05);
-        box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 20px rgba(91, 79, 228, 0.4);
         color: white;
         border: none;
     }
     
     .btn-regular:active {
-        transform: translateY(-1px) scale(0.98);
+        transform: translateY(0) scale(0.98);
+    }
+
+    /* Badge 组件优化 */
+    .badge {
+        background: var(--primary-gradient);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-weight: 600;
+        font-size: var(--text-xs);
+        box-shadow: 0 2px 8px rgba(91, 79, 228, 0.25);
+        position: relative;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .badge::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent 40%,
+            rgba(255, 255, 255, 0.3) 50%,
+            transparent 60%
+        );
+        animation: shimmer 2s infinite;
+        pointer-events: none;
+    }
+
+    @keyframes shimmer {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .badge:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(91, 79, 228, 0.35);
+    }
+
+    /* 玻璃态效果 */
+    .glass {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .glass-dark {
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* 对比度优化 */
+    .text-primary {
+        color: var(--text-color);
+        filter: contrast(1.25);
+    }
+
+    .text-secondary {
+        color: var(--text-secondary);
+        filter: contrast(1.15);
+    }
+
+    .text-muted {
+        color: var(--text-muted);
+        filter: contrast(1.05);
+    }
+
+    /* 深度效果 */
+    .depth-sm {
+        box-shadow: var(--shadow-sm);
+    }
+
+    .depth-md {
+        box-shadow: var(--shadow-md);
+    }
+
+    .depth-lg {
+        box-shadow: var(--shadow-lg);
+    }
+
+    .depth-xl {
+        box-shadow: var(--shadow-xl);
+    }
+
+    .depth-2xl {
+        box-shadow: var(--shadow-2xl);
+    }
+
+    /* 彩色深度效果 */
+    .depth-primary {
+        box-shadow: var(--shadow-primary);
+    }
+
+    .depth-accent {
+        box-shadow: var(--shadow-accent);
     }
     
     /* 次要按钮样式 */
@@ -645,8 +805,98 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
     .btn-regular:focus-visible,
     .btn-outline:focus-visible,
     .btn-card:focus-visible {
+        @apply outline-none;
         box-shadow: 0 0 0 3px var(--primary);
-        border-radius: var(--radius-md);
+    }
+
+    /* 按钮点击涟漪效果 */
+    .btn-ripple {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-ripple::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s ease, height 0.6s ease;
+    }
+
+    .btn-ripple:active::after {
+        width: 300%;
+        height: 300%;
+    }
+
+    /* 卡片进入动画 */
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .card-enter {
+        animation: slideInUp 0.5s var(--ease-out-expo) forwards;
+    }
+
+    /* 链接悬停下划线动画 */
+    .link-hover-underline {
+        position: relative;
+    }
+
+    .link-hover-underline::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--primary);
+        transition: width 0.3s ease;
+    }
+
+    .link-hover-underline:hover::after {
+        width: 100%;
+    }
+
+    /* 按钮悬停增强 */
+    button:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 20px rgba(67, 56, 202, 0.2);
+        transition: all 0.3s var(--ease-in-out-cubic);
+    }
+
+    /* 按钮按下效果 */
+    button:active {
+        transform: translateY(0) scale(0.98);
+        transition: all 0.1s var(--ease-in-out-cubic);
+    }
+
+    /* 全局过渡优化 */
+    * {
+        transition: all 0.3s var(--ease-in-out-cubic);
+    }
+
+    /* 禁用过渡的元素 */
+    *, *::before, *::after {
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    }
+
+    /* 优化性能 */
+    .gpu-accelerated {
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        perspective: 1000px;
     }
 
     .meta-icon {

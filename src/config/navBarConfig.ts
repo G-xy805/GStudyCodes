@@ -24,7 +24,7 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 			children: [
 				{
 					name: "C++",
-					url: "/categories/C++/",
+					url: "/categories/C%2B%2B/",
 					icon: "ri:code-box-line",
 				},
 				{
