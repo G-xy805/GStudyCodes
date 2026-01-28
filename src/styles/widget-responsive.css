@@ -125,13 +125,30 @@
   
   /* 移动端按钮尺寸优化 */
   button {
-    min-height: 44px;
-    min-width: 44px;
+    min-height: 48px;
+    min-width: 48px;
   }
   
-  /* 移动端链接样式优化 */
+  /* 增强移动端触摸目标 */
+  .btn-plain,
+  .btn-regular,
+  .btn-card {
+    min-height: 48px !important;
+    padding: 0 1rem !important;
+  }
+  
+  /* 增大链接点击区域和样式优化 */
   a {
+    display: inline-block;
     padding: 0.5rem;
+  }
+  
+  /* 增强表单元素视觉效果 */
+  input,
+  textarea,
+  select {
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    padding: 0.75rem !important;
   }
 }
 

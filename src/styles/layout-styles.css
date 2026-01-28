@@ -510,6 +510,49 @@
     }
 }
 
+/* 移动端亮色模式优化 */
+@media (max-width: 1023px) and (prefers-color-scheme: light) {
+    .banner-text-overlay {
+        background: linear-gradient(
+            to top,
+            rgba(255, 255, 255, 0.7) 0%,
+            rgba(255, 255, 255, 0.3) 50%,
+            transparent 100%
+        );
+    }
+
+    .banner-title {
+        color: #0F172A !important; /* 更深的标题色 */
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); /* 轻微阴影增强立体感 */
+    }
+
+    .banner-subtitle {
+        color: #334155 !important; /* 加深副标题色 */
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.08); /* 轻微阴影 */
+    }
+    
+    /* 增强卡片视觉效果 */
+    .card-base {
+        border: 1px solid rgba(0, 0, 0, 0.1) !important; /* 更明显的边框 */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important; /* 增强阴影 */
+    }
+    
+    /* 增强按钮视觉效果 */
+    .btn-regular {
+        box-shadow: 0 4px 12px rgba(91, 79, 228, 0.3) !important; /* 增强按钮阴影 */
+    }
+    
+    /* 增强导航栏视觉效果 */
+    #navbar > div {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important; /* 更明显的导航栏边框 */
+    }
+    
+    /* 增强分割线视觉效果 */
+    .line-divider {
+        border-color: rgba(0, 0, 0, 0.15) !important; /* 加深分割线 */
+    }
+}
+
 /* 水波纹显示优化 */
 .waves {
     /* 确保水波纹完整显示 */

@@ -493,6 +493,8 @@ if (typeof window !== "undefined" && typeof document !== "undefined") {
 	// 页面加载完成后初始化banner和katex容器
 if (document.readyState === "loading") {
 	document.addEventListener("DOMContentLoaded", () => {
+		// 预加载背景图片
+		preloadBackgroundImages();
 		showBanner();
 		// 只在文章页面初始化数学公式容器
 		// 客户端重新计算是否为文章页面
@@ -507,6 +509,8 @@ if (document.readyState === "loading") {
 		addThemeChangeListener();
 	});
 } else {
+	// 预加载背景图片
+	preloadBackgroundImages();
 	showBanner();
 	// 只在文章页面初始化数学公式容器
 	// 客户端重新计算是否为文章页面
@@ -521,22 +525,48 @@ if (document.readyState === "loading") {
 	addThemeChangeListener();
 }
 
+// 预加载背景图片
+function preloadBackgroundImages() {
+	// 定义背景图片路径 - 与siteConfig中的配置一致
+	const lightImages = {
+		desktop: '/assets/images/banner-light.webp',
+		mobile: '/assets/images/banner-light.webp'
+	};
+	
+	const darkImages = {
+		desktop: '/assets/images/banner-dark.webp',
+		mobile: '/assets/images/banner-dark.webp'
+	};
+	
+	// 预加载亮色主题图片
+	const lightDesktopImg = new Image();
+	lightDesktopImg.src = lightImages.desktop;
+	
+	const lightMobileImg = new Image();
+	lightMobileImg.src = lightImages.mobile;
+	
+	// 预加载暗色主题图片
+	const darkDesktopImg = new Image();
+	darkDesktopImg.src = darkImages.desktop;
+	
+	const darkMobileImg = new Image();
+	darkMobileImg.src = darkImages.mobile;
+	
+	console.log('背景图片预加载完成');
+}
+
 // 添加主题切换监听器，动态更新背景图片
 function addThemeChangeListener() {
 	// 监听主题切换事件
 	document.addEventListener('theme:changed', () => {
-		// 延迟执行，确保DOM已经更新
-		setTimeout(() => {
-			updateBackgroundImages();
-		}, 100);
+		// 移除 setTimeout 延迟，直接执行
+		updateBackgroundImages();
 	});
 	
 	// 监听系统主题变化
 	window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-		// 延迟执行，确保DOM已经更新
-		setTimeout(() => {
-			updateBackgroundImages();
-		}, 100);
+		// 移除 setTimeout 延迟，直接执行
+		updateBackgroundImages();
 	});
 }
 
@@ -570,12 +600,14 @@ function updateBackgroundImages() {
 		
 		// 更新桌面端图片
 		if (desktopImg) {
-			desktopImg.setAttribute('src', selectedImages.desktop + '?t=' + Date.now());
+			// 移除查询参数，使用缓存的图片
+			desktopImg.setAttribute('src', selectedImages.desktop);
 		}
 		
 		// 更新移动端图片
 		if (mobileImg) {
-			mobileImg.setAttribute('src', selectedImages.mobile + '?t=' + Date.now());
+			// 移除查询参数，使用缓存的图片
+			mobileImg.setAttribute('src', selectedImages.mobile);
 		}
 		
 		console.log(`背景图片已更新为${isDark ? '暗色' : '亮色'}主题`);

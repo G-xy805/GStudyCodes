@@ -42,9 +42,9 @@
   --card-bg: rgba(255, 255, 255, 0.92); /* 增加不透明度 */
   --card-bg-transparent: rgba(255, 255, 255, 0.75);
   --card-bg-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-  --text-color: #1E293B; /* 更深的文本色，提高可读性 */
-  --text-secondary: #64748B; /* 优化辅助文本色 */
-  --text-muted: #94A3B8; /* 浅色模式次要文本色 */
+  --text-color: #0F172A; /* 更深的文本色，提高对比度 */
+  --text-secondary: #475569; /* 加深辅助文本色，提高可读性 */
+  --text-muted: #64748B; /* 浅色模式次要文本色，稍微加深 */
   
   --primary-gradient: linear-gradient(135deg, #5B4FE4 0%, #4338CA 100%);
   --secondary-gradient: linear-gradient(135deg, #7B8FF6 0%, #6366F1 100%);
@@ -53,13 +53,13 @@
   --shadow-accent: 0 4px 12px rgba(168, 85, 247, 0.25);
   
   --card-border: rgba(91, 79, 228, 0.1);
-  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.02), 0 12px 24px rgba(0, 0, 0, 0.04), inset 0 1px 2px rgba(255, 255, 255, 0.5);
-  --card-hover-shadow: 0 20px 40px rgba(91, 79, 228, 0.15);
-  --card-hover-border: rgba(91, 79, 228, 0.2);
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.04), 0 12px 24px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.5); /* 增强阴影效果 */
+  --card-hover-shadow: 0 20px 40px rgba(91, 79, 228, 0.2); /* 增强悬停阴影 */
+  --card-hover-border: rgba(91, 79, 228, 0.3); /* 增强悬停边框 */
   
   --btn-content: oklch(0.55 0.12 var(--hue));
-  --btn-regular-bg: oklch(0.95 0.025 var(--hue));
-  --btn-regular-bg-hover: oklch(0.9 0.05 var(--hue));
+  --btn-regular-bg: oklch(0.92 0.04 var(--hue)); /* 稍微加深按钮背景，提高辨识度 */
+  --btn-regular-bg-hover: oklch(0.88 0.06 var(--hue)); /* 加深悬停效果 */
   --btn-regular-bg-active: oklch(0.85 0.08 var(--hue));
   
   --btn-plain-bg-hover: #F2F7FF;
@@ -75,10 +75,10 @@
   --deep-text: oklch(0.25 0.02 var(--hue));
   --title-active: oklch(0.6 0.1 var(--hue));
   
-  --line-divider: rgba(0, 0, 0, 0.08);
-  --line-color: rgba(0, 0, 0, 0.1);
-  --meta-divider: rgba(0, 0, 0, 0.2);
-  --content-meta: rgba(0, 0, 0, 0.7);
+  --line-divider: rgba(0, 0, 0, 0.12); /* 加深分割线，提高可见性 */
+  --line-color: rgba(0, 0, 0, 0.15); /* 加深线条颜色，提高可见性 */
+  --meta-divider: rgba(0, 0, 0, 0.3); /* 加深元数据分割线 */
+  --content-meta: rgba(0, 0, 0, 0.8); /* 加深内容元数据，提高可读性 */
   
   --inline-code-bg: var(--btn-regular-bg);
   --inline-code-color: var(--btn-content);
