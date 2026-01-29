@@ -165,43 +165,70 @@ function initSmartNavbar() {
         const menuBtn = document.getElementById("nav-menu-switch");
         if (menuBtn && menuBtn.getAttribute("aria-expanded") === "true") return;
         
-        // 只有当鼠标不在导航栏内且不在顶部触发区时才隐藏
         navbar.classList.remove('navbar-visible');
         navbar.setAttribute('aria-hidden', 'true');
         hideTimeout = null;
     }
 
+    // 检查鼠标是否在导航栏或下拉菜单区域内
+    function isMouseInNavbarArea(mouseX, mouseY) {
+        const navbarRect = navbar.getBoundingClientRect();
+        
+        // 检查是否在导航栏内
+        if (mouseX >= navbarRect.left && mouseX <= navbarRect.right &&
+            mouseY >= navbarRect.top && mouseY <= navbarRect.bottom) {
+            return true;
+        }
+        
+        // 检查是否在任何下拉菜单内
+        const dropdownMenus = document.querySelectorAll('.dropdown-menu');
+        for (const menu of dropdownMenus) {
+            const rect = menu.getBoundingClientRect();
+            // 只检查可见的下拉菜单
+            if (rect.height > 0 && 
+                mouseX >= rect.left && mouseX <= rect.right &&
+                mouseY >= rect.top && mouseY <= rect.bottom) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
     // 鼠标移动处理
     window.addEventListener('mousemove', (e) => {
         const mouseY = e.clientY;
+        const mouseX = e.clientX;
         
         // 鼠标在顶部触发区域 -> 显示
         if (mouseY <= TRIGGER_Height) {
             showNavbar();
         } 
-        // 鼠标离开导航栏区域 (假设导航栏高度约 64px + padding) -> 准备隐藏
-        else if (mouseY > navbar.offsetHeight + 10) {
-            // 如果没有在等待隐藏，则开启延时
-            if (!hideTimeout && navbar.classList.contains('navbar-visible')) {
-                hideTimeout = setTimeout(hideNavbar, HIDE_DELAY);
-            }
+        // 鼠标在导航栏区域（包括下拉菜单）-> 显示
+        else if (isMouseInNavbarArea(mouseX, mouseY)) {
+            showNavbar();
+        }
+        // 鼠标离开导航栏区域 -> 准备隐藏
+        else if (!hideTimeout && navbar.classList.contains('navbar-visible')) {
+            hideTimeout = setTimeout(hideNavbar, HIDE_DELAY);
         }
     });
 
-    // 鼠标进入导航栏 -> 取消隐藏
+    // 鼠标进入导航栏 -> 显示
     navbar.addEventListener('mouseenter', () => {
         showNavbar();
     });
 
-    // 鼠标离开导航栏 -> 准备隐藏
-    navbar.addEventListener('mouseleave', (e) => {
-        // 如果鼠标是向上离开（去往顶部触发区），不隐藏
-        if (e.clientY <= TRIGGER_Height) return;
-        
+    // 鼠标离开导航栏 -> 准备隐藏（但会检查是否在下拉菜单上）
+    navbar.addEventListener('mouseleave', () => {
         if (hideTimeout) {
             clearTimeout(hideTimeout);
         }
-        hideTimeout = setTimeout(hideNavbar, HIDE_DELAY);
+        hideTimeout = setTimeout(() => {
+            // 再次检查鼠标位置，防止快速移动时的闪烁
+            // 这里不需要额外检查，因为 mousemove 事件会处理
+            hideNavbar();
+        }, HIDE_DELAY);
     });
     
     // 初始化：如果鼠标已经在顶部，显示

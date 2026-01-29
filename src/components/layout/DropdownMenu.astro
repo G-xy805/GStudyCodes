@@ -90,7 +90,7 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 	}
 
 	.dropdown-menu {
-		@apply absolute top-[calc(100%+0.625rem)] left-0 pt-0 opacity-0 invisible transition-all duration-200 ease-out transform translate-y-2 z-50;
+		@apply absolute top-[calc(100%+0.625rem)] left-0 pt-0 opacity-0 invisible transition-all duration-200 ease-out transform translate-y-2 z-[100];
 	}
 
 	.dropdown-container:hover .dropdown-menu,
@@ -126,7 +126,7 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 </style>
 
 <script>
-	// 键盘导航支持
+	// 键盘导航支持和鼠标悬浮交互
 	document.addEventListener('DOMContentLoaded', function() {
 		const dropdowns = document.querySelectorAll('[data-dropdown]');
 		
@@ -137,25 +137,70 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 			
 			if (!trigger || !menu) return;
 			
+			// 延迟关闭定时器
+			let closeTimeout: ReturnType<typeof setTimeout> | null = null;
+			
+			// 打开下拉菜单
+			function openMenu() {
+				if (closeTimeout) {
+					clearTimeout(closeTimeout);
+					closeTimeout = null;
+				}
+				trigger.setAttribute('aria-expanded', 'true');
+				dropdown.setAttribute('data-expanded', 'true');
+			}
+			
+			// 关闭下拉菜单（带延迟）
+			function closeMenu() {
+				closeTimeout = setTimeout(() => {
+					trigger.setAttribute('aria-expanded', 'false');
+					dropdown.setAttribute('data-expanded', 'false');
+				}, 150); // 150ms延迟，给用户时间移动到菜单上
+			}
+			
+			// 鼠标悬浮触发器时打开菜单
+			trigger.addEventListener('mouseenter', openMenu);
+			
+			// 鼠标离开触发器时延迟关闭
+			trigger.addEventListener('mouseleave', closeMenu);
+			
+			// 鼠标悬浮菜单时保持打开
+			menu.addEventListener('mouseenter', () => {
+				if (closeTimeout) {
+					clearTimeout(closeTimeout);
+					closeTimeout = null;
+				}
+			});
+			
+			// 鼠标离开菜单时关闭
+			menu.addEventListener('mouseleave', closeMenu);
+			
 			// 键盘事件处理
 			trigger.addEventListener('keydown', function(e: KeyboardEvent) {
 				if (e.key === 'Enter' || e.key === ' ') {
 					e.preventDefault();
-					toggleDropdown(dropdown, trigger, menu);
+					const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+					if (isOpen) {
+						trigger.setAttribute('aria-expanded', 'false');
+						dropdown.setAttribute('data-expanded', 'false');
+					} else {
+						trigger.setAttribute('aria-expanded', 'true');
+						dropdown.setAttribute('data-expanded', 'true');
+						if (items.length > 0) {
+							items[0].focus();
+						}
+					}
 				} else if (e.key === 'ArrowDown') {
 					e.preventDefault();
-					openDropdown(dropdown, trigger, menu);
+					trigger.setAttribute('aria-expanded', 'true');
+					dropdown.setAttribute('data-expanded', 'true');
 					if (items.length > 0) {
 						items[0].focus();
 					}
 				} else if (e.key === 'Escape') {
-					closeDropdown(dropdown, trigger, menu);
+					trigger.setAttribute('aria-expanded', 'false');
+					dropdown.setAttribute('data-expanded', 'false');
 				}
-			});
-
-			trigger.addEventListener('click', function(e: MouseEvent) {
-				e.preventDefault();
-				toggleDropdown(dropdown, trigger, menu);
 			});
 			
 			// 菜单项键盘导航
@@ -170,7 +215,8 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 						const prevIndex = (index - 1 + items.length) % items.length;
 						items[prevIndex].focus();
 					} else if (e.key === 'Escape') {
-						closeDropdown(dropdown, trigger, menu);
+						trigger.setAttribute('aria-expanded', 'false');
+						dropdown.setAttribute('data-expanded', 'false');
 						trigger.focus();
 					}
 				});
@@ -184,7 +230,8 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 					const trigger = dropdown.querySelector('[data-dropdown-trigger]');
 					const menu = dropdown.querySelector('[data-dropdown-menu]');
 					if (trigger && menu) {
-						closeDropdown(dropdown, trigger, menu);
+						trigger.setAttribute('aria-expanded', 'false');
+						dropdown.setAttribute('data-expanded', 'false');
 					}
 				}
 			});
@@ -203,10 +250,19 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 	function openDropdown(_dropdown: Element, trigger: Element, _menu: Element) {
 		trigger.setAttribute('aria-expanded', 'true');
 		_dropdown.setAttribute('data-expanded', 'true');
+		
+		// 设置焦点到第一个菜单项
+		const firstItem = _menu.querySelector('.dropdown-item') as HTMLElement | null;
+		if (firstItem) {
+			firstItem.focus();
+		}
 	}
 	
 	function closeDropdown(_dropdown: Element, trigger: Element, _menu: Element) {
 		trigger.setAttribute('aria-expanded', 'false');
 		_dropdown.setAttribute('data-expanded', 'false');
+		
+		// 恢复焦点到触发按钮
+		trigger.focus();
 	}
 </script>
