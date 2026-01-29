@@ -56,12 +56,23 @@
 
 .month {
   &-title {
-    @apply flex items-center gap-2 text-xl font-semibold mb-5 pb-2 border-b;
-    color: var(--secondary);
-    border-color: rgba(0, 0, 0, 0.1);
+    @apply flex items-center gap-2 text-xl font-semibold mb-5 pl-4;
+    color: var(--text-color);
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      bottom: 0.5rem;
+      width: 4px;
+      background: var(--primary-gradient);
+      border-radius: 2px;
+    }
     
     .dark & {
-      border-color: rgba(255, 255, 255, 0.2);
+      color: rgba(255, 255, 255, 0.95);
     }
   }
 

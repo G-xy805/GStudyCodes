@@ -1,4 +1,4 @@
-import { type CollectionEntry, getCollection } from "astro:content";
+import { type CollectionEntry, getCollection, render } from "astro:content";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import { getCategoryUrl } from "@utils/url-utils";
@@ -9,7 +9,19 @@ async function getRawSortedPosts() {
 		return import.meta.env.PROD ? data.draft !== true : true;
 	});
 
-	const sorted = allBlogPosts.sort((a, b) => {
+	// 先渲染所有文章以获取阅读时间数据
+	const postsWithReadingTime = await Promise.all(
+		allBlogPosts.map(async (post) => {
+			// 渲染文章内容以获取frontmatter中的阅读时间数据
+			const { remarkPluginFrontmatter } = await render(post);
+			return {
+				...post,
+				readingTime: remarkPluginFrontmatter.minutes || 0
+			};
+		})
+	);
+
+	const sorted = postsWithReadingTime.sort((a, b) => {
 		// 首先按置顶状态排序，置顶文章在前
 		if (a.data.pinned && !b.data.pinned) return -1;
 		if (!a.data.pinned && b.data.pinned) return 1;
@@ -35,7 +47,63 @@ async function getRawSortedPosts() {
 
 		return orderA - orderB; // 按order升序（数字小的在前）
 	});
-	return sorted;
+
+	// 返回原始的post对象
+	return sorted.map(post => post);
+}
+
+/**
+ * 获取按阅读时间排序的文章（用于热门文章）
+ * @returns Promise<CollectionEntry<"posts">[]>
+ */
+export async function getPopularPosts() {
+	const allBlogPosts = await getCollection("posts", ({ data }) => {
+		return import.meta.env.PROD ? data.draft !== true : true;
+	});
+
+	// 先渲染所有文章以获取阅读时间数据
+	const postsWithReadingTime = await Promise.all(
+		allBlogPosts.map(async (post) => {
+			// 渲染文章内容以获取frontmatter中的阅读时间数据
+			const { remarkPluginFrontmatter } = await render(post);
+			return {
+				...post,
+				readingTime: remarkPluginFrontmatter.minutes || 0
+			};
+		})
+	);
+
+	// 按阅读时间排序（从长到短）
+	const sorted = postsWithReadingTime.sort((a, b) => {
+		// 首先按阅读时间排序（从长到短）
+		if (a.readingTime !== b.readingTime) {
+			return b.readingTime - a.readingTime;
+		}
+
+		// 如果阅读时间相同，则按发布日期排序（最新的在前）
+		const dateA = new Date(a.data.published);
+		const dateB = new Date(b.data.published);
+
+		// 如果发布日期不同，则按日期排序
+		if (dateA.getTime() !== dateB.getTime()) {
+			return dateA > dateB ? -1 : 1;
+		}
+
+		// 如果发布日期相同，则按order字段排序（数字小的在前）
+		const orderA =
+			typeof a.data.order !== "undefined"
+				? a.data.order
+				: Number.MAX_SAFE_INTEGER;
+		const orderB =
+			typeof b.data.order !== "undefined"
+				? b.data.order
+				: Number.MAX_SAFE_INTEGER;
+
+		return orderA - orderB; // 按order升序（数字小的在前）
+	});
+
+	// 返回原始的post对象
+	return sorted.map(post => post);
 }
 
 export async function getSortedPosts() {

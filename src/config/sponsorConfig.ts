@@ -13,7 +13,7 @@ export const sponsorConfig: SponsorConfig = {
 		{
 			name: "支付宝",
 			icon: "ri:alipay-line",
-			qrCode: "/assets/images/alipay.webp", // 收款码图片路径（需要放在 public 目录下）
+			qrCode: "/assets/images/sponsor/zhifubao.webp", // 收款码图片路径
 			link: "",
 			description: "使用 支付宝 扫码赞助",
 			enabled: true,
@@ -21,7 +21,7 @@ export const sponsorConfig: SponsorConfig = {
 		{
 			name: "微信",
 			icon: "ri:wechat-2-line",
-			qrCode: "/assets/images/wechat.webp", // 收款码图片路径
+			qrCode: "/assets/images/sponsor/weixin.webp", // 收款码图片路径
 			link: "",
 			description: "使用 微信 扫码赞助",
 			enabled: true,
@@ -32,7 +32,7 @@ export const sponsorConfig: SponsorConfig = {
 			qrCode: "",
 			link: "https://mp.weixin.qq.com/mp/homepage?__biz=MzU2MTI5MzE4OA==&hid=1&sn=356f3016aeac48fc034804fca1307349&scene=18#wechat_redirect",
 			description: "免费三连就是最大的支持",
-			enabled: true,
+			enabled: false,
 		},
 		{
 			name: "Bilibili",
@@ -40,7 +40,7 @@ export const sponsorConfig: SponsorConfig = {
 			qrCode: "",
 			link: "https://space.bilibili.com/341981702",
 			description: "免费三连就是最大的支持",
-			enabled: true,
+			enabled: false,
 		},
 	],
 };

@@ -56,7 +56,6 @@ const enabledMethods = sponsorConfig.methods.filter((method) => method.enabled);
                           {method.icon && (
                             <Icon 
                               icon={method.icon} 
-                              size="2xl" 
                               class={`transition-colors ${
                                 method.name === '支付宝' ? 'text-blue-500' :
                                 method.name === '微信' ? 'text-green-500' :
@@ -64,6 +63,7 @@ const enabledMethods = sponsorConfig.methods.filter((method) => method.enabled);
                                 method.name === 'Bilibili' ? 'text-pink-500' :
                                 'text-[#394E6A]'
                               }`} 
+                              style="width: 1.125rem; height: 1.125rem;" 
                             />
                           )}
                           <h3 class="text-lg font-semibold text-[#394E6A] dark:text-white">

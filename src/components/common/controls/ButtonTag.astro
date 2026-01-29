@@ -21,7 +21,9 @@ const className = Astro.props.class;
         border border-[var(--primary)]/20
         bg-[var(--primary)]/5 text-[var(--primary)]
         hover:bg-[var(--primary)] hover:text-white hover:border-[var(--primary)]
-        focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 focus-visible:outline-none
+        focus-visible:bg-[var(--primary)] focus-visible:text-white focus-visible:border-[var(--primary)] focus-visible:outline-none
+        dark:hover:bg-[var(--primary)] dark:hover:text-white dark:hover:border-[var(--primary)]
+        dark:focus-visible:bg-[var(--primary)] dark:focus-visible:text-white dark:focus-visible:border-[var(--primary)]
         active:scale-95`,
         className
     ]}

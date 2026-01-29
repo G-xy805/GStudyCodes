@@ -386,64 +386,238 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
     
     /* 优化标题排版 */
     h1 {
-        @apply text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight mb-6;
+        @apply text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight mb-8;
+        color: var(--text-color);
+        position: relative;
+        padding-bottom: 0.5rem;
+        display: inline-block;
+    }
+    
+    h1::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: var(--primary-gradient);
+        border-radius: 2px;
     }
     
     h2 {
-        @apply text-2xl md:text-3xl lg:text-4xl font-bold leading-tight tracking-tight mb-5;
+        @apply text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight mb-7;
+        color: var(--text-color);
+        position: relative;
+        padding-bottom: 0.4rem;
+        display: inline-block;
+    }
+    
+    h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: var(--primary-gradient);
+        border-radius: 1.5px;
     }
     
     h3 {
-        @apply text-xl md:text-2xl lg:text-3xl font-semibold leading-tight tracking-tight mb-4;
+        @apply text-2xl md:text-3xl lg:text-4xl font-semibold leading-tight tracking-tight mb-6;
+        color: var(--text-color);
+        position: relative;
+        padding-left: 1rem;
+    }
+    
+    h3::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0.5rem;
+        bottom: 0.5rem;
+        width: 4px;
+        background: var(--primary-gradient);
+        border-radius: 2px;
     }
     
     h4 {
-        @apply text-lg md:text-xl font-semibold leading-tight tracking-tight mb-3;
+        @apply text-xl md:text-2xl font-semibold leading-tight tracking-tight mb-5;
+        color: var(--text-color);
     }
     
     h5 {
-        @apply text-base md:text-lg font-semibold leading-tight tracking-normal mb-2;
+        @apply text-lg md:text-xl font-semibold leading-tight tracking-normal mb-4;
+        color: var(--text-secondary);
     }
     
     h6 {
-        @apply text-sm md:text-base font-semibold leading-tight tracking-normal mb-2;
+        @apply text-base md:text-lg font-semibold leading-tight tracking-normal mb-3;
+        color: var(--text-secondary);
     }
     
     /* 优化正文排版 */
     p {
-        @apply text-base leading-relaxed tracking-wide mb-4 text-[var(--text-color)];
+        @apply text-base md:text-lg leading-relaxed tracking-wide mb-6 text-[var(--text-color)];
+        line-height: 1.7;
+        letter-spacing: 0.02em;
     }
     
     /* 优化链接样式 */
     a {
         @apply text-[var(--primary)] hover:text-[var(--secondary)] transition-colors duration-200;
+        position: relative;
+        text-decoration: none;
+    }
+    
+    a:hover {
+        text-decoration: none;
+    }
+    
+    /* 优化暗色主题下的链接样式 */
+    :root.dark a {
+        @apply text-[var(--primary)] hover:text-white transition-colors duration-200;
+    }
+    
+    :root.dark a:hover {
+        text-decoration: none;
     }
     
     /* 优化代码样式 */
     code {
-        @apply font-mono text-sm;
+        @apply font-mono text-sm bg-[var(--code-bg)] px-1.5 py-0.5 rounded-md;
+        color: var(--code-text);
+    }
+    
+    /* 移除banner区域标题的装饰线条 */
+    .banner-text-overlay h1,
+    .banner-text-overlay h2,
+    .banner-text-overlay h3,
+    .banner-text-overlay h4,
+    .banner-text-overlay h5,
+    .banner-text-overlay h6 {
+        @apply pb-0 mb-0;
+        position: static;
+    }
+    
+    .banner-text-overlay h1::after,
+    .banner-text-overlay h2::after,
+    .banner-text-overlay h3::before,
+    .banner-text-overlay h3::after {
+        display: none;
+        content: none;
     }
     
     /* 优化列表样式 */
     ul, ol {
-        @apply mb-4 text-[var(--text-color)];
+        @apply mb-6 text-[var(--text-color)];
+        line-height: 1.7;
     }
     
     ul {
-        @apply list-disc pl-5;
+        @apply list-disc pl-6;
     }
     
     ol {
-        @apply list-decimal pl-5;
+        @apply list-decimal pl-6;
     }
     
     li {
-        @apply mb-2 leading-relaxed;
+        @apply mb-3 leading-relaxed;
     }
     
     li > ul,
     li > ol {
-        @apply mt-2 ml-4 mb-0;
+        @apply mt-3 ml-6 mb-0;
+    }
+    
+    /* 优化引用样式 */
+    blockquote {
+        @apply border-l-4 border-[var(--primary)] pl-4 py-2 my-8 italic text-[var(--text-secondary)];
+        background-color: rgba(var(--primary-rgb), 0.05);
+        border-radius: 0 8px 8px 0;
+    }
+    
+    /* 优化强调样式 */
+    strong {
+        @apply font-semibold text-[var(--text-color)];
+    }
+    
+    em {
+        @apply italic text-[var(--text-secondary)];
+    }
+    
+    /* 优化分隔线样式 */
+    .divider {
+        @apply my-12 relative;
+    }
+    
+    .divider::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: var(--line-color);
+        transform: translateY(-50%);
+    }
+    
+    .divider-gradient {
+        @apply my-12 relative;
+    }
+    
+    .divider-gradient::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--primary-gradient);
+        transform: translateY(-50%);
+        border-radius: 1px;
+    }
+    
+    .divider-dashed {
+        @apply my-12 relative;
+    }
+    
+    .divider-dashed::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: repeating-linear-gradient(
+            to right,
+            var(--line-color) 0px,
+            var(--line-color) 8px,
+            transparent 8px,
+            transparent 16px
+        );
+        transform: translateY(-50%);
+    }
+    
+    /* 优化水平分割布局 */
+    .section-divider {
+        @apply py-16 relative;
+    }
+    
+    .section-divider::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 20%;
+        right: 20%;
+        height: 1px;
+        background: var(--line-color);
+    }
+    
+    /* 优化卡片内分隔线 */
+    .card-divider {
+        @apply my-6 border-t border-[var(--card-border)];
     }
     
     .card-shadow {
@@ -452,7 +626,7 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
     
     .expand-animation {
         @apply relative before:ease-out before:transition active:bg-none hover:before:bg-[var(--btn-plain-bg-hover)] active:before:bg-[var(--btn-plain-bg-active)] z-0
-        before:absolute before:rounded-[inherit] before:inset-0 before:scale-[0.85] hover:before:scale-100 before:-z-10
+        before:absolute before:rounded-[inherit] before:inset-0 before:scale-[0.95] hover:before:scale-100 before:-z-10 before:pointer-events-none
     }
     
     .link {
@@ -778,6 +952,76 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
         color: #60A5FA;
     }
 
+    /* 暗色模式排版优化 */
+    :root.dark h1,
+    :root.dark h2,
+    :root.dark h3,
+    :root.dark h4 {
+        color: rgba(255, 255, 255, 0.95);
+    }
+
+    :root.dark h5,
+    :root.dark h6 {
+        color: rgba(255, 255, 255, 0.85);
+    }
+
+    :root.dark p,
+    :root.dark ul,
+    :root.dark ol,
+    :root.dark li {
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.7;
+    }
+
+    :root.dark blockquote {
+        color: rgba(255, 255, 255, 0.7);
+        background-color: rgba(var(--primary-rgb), 0.1);
+    }
+
+    :root.dark strong {
+        color: rgba(255, 255, 255, 0.95);
+    }
+
+    :root.dark em {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    :root.dark code {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    :root.dark a {
+        color: var(--primary);
+    }
+
+    :root.dark a:hover {
+        text-decoration-color: var(--primary);
+    }
+
+    /* 暗色模式分隔线优化 */
+    :root.dark .divider::before {
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    :root.dark .divider-dashed::before {
+        background: repeating-linear-gradient(
+            to right,
+            rgba(255, 255, 255, 0.15) 0px,
+            rgba(255, 255, 255, 0.15) 8px,
+            transparent 8px,
+            transparent 16px
+        );
+    }
+
+    :root.dark .section-divider::before {
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    :root.dark .card-divider {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
     .badge::before {
         content: '';
         position: absolute;
@@ -896,8 +1140,7 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
     }
 
     .link-underline {
-        @apply transition-colors duration-150 underline decoration-2 decoration-dashed decoration-[var(--link-underline)]
-        hover:decoration-[var(--link-hover)] active:decoration-[var(--link-active)] underline-offset-[0.25rem]
+        @apply transition-colors duration-150 no-underline
     }
 
     .link:hover span {
@@ -1059,7 +1302,7 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
         @apply outline-none;
     }
     .dropdown-item:focus-visible {
-        box-shadow: 0 0 0 3px var(--primary);
+        background-color: var(--btn-plain-bg-hover);
         border-radius: calc(var(--radius-large) - 0.5rem);
     }
 
@@ -1067,7 +1310,7 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
         @apply outline-none;
     }
     .mobile-dropdown button:focus-visible {
-        box-shadow: 0 0 0 3px var(--primary);
+        background-color: var(--btn-plain-bg-hover);
         border-radius: var(--radius-md);
     }
 
@@ -1078,7 +1321,7 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
     .btn-outline:focus-visible,
     .btn-card:focus-visible {
         @apply outline-none;
-        box-shadow: 0 0 0 3px var(--primary);
+        background-color: var(--btn-plain-bg-hover);
     }
 
     /* 按钮点击涟漪效果 */
@@ -1121,24 +1364,9 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
         animation: slideInUp 0.5s var(--ease-out-expo) forwards;
     }
 
-    /* 链接悬停下划线动画 */
+    /* 链接悬停效果 */
     .link-hover-underline {
         position: relative;
-    }
-
-    .link-hover-underline::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: var(--primary);
-        transition: width 0.3s ease;
-    }
-
-    .link-hover-underline:hover::after {
-        width: 100%;
     }
 
     /* 按钮悬停增强 */
@@ -1393,67 +1621,150 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
 }
 
 /* 小屏手机优化 (320px - 480px) */
-@media (max-width: 480px) {
-  .post-card {
-    @apply m-3 !important;
-    width: calc(100% - 1.5rem) !important;
-  }
-  
-  .post-card-title {
-    @apply text-lg !important;
-  }
-  
-  .post-card .description {
-    @apply text-xs !important;
-    -webkit-line-clamp: 3 !important;
-  }
-  
-  .post-list-container {
-    @apply px-0 !important;
-  }
-}
-
-/* 平板设备优化 (768px - 1023px) */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .post-card {
-    @apply m-4 !important;
-  }
-  
-  .post-card-title {
-    @apply text-xl !important;
-  }
-  
-  .post-card .description {
-    @apply text-sm !important;
-  }
-}
-
-/* 横屏模式优化 */
-@media (max-width: 1023px) and (orientation: landscape) {
-  .post-card {
-    @apply flex-row !important;
-    min-height: 200px !important;
-  }
-  
-  .post-card > a {
-    @apply w-1/3 !important;
-    aspect-ratio: 1 / 1 !important;
-    border-radius: var(--radius-large) 0 0 var(--radius-large) !important;
-  }
-  
-  .post-card > div {
-    @apply p-4 !important;
-  }
-  
-  .post-card-title {
-    @apply text-lg !important;
-  }
-  
-  .post-card .description {
-    @apply text-xs !important;
-    -webkit-line-clamp: 2 !important;
-  }
-}
+    @media (max-width: 480px) {
+      /* 响应式标题调整 */
+      h1 {
+        @apply text-3xl md:text-4xl font-bold mb-6;
+      }
+      
+      h2 {
+        @apply text-2xl md:text-3xl font-bold mb-5;
+      }
+      
+      h3 {
+        @apply text-xl md:text-2xl font-semibold mb-4;
+      }
+      
+      h4 {
+        @apply text-lg md:text-xl font-semibold mb-3;
+      }
+      
+      h5 {
+        @apply text-base md:text-lg font-semibold mb-2;
+      }
+      
+      h6 {
+        @apply text-sm md:text-base font-semibold mb-2;
+      }
+      
+      /* 响应式正文调整 */
+      p {
+        @apply text-sm leading-relaxed mb-5;
+        line-height: 1.6;
+      }
+      
+      /* 响应式列表调整 */
+      ul, ol {
+        @apply mb-5;
+        line-height: 1.6;
+      }
+      
+      li {
+        @apply mb-2;
+      }
+      
+      /* 响应式引用调整 */
+      blockquote {
+        @apply my-6 pl-3;
+      }
+      
+      /* 响应式卡片调整 */
+      .post-card {
+        @apply m-3 !important;
+        width: calc(100% - 1.5rem) !important;
+      }
+      
+      .post-card-title {
+        @apply text-lg !important;
+      }
+      
+      .post-card .description {
+        @apply text-xs !important;
+        -webkit-line-clamp: 3 !important;
+      }
+      
+      .post-list-container {
+        @apply px-0 !important;
+      }
+    }
+    
+    /* 平板设备响应式排版优化 */
+    @media (min-width: 768px) and (max-width: 1023px) {
+      /* 响应式标题调整 */
+      h1 {
+        @apply text-3xl md:text-4xl lg:text-5xl font-bold mb-7;
+      }
+      
+      h2 {
+        @apply text-2xl md:text-3xl lg:text-4xl font-bold mb-6;
+      }
+      
+      h3 {
+        @apply text-xl md:text-2xl lg:text-3xl font-semibold mb-5;
+      }
+      
+      /* 响应式正文调整 */
+      p {
+        @apply text-base leading-relaxed mb-5;
+        line-height: 1.65;
+      }
+      
+      /* 响应式卡片调整 */
+      .post-card {
+        @apply m-4 !important;
+      }
+      
+      .post-card-title {
+        @apply text-xl !important;
+      }
+      
+      .post-card .description {
+        @apply text-sm !important;
+      }
+    }
+    
+    /* 横屏模式响应式排版优化 */
+    @media (max-width: 1023px) and (orientation: landscape) {
+      /* 响应式标题调整 */
+      h1 {
+        @apply text-3xl md:text-4xl font-bold mb-6;
+      }
+      
+      h2 {
+        @apply text-2xl md:text-3xl font-bold mb-5;
+      }
+      
+      /* 响应式正文调整 */
+      p {
+        @apply text-sm md:text-base leading-relaxed mb-4;
+        line-height: 1.6;
+      }
+      
+      /* 响应式卡片调整 */
+      .post-card {
+        @apply flex-row !important;
+        min-height: 200px !important;
+      }
+      
+      .post-card > a {
+        @apply w-1/3 !important;
+        aspect-ratio: 1 / 1 !important;
+        border-radius: var(--radius-large) 0 0 var(--radius-large) !important;
+      }
+      
+      .post-card > div {
+        @apply p-4 !important;
+      }
+      
+      .post-card-title {
+        @apply text-lg !important;
+      }
+      
+      .post-card .description {
+        @apply text-xs !important;
+        -webkit-line-clamp: 2 !important;
+      }
+    }
 
 /* 响应式分页样式 */
 .device-mobile .pagination-info {

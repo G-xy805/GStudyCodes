@@ -52,13 +52,14 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 			icon: "ri:information-line",
 			children: [
 				LinkPreset.About,
-				{
-					name: "项目",
-					url: "/project/",
-					icon: "ri:code-box-line",
-				},
-				LinkPreset.Friends,
-				...(siteConfig.pages.sponsor ? [LinkPreset.Sponsor] : []), // 根据配置决定是否添加赞助页面
+				// 暂时取消以下菜单项
+				// {
+				// 	name: "项目",
+				// 	url: "/project/",
+				// 	icon: "ri:code-box-line",
+				// },
+				// LinkPreset.Friends,
+				// ...(siteConfig.pages.sponsor ? [LinkPreset.Sponsor] : []), // 根据配置决定是否添加赞助页面
 			],
 		},
 	];

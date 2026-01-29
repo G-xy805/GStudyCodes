@@ -203,7 +203,8 @@ html.dark {
     @apply bg-[var(--inline-code-bg)] rounded-md text-[--inline-code-color] px-1 py-0.5 font-semibold;
   }
 
-  li {
+  .tk-content li,
+  .tk-preview-container li {
     @apply before:content-["•"] before:text-[var(--primary)];
   }
 }
