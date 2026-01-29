@@ -1,44 +1,52 @@
 ---
 // 可靠的图标组件
 // 提供加载状态管理和错误处理
+import { getIcon, iconSizes, iconColors } from "@/config/iconConfig";
 
 export interface Props {
-	icon: string;
+	icon?: string; // 直接图标名称
+	category?: string; // 图标分类
+	name?: string; // 图标名称
 	class?: string;
 	style?: string;
 	size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl";
 	color?: string;
+	colorType?: keyof typeof iconColors; // 颜色类型
 	fallback?: string; // 备用图标或文本
 	loading?: "lazy" | "eager";
 }
 
 const {
-	icon,
+	icon: directIcon,
+	category,
+	name,
 	class: className = "",
 	style = "",
 	size = "md",
 	color,
+	colorType,
 	fallback = "●",
 	loading = "lazy",
 } = Astro.props;
 
-// 尺寸映射
-const sizeClasses = {
-	xs: "text-xs",
-	sm: "text-sm",
-	md: "text-base",
-	lg: "text-lg",
-	xl: "text-xl",
-	"2xl": "text-2xl",
-	"3xl": "text-3xl",
-	"4xl": "text-4xl",
-	"5xl": "text-5xl",
-};
+// 获取图标
+let icon = directIcon;
+if (category && name) {
+	icon = getIcon(category, name);
+}
 
-const sizeClass = sizeClasses[size] || sizeClasses.md;
+// 尺寸映射
+const sizeClass = iconSizes[size] || iconSizes.md;
+
+// 颜色处理
+let colorClass = "";
+if (colorType && iconColors[colorType]) {
+	colorClass = iconColors[colorType];
+}
+
 const colorStyle = color ? `color: ${color};` : "";
 const combinedStyle = `${colorStyle}${style}`;
-const combinedClass = `${sizeClass} ${className}`.trim();
+const combinedClass = `${sizeClass} ${colorClass} ${className}`.trim();
 
 // 生成唯一ID
 const iconId = `icon-${Math.random().toString(36).slice(2, 11)}`;

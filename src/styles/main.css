@@ -74,6 +74,8 @@ body {
                 radial-gradient(circle at 100% 100%, rgba(var(--accent-rgb), 0.05), transparent 50%);
     opacity: 0.8;
     filter: blur(40px);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: background, opacity;
 }
 
 /* 背景纹理 */
@@ -86,6 +88,15 @@ body {
     background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     opacity: 0.6;
     z-index: -1;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity;
+}
+
+/* Banner 图片过渡效果 */
+#banner img,
+#banner-wrapper div[class*="lg:hidden"] img {
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity;
 }
 
 /* 黑暗模式下的背景调整 */
@@ -282,7 +293,7 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
     
     /* 文章卡片标题样式 */
     .post-card-title {
-        color: #394E6A;
+        color: var(--text-color);
         @apply transition-all duration-300;
     }
     
@@ -388,6 +399,14 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
         @apply text-lg md:text-xl font-semibold leading-tight tracking-tight mb-3;
     }
     
+    h5 {
+        @apply text-base md:text-lg font-semibold leading-tight tracking-normal mb-2;
+    }
+    
+    h6 {
+        @apply text-sm md:text-base font-semibold leading-tight tracking-normal mb-2;
+    }
+    
     /* 优化正文排版 */
     p {
         @apply text-base leading-relaxed tracking-wide mb-4 text-[var(--text-color)];
@@ -401,6 +420,28 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
     /* 优化代码样式 */
     code {
         @apply font-mono text-sm;
+    }
+    
+    /* 优化列表样式 */
+    ul, ol {
+        @apply mb-4 text-[var(--text-color)];
+    }
+    
+    ul {
+        @apply list-disc pl-5;
+    }
+    
+    ol {
+        @apply list-decimal pl-5;
+    }
+    
+    li {
+        @apply mb-2 leading-relaxed;
+    }
+    
+    li > ul,
+    li > ol {
+        @apply mt-2 ml-4 mb-0;
     }
     
     .card-shadow {
@@ -445,7 +486,7 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
     }
     .btn-plain {
         @apply transition-colors duration-150 relative flex items-center justify-center bg-none
-        text-[#394E6A] hover:text-[var(--primary)] dark:text-white/75 dark:hover:text-[var(--primary)];
+        text-[var(--text-color)] hover:text-[var(--primary)] dark:text-white/75 dark:hover:text-[var(--primary)];
         &:not(.scale-animation) {
             @apply hover:bg-[var(--btn-plain-bg-hover)] active:bg-[var(--btn-plain-bg-active)]
         }
@@ -596,7 +637,7 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
     /* 次要按钮样式 */
     .btn-secondary {
         @apply transition-all duration-300 ease-in-out flex items-center justify-center rounded-full px-4 py-2 font-medium text-sm relative overflow-hidden;
-        background: linear-gradient(135deg, var(--secondary), #4F46E5);
+        background: var(--secondary-gradient);
         color: white;
         box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
         border: none;
@@ -703,10 +744,10 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
     
     /* base-content color variants for dark mode */
     .text-base-content {
-        @apply text-[#111827] dark:text-white
+        @apply text-[var(--text-color)] dark:text-white
     }
     .text-base-content\/70 {
-        @apply text-[#111827]/70 dark:text-white/70
+        @apply text-[var(--text-secondary)] dark:text-white/70
     }
 
     /* 下拉菜单样式 */
@@ -735,7 +776,7 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
     }
 
     .dropdown-item {
-        @apply flex items-center justify-between px-4 py-2.5 text-[#394E6A] dark:text-white/75 hover:text-[var(--primary)] hover:bg-[var(--btn-plain-bg-hover)] transition-colors duration-150 font-medium;
+        @apply flex items-center justify-between px-4 py-2.5 text-[var(--text-color)] dark:text-white/75 hover:text-[var(--primary)] hover:bg-[var(--btn-plain-bg-hover)] transition-colors duration-150 font-medium;
     }
 
     .dropdown-item:first-child {
@@ -883,21 +924,58 @@ a, button, .btn, .btn-regular, .btn-plain, .btn-card, .dropdown label, .dropdown
     }
 
     /* 全局过渡优化 */
-    * {
-        transition: all 0.3s var(--ease-in-out-cubic);
-    }
+* {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-    /* 禁用过渡的元素 */
-    *, *::before, *::after {
-        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-    }
+/* 禁用过渡的元素 */
+*, *::before, *::after {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+}
 
-    /* 优化性能 */
-    .gpu-accelerated {
-        transform: translateZ(0);
-        backface-visibility: hidden;
-        perspective: 1000px;
-    }
+/* 优化性能 */
+.gpu-accelerated,
+.background-container,
+.gradient-bg,
+.texture-bg,
+#banner,
+#banner-wrapper div[class*="lg:hidden"] {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* 主题切换时的硬件加速 */
+.theme-transitioning {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* 主题切换覆盖层动画 */
+.theme-transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    z-index: 9999;
+    opacity: 0;
+    transform: scale(1.1);
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-transition-overlay.active {
+    opacity: 0.15;
+    transform: scale(1);
+}
+
+.theme-transition-overlay.fade-out {
+    opacity: 0;
+    transform: scale(0.9);
+}
 
     .meta-icon {
         @apply w-8 h-8 transition-colors duration-150 rounded-md flex items-center justify-center bg-[var(--btn-regular-bg)]

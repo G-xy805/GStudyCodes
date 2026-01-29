@@ -18,7 +18,7 @@
 #navbar a,
 #navbar button,
 #navbar .btn-plain {
-    color: #394E6A; /* 白天模式颜色 */
+    color: var(--text-color); /* 白天模式颜色 */
     font-size: 1.25rem; /* 进一步增大导航栏字号 */
 }
 

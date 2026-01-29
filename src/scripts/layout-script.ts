@@ -557,15 +557,55 @@ function preloadBackgroundImages() {
 
 // 添加主题切换监听器，动态更新背景图片
 function addThemeChangeListener() {
+	// 创建主题切换覆盖层元素
+	const createOverlay = () => {
+		let overlay = document.getElementById('theme-transition-overlay');
+		if (!overlay) {
+			overlay = document.createElement('div');
+			overlay.id = 'theme-transition-overlay';
+			overlay.className = 'theme-transition-overlay';
+			document.body.appendChild(overlay);
+		}
+		return overlay;
+	};
+	
+	// 显示主题切换动画
+	const showThemeTransition = () => {
+		const overlay = createOverlay();
+		
+		// 重置覆盖层状态
+		overlay.classList.remove('active', 'fade-out');
+		
+		// 触发重排
+		overlay.offsetHeight;
+		
+		// 显示覆盖层
+		overlay.classList.add('active');
+		
+		// 动画完成后淡出
+		setTimeout(() => {
+			overlay.classList.add('fade-out');
+			
+			// 动画结束后移除覆盖层
+			setTimeout(() => {
+				overlay.remove();
+			}, 400);
+		}, 200);
+	};
+	
 	// 监听主题切换事件
 	document.addEventListener('theme:changed', () => {
-		// 移除 setTimeout 延迟，直接执行
+		// 显示主题切换动画
+		showThemeTransition();
+		// 直接执行背景图片更新
 		updateBackgroundImages();
 	});
 	
 	// 监听系统主题变化
 	window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-		// 移除 setTimeout 延迟，直接执行
+		// 显示主题切换动画
+		showThemeTransition();
+		// 直接执行背景图片更新
 		updateBackgroundImages();
 	});
 }
@@ -598,16 +638,39 @@ function updateBackgroundImages() {
 		// 根据主题选择图片
 		const selectedImages = isDark ? darkImages : lightImages;
 		
+		// 添加主题切换硬件加速类
+		document.documentElement.classList.add('theme-transitioning');
+		
+		// 添加淡入淡出效果的函数
+		const updateWithFade = (imgElement: HTMLImageElement, newSrc: string) => {
+			if (!imgElement) return;
+			
+			// 开始淡出
+			imgElement.style.opacity = '0';
+			
+			// 等待淡出完成后更新图片
+			setTimeout(() => {
+				imgElement.setAttribute('src', newSrc);
+				
+				// 图片加载完成后淡入
+				imgElement.onload = () => {
+					imgElement.style.opacity = '1';
+					// 动画完成后移除硬件加速类
+					setTimeout(() => {
+						document.documentElement.classList.remove('theme-transitioning');
+					}, 300);
+				};
+			}, 200);
+		};
+		
 		// 更新桌面端图片
 		if (desktopImg) {
-			// 移除查询参数，使用缓存的图片
-			desktopImg.setAttribute('src', selectedImages.desktop);
+			updateWithFade(desktopImg as HTMLImageElement, selectedImages.desktop);
 		}
 		
 		// 更新移动端图片
 		if (mobileImg) {
-			// 移除查询参数，使用缓存的图片
-			mobileImg.setAttribute('src', selectedImages.mobile);
+			updateWithFade(mobileImg as HTMLImageElement, selectedImages.mobile);
 		}
 		
 		console.log(`背景图片已更新为${isDark ? '暗色' : '亮色'}主题`);

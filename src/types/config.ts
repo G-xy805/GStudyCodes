@@ -434,3 +434,8 @@ export type SponsorConfig = {
 	showSponsorsList?: boolean; // 是否显示赞助者列表，默认 true
 	showButtonInPost?: boolean; // 是否在文章详情页底部显示赞助按钮，默认 true
 };
+
+// 图标定义类型
+export type IconDefinition = {
+	[key: string]: string;
+};
